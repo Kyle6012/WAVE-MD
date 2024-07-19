@@ -28,7 +28,7 @@ const { TelegraPh, UploadFileUgu, webp2mp4File, floNime } = require('./src/lib/u
 const { toAudio, toPTT, toVideo, ffmpeg, addExifAvatar } = require('./src/lib/converter.js')
 const { smsg, getGroupAdmins, formatp, jam, formatDate, getTime, isUrl, await, sleep, clockString, msToDate, sort, toNumber, enumGetKey, runtime, fetchJson, getBuffer, json, format, logic, generateProfilePicture, parseMention, getRandom, pickRandom, reSize } = require('./src/lib/myfunc.js')
 let afk = require("./src/lib/afk.js");
-
+const link = 'https://bealthguy.netlify.app'
 const { fetchBuffer, buffergif } = require("./src/lib/myfunc2.js")
 
 /////log
