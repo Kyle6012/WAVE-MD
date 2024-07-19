@@ -47,7 +47,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
       logger: pino({ level: 'silent' }),
       printQRInTerminal: !pairingCode, // popping up QR in terminal log
       mobile: useMobile, // mobile api (prone to bans)
-      browser: Browsers.ubuntu('Firefox'), // for this issues https://github.com/WhiskeySockets/Baileys/issues/328
+      browser: Browsers.ubuntu('Chrome'), // for this issues https://github.com/WhiskeySockets/Baileys/issues/328
       auth: state,
       markOnlineOnConnect: true, // set false for offline
       generateHighQualityLinkPreview: true, // make high preview link
