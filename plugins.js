@@ -93,7 +93,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
       setTimeout(async () => {
          let code = await Wave.requestPairingCode(phoneNumber)
          code = code?.match(/.{1,4}/g)?.join("-") || code
-         console.log(chalk.black(chalk.bgGreen(`🤖Your Pairing Code🤖: `)), chalk.black(chalk.white(code)))
+         console.log(chalk.black(chalk.bgGreen(`Your Pairing Code: `)), chalk.black(chalk.white(code)))
       }, 3000)
    }
 
@@ -359,10 +359,10 @@ WaveLft = await getBuffer(ppuser)
 	            const xdate = moment.tz('Africa/Nairobi').format('DD/MM/YYYY')
 	            const xmembers = metadata.participants.length
 Wavebody = `┌──⊰  𝑾𝑬𝑳𝑪𝑶𝑴𝑬 
-│⊳  🌐 To: ${metadata.subject}
-│⊳  📋 Name: @${WaveName.split("@")[0]}
-│⊳  👥 Members: ${xmembers}th
-│⊳  🕰️ Joined: ${xtime} ${xdate}
+│⊳ To: ${metadata.subject}
+│⊳ Name: @${WaveName.split("@")[0]}
+│⊳ Members: ${xmembers}th
+│⊳ Joined: ${xtime} ${xdate}
 └──────────⊰`
 Wave.sendMessage(anu.id,
  { text: Wavebody,
@@ -383,11 +383,11 @@ Wave.sendMessage(anu.id,
                 	let WaveName = num
                     const Wavemembers = metadata.participants.length  
      Wavebody = `┌──⊰ LEFT 
-│⊳   From: ${metadata.subject}
-│⊳   Reason: Left
-│⊳   Name: @${WaveName.split("@")[0]}
-│⊳   Members: ${Wavemembers}th
-│⊳   Time: ${Wavetime} ${Wavedate}
+│⊳ From: ${metadata.subject}
+│⊳ Reason: Left
+│⊳ Name: @${WaveName.split("@")[0]}
+│⊳ Members: ${Wavemembers}th
+│⊳ Time: ${Wavetime} ${Wavedate}
 └──────────⊰`
 Wave.sendMessage(anu.id,
  { text: Wavebody,

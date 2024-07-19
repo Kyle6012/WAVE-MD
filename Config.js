@@ -5,11 +5,11 @@ require('dotenv').config();
 //contact details
 global.ownernumber = [ process.env.OWNER_NUMBER || "254745247106"],
 global.ownername = process.env.OWNER_NAME || "ꪶ♱ꫂ 𝐵𝐸𝐴𝐿𝑇𝐻 𝐺𝑈𝑌 ⛧",
-global.ytname = "YT: BealthBotz.inc"
+global.ytname = "YT: "
 global.socialm = "GitHub: Kyle6012"
-global.location = "Undefined"
+global.location = "Kenya"
 
-global.botname = process.env.BOTNAME || "WAVE-MD",//name of the bot
+global.botname = process.env.BOTNAME || "WAVE-MD",
 
 //sticker details
 global.stickername = process.env.STICKER || "ꪶ♱ꫂ 𝐵𝐸𝐴𝐿𝑇𝐻 𝐺𝑈𝑌 ⛧",
@@ -20,7 +20,7 @@ global.themeemoji = '🔥'
 global.wm = "bealthguy"
 
 //theme link
-global.link = 'https://bealthguy.netlify.app/'
+global.link = 'https://bealthguy.netlify.app'
 
 //custom prefix
 global.prefa = process.env.PREFIX || ".",
@@ -33,7 +33,7 @@ global.autorecordtype = false //auto typing + recording
 global.autoread = false //auto read messages
 global.autobio = true //auto update bio
 global.anti212 = true //auto block +212
-global.autoread_status = true//auto view status/story
+global.autoread_status = true
 
 
 

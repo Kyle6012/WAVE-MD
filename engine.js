@@ -1339,11 +1339,11 @@ let repoInfo = await axios.get("https://api.github.com/repos/Kyle6012/WAVE-MD");
 
    const scritxt = `*WAVE BOT*\n
   *Creator:* Bealth Guy\n
-  * Repo:* ${repo.html_url}\n
-  * Total Forks:* ${repo.forks_count}\n
-  * Total Stars:* ${repo.stargazers_count}\n
-  * Repo Size:* ${(repo.size/1024).toFixed(2)} MB\n
-  * Last Updated:* ${repo.updated_at}\n
+  *Repo:* ${repo.html_url}\n
+  *Total Forks:* ${repo.forks_count}\n
+  *Total Stars:* ${repo.stargazers_count}\n
+  *Repo Size:* ${(repo.size/1024).toFixed(2)} MB\n
+  *Last Updated:* ${repo.updated_at}\n
  
 `
 
@@ -1623,7 +1623,7 @@ break;
             break;
 
 case 'play':  case 'song': {
-Wave.sendMessage(from, { react: { text: "", key: m.key }}) 
+Wave.sendMessage(from, { react: { text: "📥", key: m.key }}) 
 if (!text) return reply(`𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒔𝒐𝒏𝒈 𝒏𝒂𝒎𝒆 \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: ${prefix + command}  𝒂𝒏𝒊𝒎𝒆 𝑾𝒉𝒂𝒕𝒔𝑨𝒑𝒑 𝒔𝒕𝒂𝒕𝒖𝒔`)
 const bealthplaymp3 = require('./src/lib/ytdl2.js')
 let yts = require("youtube-yts")
@@ -3360,7 +3360,7 @@ break
 
 
 case 'list': {
-  const alivem = ` Hey darling! 🌟 Please select the menu buttons here.`
+  const alivem = `Select the menu buttons here.`
 let liistmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
     message: {
@@ -4217,6 +4217,7 @@ https://chat.whatsapp.com/${response}
           }
         }
         break;
+
         case 'test': case 'p': case 'ping': 
         let timestampe = speed()
         let latensie = speed() - timestampe
@@ -4228,7 +4229,7 @@ https://chat.whatsapp.com/${response}
 case 'developer':
 case 'dev':
     const devmod = `   *Moderators* \n\n
-*🎫Bealth Guy * @254745247106 
+*Bealth Guy*: @254745247106 
  \n`;
 
     Wave.sendMessage(m.chat, { text: devmod, mentions: ["254745247106@s.whatsapp.net"] }, { quoted: m });
@@ -4654,7 +4655,7 @@ case 'chat':
       case "run":      
         if (!text) {
           return m.reply(
-            `🍭𝑫𝒂𝒓𝒍𝒊𝒏𝒈 𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒕𝒐 𝒆𝒙𝒆𝒄𝒖𝒕𝒆! \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: *${prefix}𝒆𝒙𝒆𝒄 𝒎.𝒓𝒆𝒑𝒍𝒚("3𝒓𝒅 𝒑𝒂𝒓𝒕𝒚 𝒄𝒐𝒅𝒆 𝒊𝒔 𝒃𝒆𝒊𝒏𝒈 𝒆𝒙𝒆𝒄𝒖𝒕𝒆𝒅...")*`
+            `𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒕𝒐 𝒆𝒙𝒆𝒄𝒖𝒕𝒆! \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: *${prefix}𝒆𝒙𝒆𝒄 𝒎.𝒓𝒆𝒑𝒍𝒚("3𝒓𝒅 𝒑𝒂𝒓𝒕𝒚 𝒄𝒐𝒅𝒆 𝒊𝒔 𝒃𝒆𝒊𝒏𝒈 𝒆𝒙𝒆𝒄𝒖𝒕𝒆𝒅...")*`
           );
         }
         try {
