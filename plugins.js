@@ -440,3 +440,26 @@ if (e.includes("Timed Out")) return
 if (e.includes("Value not found")) return
 console.log('Caught exception: ', err)
 })
+const http = require('http')
+
+// Get port from command-line argument, default to 3000 if not specified
+const port = process.argv[2] || 3000
+
+const server = http.createServer((req, res) => {
+    res.statusCode = 200
+    res.setHeader('Content-Type', 'text/plain')
+    res.end('Hello World\n')
+})
+
+server.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}/`)
+})
+
+// Optionally handle IPC messages for restart/reset
+process.on('message', message => {
+    if (message === 'reset') {
+        // Perform necessary cleanup before restarting
+        process.send('reset')
+        process.exit(0)
+    }
+})

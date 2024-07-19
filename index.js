@@ -1,7 +1,7 @@
 const { spawn } = require('child_process')
 const path = require('path')
 
-// Function to start the server with the specified port
+// Function to start the server with a specified port
 function start(port) {
     let args = [path.join(__dirname, 'plugins.js'), port, ...process.argv.slice(2)]
     console.log(`Spawning process: ${process.argv[0]} ${args.join(' ')}`)
@@ -25,6 +25,6 @@ function start(port) {
     })
 }
 
-// Default port or specify another one
-const port = process.env.PORT || 3000 // Use PORT environment variable or default to 3000
+// Explicitly set port to 3000
+const port = 3000
 start(port)
