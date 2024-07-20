@@ -31,6 +31,23 @@ let afk = require("./src/lib/afk.js");
 const link = 'https://bealthguy.netlify.app'
 const { fetchBuffer, buffergif } = require("./src/lib/myfunc2.js")
 
+
+function executePythonScript(script, args, callback) {
+    const command = `python3 ${script} ${args.join(' ')}`;
+    exec(command, (error, stdout, stderr) => {
+        if (error) {
+            reply(`exec error: ${error}`);
+            callback(error, null);
+            return;
+        }
+        if (stderr) {
+            reply(`stderr: ${stderr}`);
+            callback(stderr, null);
+            return;
+        }
+        callback(null, stdout.trim());
+    });
+}
 /////log
  global.modnumber = '254745247106' 
 //src/database
@@ -775,6 +792,7 @@ break;
                 });
             }
             break;
+
             case 'join': {
                 try {
                     if (!isCreator) return reply(mess.owner)
@@ -2763,7 +2781,7 @@ let owmsg = generateWAMessageFromContent(from, {
               }
 
 
-           ],
+          ],
           })
         })
     }
