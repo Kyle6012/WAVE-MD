@@ -1,6 +1,6 @@
 const prefix = global.prefa
 const funmenu=`「 *Wave BOT* 」
-┌── _*🎉FUN🎉*_
+┌── _*FUN*_
 │⊳ ${prefix}truth
 │⊳ ${prefix}dare
 │⊳ ${prefix}couple 

@@ -2,7 +2,7 @@ const prefix = global.prefa
   const pushname = m.pushName || "No Name"
 
 const generalmenu =`「 *Wave BOT* 」
-┌── _*🧧GENERAL🧧*_
+┌── _*GENERAL*_
 │⊳  ${prefix}hi
 │⊳  ${prefix}dev
 │⊳  ${prefix}info

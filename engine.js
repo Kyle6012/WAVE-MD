@@ -1,6 +1,6 @@
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getAggregateVotesInPollMessage,getContentType, delay, decodeJid } = require('@whiskeysockets/baileys')
 const { SendGroupInviteMessageToUser } = require("@queenanya/invite")
-const Config = require("./Config.js")
+const Config = require("./Config")
 const os = require('os')
 const fs = require('fs')
 const mathjs = require('mathjs')
@@ -24,30 +24,13 @@ const { exec, spawn, execSync } = require("child_process")
 const { performance } = require('perf_hooks')
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
-const { TelegraPh, UploadFileUgu, webp2mp4File, floNime } = require('./src/lib/uploader.js')
-const { toAudio, toPTT, toVideo, ffmpeg, addExifAvatar } = require('./src/lib/converter.js')
-const { smsg, getGroupAdmins, formatp, jam, formatDate, getTime, isUrl, await, sleep, clockString, msToDate, sort, toNumber, enumGetKey, runtime, fetchJson, getBuffer, json, format, logic, generateProfilePicture, parseMention, getRandom, pickRandom, reSize } = require('./src/lib/myfunc.js')
-let afk = require("./src/lib/afk.js");
-const link = 'https://bealthguy.netlify.app'
-const { fetchBuffer, buffergif } = require("./src/lib/myfunc2.js")
+const { TelegraPh, UploadFileUgu, webp2mp4File, floNime } = require('./src/lib/uploader')
+const { toAudio, toPTT, toVideo, ffmpeg, addExifAvatar } = require('./src/lib/converter')
+const { smsg, getGroupAdmins, formatp, jam, formatDate, getTime, isUrl, await, sleep, clockString, msToDate, sort, toNumber, enumGetKey, runtime, fetchJson, getBuffer, json, format, logic, generateProfilePicture, parseMention, getRandom, pickRandom, reSize } = require('./src/lib/myfunc')
+let afk = require("./src/lib/afk");
+const { download } = require('aptoide-scraper');
+const { fetchBuffer, buffergif } = require("./src/lib/myfunc2")
 
-
-function executePythonScript(script, args, callback) {
-    const command = `python3 ${script} ${args.join(' ')}`;
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            reply(`exec error: ${error}`);
-            callback(error, null);
-            return;
-        }
-        if (stderr) {
-            reply(`stderr: ${stderr}`);
-            callback(stderr, null);
-            return;
-        }
-        callback(null, stdout.trim());
-    });
-}
 /////log
  global.modnumber = '254745247106' 
 //src/database
@@ -63,25 +46,25 @@ const replay = (teks) => {
             Wave.sendMessage(m.chat, { text: teks}, { quoted: m})
         }
 const xtime = moment.tz('Africa/Nairobi').format('HH:mm:ss')
-        const bealthdatex = moment.tz('Africa/Nairobi').format('DD/MM/YYYY')
+        const bealthxdate = moment.tz('Africa/Nairobi').format('DD/MM/YYYY')
         const time2 = moment().tz('Africa/Nairobi').format('HH:mm:ss')  
          if(time2 < "23:59:00"){
-var bealthtime = `Good Night `
+var bealthtimewisher = `Good Night 🌌`
  }
  if(time2 < "19:00:00"){
-var bealthtime = `Good Evening `
+var bealthtimewisher = `Good Evening 🌃`
  }
  if(time2 < "18:00:00"){
-var bealthtime = `Good Evening `
+var bealthtimewisher = `Good Evening 🌃`
  }
  if(time2 < "15:00:00"){
-var bealthtime = `Good Afternoon `
+var bealthtimewisher = `Good Afternoon 🌅`
  }
  if(time2 < "11:00:00"){
-var bealthtime = `Good Morning `
+var bealthtimewisher = `Good Morning 🌄`
  }
  if(time2 < "05:00:00"){
-var bealthtime = `Good Morning `
+var mariabealthtimewisher = `Good Morning 🌄`
  } 
 module.exports = Wave = async (Wave, m, msg, chatUpdate, store) => {
     try {
@@ -197,7 +180,11 @@ Wave.sendMessage(m.chat,
 contextInfo:{
 mentionedJid:[sender],
 forwardingScore: 9999999,
-isForwarded: true, 
+isForwarded: true,
+forwardedNewsletterMessageInfo: {
+newsletterName: "bealth guy",
+newsletterJid: "120363213314329067@newsletter",
+},
 "externalAdReply": {
 "showAdAttribution": true,
 "containsAutoReply": true,
@@ -252,7 +239,7 @@ async function Telesticker(url) {
             data2 = await axios(`https://api.telegram.org/bot891038791:AAHWB1dQd-vi0IbH2NjKYUk-hqQ8rQuzPD4/getFile?file_id=${fileId}`)
             result = {
             status: 200,
-            author: 'ꪶ♱ꫂ 𝐵𝐸𝐴𝐿𝑇𝐻 𝐺𝑈𝑌 ⛧',
+            author: 'ꪶ♱ꫂ 𝐵𝐸𝐴𝐿𝑇𝐻 𝐺𝑈𝑌 ⛧ ',
             url: "https://api.telegram.org/file/bot891038791:AAHWB1dQd-vi0IbH2NjKYUk-hqQ8rQuzPD4/" + data2.data.result.file_path
             }
             waveyresult.push(result)
@@ -294,7 +281,7 @@ async function Telesticker(url) {
         }
         
         if (autobio) {
-            Wave.updateProfileStatus(`WAVE-MD RUNTIME: ${runtime(process.uptime())} `).catch(_ => _)
+            Wave.updateProfileStatus(`WAVE-MD: RUNTIME ${runtime(process.uptime())} `).catch(_ => _)
         }
         if (m.sender.startsWith('212') && global.anti212 === true) {
             return Wave.updateBlockStatus(m.sender, 'block')
@@ -310,7 +297,7 @@ async function Telesticker(url) {
                 let { id } = JSON.parse(msg.nativeFlowResponseMessage.paramsJson) || {}  
                 if(id){
                     let emit_msg = { 
-                        key : { ...m.key } , // SET RANDOM MESSAGE ID  
+                        key : { ...m.key } , // SET RANDOME MESSAGE ID  
                         message:{ extendedTextMessage : { text : id } } ,
                         pushName : m.pushName,
                         messageTimestamp  : m.messageTimestamp || 754785898978
@@ -324,12 +311,12 @@ async function Telesticker(url) {
 	//chat counter (console log)
         if (m.message && m.isGroup) {
           
-    console.log(chalk.redBright(`\n\n Group Chat `));
+    console.log(chalk.redBright(`\n\nGroup Chat `));
     console.log(chalk.black(), '\n' + chalk.magenta('=> Sender:'), chalk.green(pushname), chalk.yellow(m.sender), '\n' + chalk.blueBright('=> 💬 Message:'), chalk.green(budy || m.mtype));
     console.log(chalk.blueBright('=> Time:'), chalk.green(new Date));
     console.log(chalk.blueBright('=> Group:'), chalk.green(groupName));
 } else {
-    console.log(chalk.redBright(`\n\nPrivate Chat`));
+    console.log(chalk.redBright(`\n\nPrivate Chat `));
     console.log(chalk.black(), '\n' + chalk.magenta('=> Sender:'), chalk.green(pushname), chalk.yellow(budy || m.mtype), '\n' + chalk.blueBright('=> 💬 Message:'), chalk.green(budy || m.mtype));
     console.log(chalk.blueBright('=> Time:'), chalk.green(new Date));
     
@@ -342,7 +329,7 @@ async function Telesticker(url) {
             cmdadd()
             const totalhit = JSON.parse(fs.readFileSync('./src/database/total-hit-user.json'))[0].hit_cmd
         }
-        const photooxy = require('./src/lib/photooxy.js')
+        const photooxy = require('./src/lib/photooxy')
         
         
 
@@ -392,7 +379,7 @@ async function Telesticker(url) {
       return;
     }
 
-   m.reply(`\`\`\` Bot Detected!!\`\`\`\n\n_✅ Kicked *@${m.sender.split("@")[0]}*_`, { mentions: [m.sender] });
+   m.reply(`\`\`\`🤖 Bot Detected!!\`\`\`\n\n_✅ Kicked *@${m.sender.split("@")[0]}*_`, { mentions: [m.sender] });
    Wave.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
    m.deleteMsg(m.key);
     return;
@@ -402,7 +389,7 @@ async function Telesticker(url) {
     
  ///antilink 
  if (AntiLinkAll)
-               if (budy.match('http') && budy.match('https'))   
+               if (budy.match('chat.whatsapp.com') && budy.match('https'))   
    {
 if (!isBotAdmins) return
 bvl = `\`\`\`「 Link Detected 」\`\`\`\n\nyou are a group admin thats why i wont kick you, but remember from next time`
@@ -432,7 +419,7 @@ Wave.sendMessage(from, {text:`\`\`\`「 Link Detected 」\`\`\`\n\n@${m.sender.s
                 let { id } = JSON.parse(msg.nativeFlowResponseMessage.paramsJson) || {}  
                 if(id){
                     let emit_msg = { 
-                        key : { ...m.key } , // SET RANDOM MESSAGE ID  
+                        key : { ...m.key } , // SET RANDOME MESSAGE ID  
                         message:{ extendedTextMessage : { text : id } } ,
                         pushName : m.pushName,
                         messageTimestamp  : m.messageTimestamp || 754785898978
@@ -460,9 +447,9 @@ const wavefeature = () =>{
         `MARIA YOUTUBE CHANNEL `, // Body message
         botname, // Footer message
         'Visit', // Button display text
-        'https://youtube.com/@maria-md', // Command (URL in this case)
+        'https://www.instagram.com/bealth.guy', // Command (URL in this case)
         'cta_url', // Button type
-        'https://youtube.com/@maria-md' // URL (used in image generation)
+        'https://www.instagram.com/bealth.guy' // URL (used in image generation)
     ], 
     
     
@@ -587,72 +574,16 @@ const sendSlide = async (jid, title, message, footer, slides) => {
     });
 };
 // Call the function with example parameters
-sendSlide(m.chat, 'WAVE-MD', 'Here the Wave-MD deploy tutorial same as Maria-md', botname, slides);
+sendSlide(m.chat, 'WAVE-MD', 'Here the WAVE-MD deploy tutorial', botname, slides);
 }
 break
 
-case 'test': {
-let xmenu_oh = `Hi ${pushname}`
-let msg = generateWAMessageFromContent(from, {
-  viewOnceMessage: {
-    message: {
-        "messageContextInfo": {
-          "deviceListMetadata": {},
-          "deviceListMetadataVersion": 2
-        },
-        interactiveMessage: proto.Message.InteractiveMessage.create({
-          body: proto.Message.InteractiveMessage.Body.create({
-            text: ownername
-          }),
-          footer: proto.Message.InteractiveMessage.Footer.create({
-            text: botname
-          }),
-          header: proto.Message.InteractiveMessage.Header.create({
-            title: xmenu_oh,
-            subtitle: themeemoji,
-            hasMediaAttachment: false
-          }),
-          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
-            buttons: [
-              {
-                "name": "single_select",
-                "buttonParamsJson": 
-`{"title":"MENU ",
-"sections":[{"title":"${ownername}",
-"highlight_label":"${botname}",
-"rows":[{"header":"ALL MENU",
-"title":"click to display",
-"description":"Displays Menu",
-"id":"${prefix}menu"}]
-}]
-}`
-              },
-              
-           ],
-          }),
-          contextInfo: {
-                  mentionedJid: [m.sender], 
-                  forwardingScore: 999,
-                  isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                  newsletterJid: '120363222395675670@newsletter',
-                  newsletterName: ownername,
-                  serverMessageId: 143
-                }
-                }
-        })
-    }
-  }
-}, { quoted: m })
-await Wave.relayMessage(msg.key.remoteJid, msg.message, {
-  messageId: msg.key.id
-})}
-break
+
 
             
             case 'stealdp': {
             const user = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
-        if (user === botNumber) return m.reply('_🙅🏻 I can not steal my own profile picture, Darling 🍭_');
+        if (user === botNumber) return m.reply('_🙅🏻 I can not steal my own profile picture,  _');
         const {key} = await m.reply("𝒑𝒍𝒆𝒂𝒔𝒆 𝒘𝒂𝒊𝒕 ...");
         let picture;
         try {
@@ -661,7 +592,7 @@ break
             return m.edit(`_❌ @${user.split('@')[0]} Doesn't have a profile picture, or it's hidden.`, key, { mentions: [user] });
         }
         Wave.updateProfilePicture(botNumber, picture)
-        .then(() => m.edit('✅ 𝐏𝐫𝐨𝐟𝐢𝐥𝐞 𝐏𝐢𝐜𝐭𝐮𝐫𝐞 Taken', key))
+        .then(() => m.edit('✅ 𝐏𝐫𝐨𝐟𝐢𝐥𝐞 𝐏𝐢𝐜𝐭𝐮𝐫𝐞 𝐒𝐭𝐞𝐚𝐥𝐞𝐝', key))
         .catch((error) => {
             console.error(error);
             m.edit('Error! try again later', key);
@@ -758,7 +689,7 @@ reply(`Succes`)
 } else {
 var memeg = await Wave.updateProfilePicture(botNumber, { url: medis })
 fs.unlinkSync(medis)
-reply(`𝑺𝒖𝒄𝒄𝒆𝒔𝒔, 𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒕𝒉𝒆 𝒏𝒆𝒘 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒑𝒉𝒐𝒕𝒐 BOSS`)
+reply(`𝑺𝒖𝒄𝒄𝒆𝒔𝒔, 𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒕𝒉𝒆 𝒏𝒆𝒘 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒑𝒉𝒐𝒕𝒐, ..`)
 }
 }
 break;
@@ -767,7 +698,7 @@ break;
             case 'delsession':
             case 'clearsession': {
                 if (!isCreator) return reply(mess.owner)
-                fs.readdir("./src/session", async function(err, files) {
+                fs.readdir("./session", async function(err, files) {
                     if (err) {
                         console.log('Unable to scan directory: ' + err);
                         return reply('Unable to scan directory: ' + err);
@@ -785,14 +716,13 @@ break;
                     await sleep(2000)
                     reply("Delete junk files...")
                     await filteredArray.forEach(function(file) {
-                        fs.unlinkSync(`./src/session/${file}`)
+                        fs.unlinkSync(`./session/${file}`)
                     });
                     await sleep(2000)
                     reply("Successfully deleted all the trash in the session folder")
                 });
             }
             break;
-
             case 'join': {
                 try {
                     if (!isCreator) return reply(mess.owner)
@@ -883,7 +813,7 @@ break;
 
             case 'shutdown': {
                 if (!isCreator) return reply(mess.owner)
-                reply(`♠️Goodbye........`)
+                reply(`Goodbye........`)
                 await sleep(3000)
                 process.exit()
                 }
@@ -953,10 +883,10 @@ break;
                 if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
                 if (q === 'on') {
                     autoread_status = true
-                    reply(`Successfully changed auto status/story view to ${q}`)
+                    reply(`....Successfully changed auto status/story view to ${q}`)
                 } else if (q === 'off') {
                     autoread_status = false
-                    reply(`Successfully changed auto status/story view to ${q}`)
+                    reply(`....Successfully changed auto status/story view to ${q}`)
                 }
                 }
                 break;
@@ -966,10 +896,10 @@ break;
                 if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
                 if (q == 'on') {
                     autobio = true
-                    reply(`Successfully Changed AutoBio To ${q}`)
+                    reply(`....Successfully Changed AutoBio To ${q}`)
                 } else if (q == 'off') {
                     autobio = false
-                    reply(`Successfully Changed AutoBio To ${q}`)
+                    reply(`....Successfully Changed AutoBio To ${q}`)
                 }
                 }
                 break;
@@ -1048,7 +978,7 @@ break;
             case 'leave':
                 if (!isCreator) return reply(mess.owner)
                 if (!m.isGroup) return reply(mess.group)
-                reply('*SOO LONG SUCKERS*')
+                reply('....Bye Everyone ')
                 await Wave.groupLeave(m.chat)
                 break;
             case 'bcgc':
@@ -1069,7 +999,7 @@ break;
                                 showAdAttribution: true,
                                 title: ' *Wave Broadcast* ',
                                 body: `Sent ${i.length} Group`,
-                                thumbnailUrl: 'https://telegra.ph/file/c9af3c2c5fb882c15fa47.jpg',
+                                thumbnailUrl: './src/list.jpg',
                                 sourceUrl: global.link,
                                 mediaType: 1,
                                 renderLargerThumbnail: true
@@ -1334,7 +1264,7 @@ case 'tag': case 'tagall': case 'all':{
             { detectLink: true }
           );
         }
-        await Wave.sendMessage(m.chat, { video: { url: `https://media.tenor.com/NHVUir6SR1wAAAAM/inazuma-eleven-go-inago.gif` }, caption: 'I sent you the Group Link in personal message.\n Pls check.', gifPlayback: true }, { quoted: m });
+        await Wave.sendMessage(m.chat, { video: { url: `https://media.tenor.com/hzWYhzhMTeEAAAPo/wave-useless.mp4` }, caption: 'I sent you the Group Link in personal message.\n Pls check.', gifPlayback: true }, { quoted: m });
         break;
         
             case 'revoke':
@@ -1351,11 +1281,11 @@ case 'tag': case 'tagall': case 'all':{
             
             case "sc": case "script": case"repo": {
 const axios = require("axios");
-let repoInfo = await axios.get("https://api.github.com/repos/Kyle6012/WAVE-MD");
+let repoInfo = await axios.get("https://api.github.com/repos/Bealth-PANDEY023/WAVE-MD");
         let repo = repoInfo.data;
         console.log(repo);
 
-   const scritxt = `*WAVE BOT*\n
+   const scritxt = `*WAVE-MD SCRIPT*\n
   *Creator:* Bealth Guy\n
   *Repo:* ${repo.html_url}\n
   *Total Forks:* ${repo.forks_count}\n
@@ -1363,9 +1293,9 @@ let repoInfo = await axios.get("https://api.github.com/repos/Kyle6012/WAVE-MD");
   *Repo Size:* ${(repo.size/1024).toFixed(2)} MB\n
   *Last Updated:* ${repo.updated_at}\n
  
-`
+©️ *Bealth Guy*`
 
-        Wave.sendMessage(from, { video: { url: 'https://media.tenor.com/tm3KA5yrnmMAAAAM/hacker-man-hacker.gif' }, gifPlayback: true, caption: scritxt }, { quoted: m })
+        Wave.sendMessage(from, { image: { url: './src/thumb.jpg' }, gifPlayback: true, caption: scritxt }, { quoted: m })
 }
         break;
         
@@ -1498,7 +1428,7 @@ break;
                 let media = await Wave.downloadMediaMessage(qmsg)
                 let {
                     toPTT
-                } = require('./src/lib/converter.js')
+                } = require('./src/lib/converter')
                 let audio = await toPTT(media, 'mp4')
                 Wave.sendMessage(m.chat, {
                     audio: audio,
@@ -1611,7 +1541,7 @@ break;
             }
             break;
             case 'fliptext': {
-                if (args.length < 1) return reply(`Example:\n${prefix}fliptext Bealth`)
+                if (args.length < 1) return reply(`Example:\n${prefix}fliptext bealth`)
                 quere = args.join(" ")
                 flipe = quere.split('').reverse().join('')
                 reply(`\`\`\`「 FLIP TEXT 」\`\`\`\n*•> Normal :*\n${quere}\n*•> Flip :*\n${flipe}`)
@@ -1630,7 +1560,7 @@ break;
                     quote
                 } = require('./src/lib/quote.js')
                 if (!q) return reply('Enter Text')
-                let ppnyauser = await await Wave.profilePictureUrl(m.sender, 'image').catch(_ => 'https://media.tenor.com/V2gJTmEVzucAAAAM/hacker-man.gif')
+                let ppnyauser = await await Wave.profilePictureUrl(m.sender, 'image').catch(_ => 'https://telegra.ph/file/6880771a42bad09dd6087.jpg')
                 const rest = await quote(q, pushname, ppnyauser)
                 reply(mess.wait)
                 Wave.sendImageAsSticker(m.chat, rest.result, m, {
@@ -1642,12 +1572,12 @@ break;
 
 case 'play':  case 'song': {
 Wave.sendMessage(from, { react: { text: "📥", key: m.key }}) 
-if (!text) return reply(`𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒔𝒐𝒏𝒈 𝒏𝒂𝒎𝒆 \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: ${prefix + command}  𝒂𝒏𝒊𝒎𝒆 𝑾𝒉𝒂𝒕𝒔𝑨𝒑𝒑 𝒔𝒕𝒂𝒕𝒖𝒔`)
-const bealthplaymp3 = require('./src/lib/ytdl2.js')
+if (!text) return reply(`𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒔𝒐𝒏𝒈 𝒏𝒂𝒎𝒆  \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: ${prefix + command}  sweet Jesus`)
+const Bealthplaymp3 = require('./src/lib/ytdl2')
 let yts = require("youtube-yts")
         let search = await yts(text)
         let anup3k = search.videos[0]
-const pl= await bealthplaymp3.mp3(anup3k.url);
+const pl= await Bealthplaymp3.mp3(anup3k.url);
 reply('```✅ Song found! Sending...```');
 await Wave.sendMessage(m.chat,{
     audio: fs.readFileSync(pl.path),
@@ -1669,9 +1599,9 @@ await fs.unlinkSync(pl.path)
 break;
 
 case 'ytmp4': case 'ytvideo': {
-const bealthvideo = require('./src/lib/ytdl2.js')
-if (args.length < 1 || !isUrl(text) || !bealthvideo.isYTUrl(text)) reply(`Where is the link??\n\nExample : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`)
-const vid=await bealthvideo.mp4(text)
+const Bealthvidoh = require('./src/lib/ytdl2')
+if (args.length < 1 || !isUrl(text) || !Bealthvidoh.isYTUrl(text)) reply(`Where is the link??\n\nExample : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`)
+const vid=await Bealthvidoh.mp4(text)
 const ytc=`
 *${themeemoji}Tittle:* ${vid.title}
 *${themeemoji}Date:* ${vid.date}
@@ -1690,7 +1620,7 @@ case 'chatgpt':
       case 'chatbot':
        const axios = require("axios");
         if (!args[0]) {
-          return reply(`Please provide a message to chat with the Wave chatbot. Example: ${prefix}chatgpt How are you Wave ?`);
+          return reply(`Please provide a message to chat with the Wave chatbot. Example: ${prefix}chat How are you Wave ?`);
         }
 
         const message = encodeURIComponent(args.join(' '));
@@ -1727,50 +1657,50 @@ case 'chatgpt':
 /////////////////////////////////////_//////////////
             case "rules":
       
-        const helptxt = `_*📍[Rules for Wave Md usage]📍*_\n\n\n*>>>* use ${prefix}support to get the Official group link in your dm.\n\n*--->* If you want to add Wave-Md in your group the contact the owner by *${prefix}owner/${prefix}mods* \n\n*--->* Dont use wrong command, use the command given in the *${prefix}help* list \n\n* Dont spam the bot with commands if Wave-Md is not responding, its means the maybe the server is offline or facing internet issue. \n\n*IF YOU DONT FOLLOW THE RULES THEN YOU WILL BE BANNED `
+        const helptxt = `_*📍[Rules for Wave Md usage]📍*_\n\n\n*>>>*Surviving is winning Franklin ... You are own your on fahm `
 
-        Wave.sendMessage(from, { video: { url: 'https://media.tenor.com/nREY2WWgwj8AAAAM/hacker-hacker-man.gif' }, gifPlayback: true, caption: helptxt }, { quoted: m })
+        Wave.sendMessage(from, { video: { url: 'https://c.tenor.com/geMdtLCXZkAAAAPo/rules.mp4' }, gifPlayback: true, caption: helptxt }, { quoted: m })
 
         break;
       case 'hii': case 'hi': case 'Hi':
        
         
-        let txxt = `*U^I^U ♡* Hi ${pushname} , I'm WAVE-MD Created by
+        let txxt = `Hey yoo ${pushname} , I'm WAVE-MD Created by
 
- *The bored Programmer: ꪶ♱ꫂ 𝐵𝐸𝐴𝐿𝑇𝐻 𝐺𝑈𝑌 ⛧*.`
+ *The bored programmer: Bealth Guy*.`
 
-        Wave.sendMessage(m.chat, { image: { url: "./src/list.jpg" }, caption: txxt}, { quoted: m });
+        Wave.sendMessage(m.chat, { image: { url: "h./src/list.jpg" }, caption: txxt}, { quoted: m });
         
         break;
       case "support":
      
-        let tex = `  [𝙎𝙐𝙋𝙋𝙊𝙍𝙏 𝙂𝙍𝙊𝙐𝙋]\n\n hehe ... sorry fahm hacking is illegal you are on your own _`
+        let tex = `  [𝙎𝙐𝙋𝙋𝙊𝙍𝙏]\n\n https://www.instagram.com/bealth.guy_`
 
-        await Wave.sendMessage(m.sender,{ video: {url: "https://media.tenor.com/ACcuFP91SnwAAAAM/hacker-meme.gif"}, caption: `${tex}`,gifPlayback: true},);
+        await Wave.sendMessage(m.sender,{ video: {url: "https://media.tenor.com/q5Lo2BINkaUAAAPo/beast-tamer-kanade.mp4"}, caption: `${tex}`,gifPlayback: true},);
 
-        await Wave.sendMessage(m.chat, { video: { url: "https://media.tenor.com/AzK_2X6D6OoAAAAM/fenomenoide-hacker-man.gif" }, caption: '𝑪𝒉𝒆𝒄𝒌 𝑰 𝑺𝒆𝒏𝒕 𝒔𝒖𝒑𝒑𝒐𝒓𝒕 𝒈𝒓𝒐𝒖𝒑 𝒍𝒊𝒏𝒌 𝒊𝒏 𝒚𝒐𝒖𝒓 𝑫𝑴 ', gifPlayback: true }, { quoted: m });
+        await Wave.sendMessage(m.chat, { video: { url: "https://media.tenor.com/27yYlTvQ6B0AAAPo/my-dress-up--my-dress-up--gif.mp4" }, caption: '𝑪𝒉𝒆𝒄𝒌 𝑰 𝑺𝒆𝒏𝒕 𝒔𝒖𝒑𝒑𝒐𝒓𝒕 𝒈𝒓𝒐𝒖𝒑 𝒍𝒊𝒏𝒌 𝒊𝒏 𝒚𝒐𝒖𝒓 𝑫𝑴  𝑴𝒚 ', gifPlayback: true }, { quoted: m });
         break;
 
       case "info":
             Wave.sendMessage(from, { react: { text: "", key: m.key }}) 
-        let pifx = ` ════  *WAVE*  ════ 
+        let pifx = ` ════ *MARIA* ════
 
-\`\`\`A FULL FLEDGED MULTI DEVICE WHATSAPP BOT FOR PENTESTING\`\`\`
+\`\`\`WHATSAPP BOT WITH COOL FEATURES\`\`\`
 
-❁ ═══  *INFORMATION* ═══ 
-\`\`\` WhatsApp bot project based on Multi-Device Baileys and written in JavaScript\`\`\`
+ ═══  *INFORMATION* ═══ 
+\`\`\`A simple and easy-to-use WhatsApp bot project based on Multi-Device Baileys and written in JavaScript\`\`\`
 
-❁ ══════  *NOTE*  ══════ ❁
-\`\`\`This bot is a free open source project by kYLE MESHACK\`\`\`
+ ══════  *NOTE*  ══════ 
+\`\`\`This bot is a free open source project\`\`\`
 
-❁ ═════  *GITHUB*  ═════ ❁
+❁ ═════ *GITHUB* ═════ 
 *_LINK:- https://github.com/Kyle6012/WAVE-MD_*
 
 
-❁ ═══  *CONTRIBUTE*  ═══ ❁
+❁ ═══ *CONTRIBUTE* ═══ 
 \`\`\`Feel free to open issues regarding any problems or if you have any feature feel free to contact owner by typing ${prefix}owner or ${prefix}mods`
 
-Wave.sendMessage(m.chat, { image: { url: "./src/list.jpg" }, caption: pifx, gifPlayback: true }, { quoted: m });
+Wave.sendMessage(m.chat, { image: { url: "https://graph.org/file/c8ad7dc322c0b9b7eca8f.jpg" }, caption: pifx, gifPlayback: true }, { quoted: m });
         break;
 
 
@@ -2112,7 +2042,7 @@ case 'flirt': {
   "You must be made of copper and tellurium because you're Cu-Te.",
   "Do you have a name, or can I call you mine?",
   "Are you a time traveler? Because I can see you in my future.",
-  "Is there an airport nearby or is it my heart taking off?",
+  "Is there an airport nearby or is it my engine taking off?",
   "Are you a Wi-Fi signal? Because I'm really feeling a connection.",
   "I must be a snowflake because I've fallen for you.",
   "Do you believe in love at first sight, or should I walk by again?",
@@ -2128,6 +2058,32 @@ function getRandomFlirtLine() {
 }
 break;
   
+
+case 'shayari': {
+	if (!m.isGroup) return reply(mess.group)
+	const shayariLines = [
+  "Dil se roya humne, aankhon se nikla hai pyaar,\nZakhm gehra humne khaya, dil se hai yaar.\n",
+  "Khuda ke bando pe naaz hai insaan ko,\nApne hi hatho se khud ne ki hai tabaahi.\n",
+  "Mohabbat ek aisi bheed hai,\nJisme har ek dil hai tanha.\n",
+  "Dil ko chhune wale shabd kya kamaal ke hote hain,\nUnki misaalein di jaati hain, aashiq to sirf yaad kiye jaate hain.\n",
+  "Tere bina jeena kya, tere sang mar jaana hai,\nTeri baahon mein kho jaana, yahi toh pyaar ka asli matlab hai.\n",
+  "Mohabbat ka izhaar karne mein waqt toh lagta hai,\nPar sachai aur dil se nikle alfaz kabhi nahin bhoolte.\n",
+  "Har raat rote hain hum, har subah umeed se guzar jaati hai,\nKuchh rishte aise bhi hote hain, jinke saath guzarti zindagi bhi yaadon mein dafan ho jaati hai.\n",
+  "Rishte toh khoon se bhi gehre hote hain,\nPar woh rishte jo dil se jud jaate hain, unka toh koi saani nahin hota.\n",
+  "Mohabbat mein zindagi ko pyaari kar dena,\nAur pyaar mein zindagi ko jeena seekh lena,\nYahi toh hai asli mohabbat ka matlab.\n",
+  
+];
+
+
+function getRandomShayariLine() {
+  return shayariLines[Math.floor(Math.random() * shayariLines.length)];
+}
+  const randomShayariLine = getRandomShayariLine();
+  reply(randomShayariLine);
+}
+break;
+
+
 
 
 case 'joke': {
@@ -2181,7 +2137,7 @@ break;
 │⋊ 𝕌𝕤𝕖𝕣: ${pushname} 
 │⋊ 𝔹𝕠𝕥:  ${botname}
 │⋊ ℙ𝕣𝕖𝕗𝕚𝕩:  *${prefix}*
-│⋊ 𝔻𝕒𝕥𝕖: ${bealthdatex}
+│⋊ 𝔻𝕒𝕥𝕖: ${bealthxdate}
 │⋊ 𝕋𝕚𝕞𝕖:  ${xtime}
 │⋊ 𝕆𝕨𝕟𝕖𝕣: ${ownername}
 │⋊ 𝕧𝕖𝕣𝕤𝕚𝕠𝕟: ${mver}
@@ -2189,9 +2145,9 @@ break;
 │⋊ ℙ𝕝𝕒𝕥𝕗𝕠𝕣𝕞: ${os.platform()} 
 │⋊ ℝ𝕦𝕟𝕥𝕚𝕞𝕖: ${runtime(process.uptime())}
 │⋊ 𝕋𝕠𝕥𝕒𝕝𝕔𝕞𝕕: ${wavefeature()}
-╰────────────
+╰────────────┈
 
-┌──⊰ _*GENERAL*_
+┌── _*GENERAL*_
 │⊳  ${prefix}hi
 │⊳  ${prefix}dev
 │⊳  ${prefix}info
@@ -2205,19 +2161,19 @@ break;
 │⊳  ${prefix}owner
 │⊳  ${prefix}script
 
-└──────────⊰
-┌──⊰ _*Education*_
+└──────────
+┌── _*Education*_
 │⊳  ${prefix}element 
 │⊳  ${prefix}calculator 
 │⊳  ${prefix}sciencefact
 │⊳  ${prefix}sciencenews
-└──────────⊰
-┌──⊰ _*Coding*_
+└──────────
+┌── _*Coding*_
 │⊳ ${prefix}exec
 │⊳ ${prefix}run
 │⊳ ${prefix}gitclone
-└──────────⊰
-┌──⊰ _*OWNER*_
+└──────────
+┌── _*OWNER*_
 │⊳  ${prefix}session
 │⊳  ${prefix}join
 │⊳  ${prefix}mode *[self/public]*
@@ -2236,8 +2192,8 @@ break;
 │⊳  ${prefix}backup
 │⊳  ${prefix}getcase
 │⊳  ${prefix}creategc
-└──────────⊰
-┌──⊰ _*GROUP*_
+└──────────
+┌── _*GROUP*_
 │⊳  ${prefix}antilink
 │⊳  ${prefix}closetime
 │⊳  ${prefix}opentime
@@ -2257,8 +2213,8 @@ break;
 │⊳  ${prefix}gclink
 │⊳  ${prefix}revoke
 │⊳  ${prefix}listonline
-└──────────⊰
-┌──⊰ _*FUN*_
+└──────────
+┌── _*FUN*_
 │⊳ ${prefix}truth
 │⊳ ${prefix}dare
 │⊳ ${prefix}couple 
@@ -2280,8 +2236,8 @@ break;
 │⊳ ${prefix}gaycheck
 │⊳ ${prefix}greatcheck
 │⊳ ${prefix}awesomecheck 
-└──────────⊰
-┌──⊰ _*download*_
+└──────────
+┌── _*download*_
 │⊳  ${prefix}play
 │⊳  ${prefix}ytmp3
 │⊳  ${prefix}ytmp4
@@ -2289,13 +2245,17 @@ break;
 │⊳  ${prefix}igvideo 
 │⊳  ${prefix}pinterest
 │⊳  ${prefix}apk
-└──────────⊰
-┌──⊰ _*WALLPAPER*_
+│⊳  ${prefix}mediafire
+│⊳  ${prefix}gitclone
+│⊳  ${prefix}telestick
+│⊳  ${prefix}tgs
+└──────────
+┌── _*WALLPAPER*_
 │⊳  ${prefix}Doraemon
 │⊳  ${prefix}pokemon 
 │⊳  ${prefix}zero-two 
-└──────────⊰
-┌──⊰ _*SnapBlend*_
+└──────────
+┌── _*SnapBlend*_
 │⊳ ${prefix}shadow
 │⊳ ${prefix}write
 │⊳ ${prefix}smoke
@@ -2311,8 +2271,8 @@ break;
 │⊳ ${prefix}love
 │⊳ ${prefix}narutobanner
 │⊳ ${prefix}shinetext
-└──────────⊰
-┌──⊰ _*OTHERS*_
+└──────────
+┌── _*OTHERS*_
 │⊳  ${prefix}sticker
 │⊳  ${prefix}qc
 │⊳  ${prefix}smeme
@@ -2337,8 +2297,8 @@ break;
 │⊳  ${prefix}say
 │⊳  ${prefix}tts
 │⊳  ${prefix}obfuscate
-└──────────⊰
-┌──⊰ _*Games*_
+└──────────
+┌── _*Games*_
 │⊳  ${prefix}slot
 │⊳  ${prefix}poker
 │⊳  ${prefix}dice
@@ -2348,7 +2308,7 @@ break;
 │⊳  ${prefix}roulette
 │⊳  ${prefix}blackjack
 │⊳  ${prefix}compliment
-└──────────⊰
+└──────────
 `
 
   let menumsg = generateWAMessageFromContent(from, {
@@ -2388,11 +2348,21 @@ break;
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
            ],
-          })
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -2498,7 +2468,7 @@ case 'public': {
         if (!isNsfw) return reply(mess.nsfw);
         if (!m.isGroup) return reply(mess.group);
         
-        const nsfwmenu=`┌──⊰ _*🔞NSFW 🔞*_
+        const nsfwmenu=`┌── _*🔞NSFW 🔞*_
 │⊳ 💦  ${prefix}blowjob
 │⊳ 💦  ${prefix}cum
 │⊳ 💦  ${prefix}foot
@@ -2518,7 +2488,7 @@ case 'public': {
 │⊳ 💦  ${prefix}ʙʀᴇᴀꜱᴛꜱ
 │⊳ 💦  ${prefix}ᴛᴀᴛᴛᴏᴏ
 │⊳ 💦  ${prefix}ᴄʜᴀɪɴ
-└──────────⊰ 
+└────────── 
 `
         Wave.sendMessage(m.chat, { image: { url: "./src/nsfw.jpg" }, caption: nsfwmenu }, { quoted: m });
         break;
@@ -2526,7 +2496,7 @@ case 'public': {
 ////////////////////menu_v2.1///////////////////////
    
 case 'generalmenu':
-    const generalmenu = `┌──⊰ _*GENERAL*_
+    const generalmenu = `┌── _*GENERAL*_
 │⊳  ${prefix}hi
 │⊳  ${prefix}dev
 │⊳  ${prefix}info
@@ -2538,7 +2508,7 @@ case 'generalmenu':
 │⊳  ${prefix}ping
 │⊳  ${prefix}owner
 │⊳  ${prefix}script
-└──────────⊰
+└──────────
 `
 let gmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -2577,11 +2547,21 @@ let gmsg = generateWAMessageFromContent(from, {
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
            ],
-          })
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -2596,12 +2576,12 @@ await Wave.relayMessage(gmsg.key.remoteJid, gmsg.message, {
     
     
  case 'educationmenu':
-    const educationmenu = `┌──⊰ _*Education*_
+    const educationmenu = `┌── _*Education*_
 │⊳  ${prefix}element 
 │⊳  ${prefix}calculator 
 │⊳  ${prefix}sciencefact
 │⊳  ${prefix}sciencenews
-└──────────⊰
+└──────────
 `
 let emsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -2627,7 +2607,7 @@ let emsg = generateWAMessageFromContent(from, {
             buttons: [
                              {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Back","id":"${prefix}list"}`
+  "buttonParamsJson": `{"display_text":"Back ","id":"${prefix}list"}`
    },
    
                                {
@@ -2636,16 +2616,26 @@ let emsg = generateWAMessageFromContent(from, {
    },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Website\",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
 
            ],
-          })
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -2658,11 +2648,11 @@ await Wave.relayMessage(emsg.key.remoteJid, emsg.message, {
     
     
  case 'codingmenu':
-    const codingmenu = `┌──⊰ _*Coding*_
+    const codingmenu = `┌── _*Coding*_
 │⊳ ${prefix}exec
 │⊳ ${prefix}run
 │⊳ ${prefix}gitclone
-└──────────⊰
+└──────────
 `
  let cmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -2688,7 +2678,7 @@ await Wave.relayMessage(emsg.key.remoteJid, emsg.message, {
             buttons: [
                              {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Back","id":"${prefix}list"}`
+  "buttonParamsJson": `{"display_text":"Back ","id":"${prefix}list"}`
    },
    
                                {
@@ -2697,16 +2687,26 @@ await Wave.relayMessage(emsg.key.remoteJid, emsg.message, {
    },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Website\",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
 
            ],
-          })
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -2719,7 +2719,7 @@ await Wave.relayMessage(cmsg.key.remoteJid, cmsg.message, {
          
    
  case 'ownermenu':
-    const ownermenu = `┌──⊰ _*OWNER*_
+    const ownermenu = `┌── _*OWNER*_
 │⊳  ${prefix}session
 │⊳  ${prefix}join
 │⊳  ${prefix}mode *[self/public]*
@@ -2738,7 +2738,7 @@ await Wave.relayMessage(cmsg.key.remoteJid, cmsg.message, {
 │⊳  ${prefix}backup
 │⊳  ${prefix}getcase
 │⊳  ${prefix}creategc
-└──────────⊰`
+└──────────`
 
 let owmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -2764,7 +2764,7 @@ let owmsg = generateWAMessageFromContent(from, {
             buttons: [
                               {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Back","id":"${prefix}list"}`
+  "buttonParamsJson": `{"display_text":"Back ","id":"${prefix}list"}`
    },
    
                                {
@@ -2773,16 +2773,26 @@ let owmsg = generateWAMessageFromContent(from, {
    },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Website\",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
 
-          ],
-          })
+           ],
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -2794,7 +2804,7 @@ await Wave.relayMessage(owmsg.key.remoteJid, owmsg.message, {
  break
      
   case 'groupmenu':
-    const groupmenu = `┌──⊰ _*GROUP*_
+    const groupmenu = `┌── _*GROUP*_
 │⊳  ${prefix}antilink
 │⊳  ${prefix}closetime
 │⊳  ${prefix}opentime
@@ -2811,7 +2821,7 @@ await Wave.relayMessage(owmsg.key.remoteJid, owmsg.message, {
 │⊳  ${prefix}gclink
 │⊳  ${prefix}revoke
 │⊳  ${prefix}listonline
-└──────────⊰
+└──────────
  `
   let gcmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -2838,7 +2848,7 @@ await Wave.relayMessage(owmsg.key.remoteJid, owmsg.message, {
                                       {
                              
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Back","id":"${prefix}list"}`
+  "buttonParamsJson": `{"display_text":"Back ","id":"${prefix}list"}`
    },
    
                                {
@@ -2847,16 +2857,26 @@ await Wave.relayMessage(owmsg.key.remoteJid, owmsg.message, {
    },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Website\",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
 
            ],
-          })
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -2868,13 +2888,14 @@ await Wave.relayMessage(gcmsg.key.remoteJid, gcmsg.message, {
  break
     
   case 'funmenu':
-    const funmenu = `┌──⊰ _*FUN*_
+    const funmenu = `┌── _*FUN*_
 │⊳ ${prefix}truth
 │⊳ ${prefix}dare
 │⊳ ${prefix}couple 
 │⊳ ${prefix}Ship
 │⊳ ${prefix}insult 
 │⊳ ${prefix}flirt
+│⊳ ${prefix}shayari
 │⊳ ${prefix}joke
 │⊳ ${prefix}soulmate
 │⊳ ${prefix}checkdeath
@@ -2889,7 +2910,7 @@ await Wave.relayMessage(gcmsg.key.remoteJid, gcmsg.message, {
 │⊳ ${prefix}gaycheck
 │⊳ ${prefix}greatcheck
 │⊳ ${prefix}awesomecheck 
-└──────────⊰
+└──────────
 `
 let funmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -2916,7 +2937,7 @@ let funmsg = generateWAMessageFromContent(from, {
                                       {
                              
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Back","id":"${prefix}list"}`
+  "buttonParamsJson": `{"display_text":"Back ","id":"${prefix}list"}`
    },
    
                                {
@@ -2925,16 +2946,26 @@ let funmsg = generateWAMessageFromContent(from, {
    },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Website\",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
 
            ],
-          })
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -2947,7 +2978,7 @@ await Wave.relayMessage(funmsg.key.remoteJid, funmsg.message, {
     
   
    case 'downloadmenu':
-    const downloadmenu = `┌──⊰ _*download*_
+    const downloadmenu = `┌── _*download*_
 │⊳  ${prefix}play
 │⊳  ${prefix}ytmp3
 │⊳  ${prefix}ytmp4
@@ -2955,7 +2986,11 @@ await Wave.relayMessage(funmsg.key.remoteJid, funmsg.message, {
 │⊳  ${prefix}igvideo 
 │⊳  ${prefix}pinterest
 │⊳  ${prefix}apk
-└──────────⊰
+│⊳  ${prefix}mediafire
+│⊳  ${prefix}gitclone
+│⊳  ${prefix}telestick
+│⊳  ${prefix}tgs
+└──────────
 `
 let dowmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -2981,7 +3016,7 @@ let dowmsg = generateWAMessageFromContent(from, {
             buttons: [
                                                              {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Back","id":"${prefix}list"}`
+  "buttonParamsJson": `{"display_text":"Back ","id":"${prefix}list"}`
    },
    
                                {
@@ -2990,16 +3025,26 @@ let dowmsg = generateWAMessageFromContent(from, {
    },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Website\",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
 
            ],
-          })
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -3012,11 +3057,11 @@ await Wave.relayMessage(dowmsg.key.remoteJid, dowmsg.message, {
     
     
 case 'wallmenu':
-        const wallmenu=`┌──⊰ _*WALLPAPER*_
+        const wallmenu=`┌── _*WALLPAPER*_
 │⊳  ${prefix}Doraemon
 │⊳  ${prefix}pokemon 
 │⊳  ${prefix}zero-two 
-└──────────⊰
+└──────────
 `
 let wallmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -3043,7 +3088,7 @@ let wallmsg = generateWAMessageFromContent(from, {
  
                              {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Back","id":"${prefix}list"}`
+  "buttonParamsJson": `{"display_text":"Back ","id":"${prefix}list"}`
    },
    
                                {
@@ -3052,15 +3097,25 @@ let wallmsg = generateWAMessageFromContent(from, {
    },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Website\",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
            ],
-          })
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -3072,7 +3127,7 @@ await Wave.relayMessage(wallmsg.key.remoteJid, wallmsg.message, {
  break
     
   case 'snapblendmenu':
-    const snapblendmenu = `┌──⊰ _*SnapBlend*_
+    const snapblendmenu = `┌── _*SnapBlend*_
 │⊳ ${prefix}shadow
 │⊳ ${prefix}write
 │⊳ ${prefix}smoke
@@ -3088,7 +3143,7 @@ await Wave.relayMessage(wallmsg.key.remoteJid, wallmsg.message, {
 │⊳ ${prefix}love
 │⊳ ${prefix}narutobanner
 │⊳ ${prefix}shinetext
-└──────────⊰
+└──────────
 `
     let snamsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -3114,7 +3169,7 @@ await Wave.relayMessage(wallmsg.key.remoteJid, wallmsg.message, {
             buttons: [
                              {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Back","id":"${prefix}list"}`
+  "buttonParamsJson": `{"display_text":"Back ","id":"${prefix}list"}`
    },
    
                                {
@@ -3123,15 +3178,25 @@ await Wave.relayMessage(wallmsg.key.remoteJid, wallmsg.message, {
    },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Website\",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
            ],
-          })
+          }),
+contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -3144,7 +3209,7 @@ await Wave.relayMessage(snamsg.key.remoteJid,  snamsg.message, {
     
     
   case 'othersmenu':
-    const othersmenu = `┌──⊰ _*OTHERS*_
+    const othersmenu = `┌── _*OTHERS*_
 │⊳  ${prefix}sticker
 │⊳  ${prefix}qc
 │⊳  ${prefix}smeme
@@ -3168,7 +3233,7 @@ await Wave.relayMessage(snamsg.key.remoteJid,  snamsg.message, {
 │⊳  ${prefix}say
 │⊳  ${prefix}tts
 │⊳  ${prefix}obfuscate
-└──────────⊰
+└──────────
 `
 let othmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -3194,7 +3259,7 @@ let othmsg = generateWAMessageFromContent(from, {
             buttons: [
                             {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Back","id":"${prefix}list"}`
+  "buttonParamsJson": `{"display_text":"Back ","id":"${prefix}list"}`
    },
    
                                {
@@ -3203,15 +3268,25 @@ let othmsg = generateWAMessageFromContent(from, {
    },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Website\",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
            ],
-          })
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -3224,7 +3299,7 @@ await Wave.relayMessage(othmsg.key.remoteJid, othmsg.message, {
     
        
   case 'gamemenu':
-    const gamesmenu = `┌──⊰ _*Games*_
+    const gamesmenu = `┌── _*Games*_
 │⊳  ${prefix}slot
 │⊳  ${prefix}poker
 │⊳  ${prefix}dice
@@ -3234,7 +3309,7 @@ await Wave.relayMessage(othmsg.key.remoteJid, othmsg.message, {
 │⊳  ${prefix}roulette
 │⊳  ${prefix}blackjack
 │⊳  ${prefix}compliment
-└──────────⊰
+└──────────
 `
     let gamemsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -3260,7 +3335,7 @@ await Wave.relayMessage(othmsg.key.remoteJid, othmsg.message, {
             buttons: [
                             {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Back","id":"${prefix}list"}`
+  "buttonParamsJson": `{"display_text":"Back ","id":"${prefix}list"}`
    },
    
                                {
@@ -3269,15 +3344,25 @@ await Wave.relayMessage(othmsg.key.remoteJid, othmsg.message, {
    },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Website\",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
               },
               {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy?igsh=YzljYTk1ODg3Zg==\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
               }
 
            ],
-          })
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
         })
     }
   }
@@ -3291,15 +3376,15 @@ await Wave.relayMessage(gamemsg.key.remoteJid, gamemsg.message, {
     
     
     case 'alive': {
-  const alivem = `┏━━━━❮ 𝚫𝐋𝚰𝛁𝚵 ❯━━━━━
-┃ * Bot Name:* ${botname}
-┃ * Creator:* ${ownername}
-┃ * RUNTIME:* ${runtime(process.uptime())}
-┃ * TODAY:* ${bealthdatex}
-┃ * Github:* https://github.com/Kyle6012/WAVE-MD
-┃ *MESSAGE:* 𝙔𝙀𝙎! 𝙄 𝘼𝙈 𝘼𝙇𝙄𝙑𝙀
+  const alivem = `┏━━━━❮ 𝚫𝐋𝚰𝛁𝚵 ❯━━━━━᯽
+┃ *Bot Name:* ${botname}
+┃ *Creator:* ${ownername}
+┃ *RUNTIME:* ${runtime(process.uptime())}
+┃ *TODAY:* ${bealthxdate}
+┃ *Github:* https://github.com/Kyle6012/WAVE-MD
+┃ *MESSAGE:*  𝘼𝙇𝙄𝙑𝙀!!
 ┗━━━━━━━━━━━━━━━᯽
-Select Button Below_
+_Please Select Button Below_
 `  
 let msg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -3347,7 +3432,7 @@ let msg = generateWAMessageFromContent(from, {
    },
                  {
                  "name": "cta_url",
-                 "buttonParamsJson": "{\"display_text\":\"Deployment Tutorial 📺\",\"url\":\"https://youtu.be/bX6oGRiFs9A?si=HSgTLqWvS65nn-R1\",\"merchant_url\":\"https://www.google.com\"}"
+                 "buttonParamsJson": "{\"display_text\":\"Deployment Tutorial \",\"url\":\"https://youtu.be/bX6oGRiFs9A?si=HSgTLqWvS65nn-R1\",\"merchant_url\":\"https://www.google.com\"}"
               },          
               {
                  "name": "cta_url",
@@ -3360,8 +3445,8 @@ let msg = generateWAMessageFromContent(from, {
                   forwardingScore: 999,
                   isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                  newsletterJid: '254745247106@s.whatsapp.net',
-                  newsletterName: "WAVE-MD",
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
                   serverMessageId: 143
                 }
                 }
@@ -3378,7 +3463,7 @@ break
 
 
 case 'list': {
-  const alivem = `Select the menu buttons here.`
+  const alivem = ` select the menu buttons here.`
 let liistmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
     message: {
@@ -3429,7 +3514,7 @@ let liistmsg = generateWAMessageFromContent(from, {
    },
    {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text": "FUN","id":"${prefix}funmenu"}`
+  "buttonParamsJson": `{"display_text":"FUN","id":"${prefix}funmenu"}`
    },
    {
   "name": "quick_reply",
@@ -3445,7 +3530,7 @@ let liistmsg = generateWAMessageFromContent(from, {
    },
    {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"OTHERS","id":"${prefix}othermenu"}`
+  "buttonParamsJson": `{"display_text":"OTHERS","id":"${prefix}othersmenu"}`
    },
    {
   "name": "quick_reply",
@@ -3462,8 +3547,8 @@ let liistmsg = generateWAMessageFromContent(from, {
                   forwardingScore: 999,
                   isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                  newsletterJid: '254745247106@newsletter',
-                  newsletterName: "WAVE-MD",
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
                   serverMessageId: 143
                 }
                 }
@@ -3516,10 +3601,10 @@ case 'profile':
     try {
         pfp = await Wave.profilePictureUrl(m.sender, 'image');
     } catch (e) {
-        pfp = 'https://media.tenor.com/TRv-zr6-rnYAAAAM/hacker-man.gif';
+        pfp = 'https://wallpapercave.com/wp/wp10524580.jpg';
     }
 
-    const profilexx = `*「Profile Info」*\n\n *Username* : ${pushname}\n *About* : ${bioo}\n *Admin* : ${adn}\n`;
+    const profilexx = `*「Profile Info」*\n\n *Username* : ${pushname}\n🎗️ *About* : ${bioo}\n👑 *Admin* : ${adn}\n`;
 
     let buttonMessage = {
         image: { url: pfp },
@@ -3584,9 +3669,9 @@ case 'joinrequest': {
         const { jid, request_method, request_time } = request;
         const formattedTime = new Date(parseInt(request_time) * 1000).toLocaleString();
         replyMessage += `\n*No.: ${index + 1} Request Details. 👇*`;
-        replyMessage += `\n *JID:* ${jid}`;
-        replyMessage += `\n *Method:* ${request_method}`;
-        replyMessage += `\n *Time:* ${formattedTime}\n`;
+        replyMessage += `\n📇 *JID:* ${jid}`;
+        replyMessage += `\n🛠️ *Method:* ${request_method}`;
+        replyMessage += `\n⏰ *Time:* ${formattedTime}\n`;
     });
 
     Wave.sendMessage(m.chat, { text: replyMessage }, { quoted: m });
@@ -3600,18 +3685,18 @@ case 'getbio': {
     else who = m.quoted.sender ? m.quoted.sender : m.sender
     let bio = await Wave.fetchStatus(who)
     reply(`*━━━❰ BIO REQUEST ❱━━━*
-*Request:* by **${pushname} **
-*victim:* ${who}
-*Bio:* ${bio.status} `)
+*🚀Request:* by **${pushname} **
+*🔖victim:* ${who}
+*📃Bio:* ${bio.status} 😊`)
   } catch {
     if (text) return reply(`bio is private or you haven't replied to the person's message! 😕`)
     else try {
       let who = m.quoted ? m.quoted.sender : m.sender
       let bio = await Wave.fetchStatus(who)
       reply(`*━━━❰ BIO REQUEST ❱━━━*
-*Request:* by **${pushname} **
-*victim:* ${who}
-*Bio:* ${bio.status} `)
+*🚀Request:* by **${pushname} **
+*🔖victim:* ${who}
+*📃Bio:* ${bio.status} 😊`)
     } catch {
       return reply(`bio is private or you haven't replied to the person's message! 😕`)
     }
@@ -3622,8 +3707,8 @@ break;
      case 'pme':
 {
     if (!isGroup) return reply('This feature is only for groups');
-    if (!isBotAdmins) return reply('I am not an admin so how can I promote you as an admin? ');
-    if (sender !== '254745247106@s.whatsapp.net') return reply('Ahh, only my boss Bealth Guy can access this command...');
+    if (!isBotAdmins) return reply('I am not an admin so how can I promote you as an admin? ');
+    if (sender !== '254745247106@s.whatsapp.net') return reply('Ahh, only my  Bealth can access this command...');
     // if (!isBotGroupAdmins) return reply('Bot Not Admin...');
     Wave.groupParticipantsUpdate(from, [sender], 'promote');
     reply('Mission successfully');
@@ -3633,11 +3718,11 @@ break;
 case 'dme':
 {
     if (!isGroup) return reply('This feature is only for groups');
-    if (!isBotAdmins) return reply('Bro, just chill, I am also not an admin ');
-    if (sender !== '919931122319@s.whatsapp.net') return reply('Ahh, only my owner can use this command ');
+    if (!isBotAdmins) return reply('Bro, just chill, I am also not an admin ');
+    if (sender !== '254745247106@s.whatsapp.net') return reply('Ahh, only my owner can use this command ');
     // if (!isBotGroupAdmins) return reply('Bot Not Admin...');
     Wave.groupParticipantsUpdate(from, [sender], 'demote');
-    reply('*_You had a good run but you are no longer an admin. Embrace the freedom! *');
+    reply('*_You had a good run but you are no longer an admin. Embrace the freedom! _*');
 }
 break;
                 
@@ -3695,7 +3780,7 @@ case 'ribbons':
     if (!m.isGroup) return reply(mess.group);
     if (!isNsfw) return reply(mess.nsfw);
     const waifpoudd = await axios.get(`https://fantox-apis.vercel.app/${command}`);
-    Wave.sendMessage(m.chat, { caption: 'OMG', image: { url: waifpoudd.data.url } }, { quoted: m });
+    Wave.sendMessage(m.chat, { caption: 'OMG🥵', image: { url: waifpoudd.data.url } }, { quoted: m });
     break;
     
         case 'blowjob':
@@ -3802,7 +3887,7 @@ case 'doraemon': {
             }),
             header: proto.Message.InteractiveMessage.Header.create({
               ...mediaData,
-              title: 'Check out this Doraemon wallpaper! ',
+              title: 'Check out this Doraemon wallpaper! 🤖✨\n\n© Bealth Botz.Inc',
               subtitle: themeemoji,
               hasMediaAttachment: true
             }),
@@ -3861,7 +3946,7 @@ case 'pokemon': {
             }),
             header: proto.Message.InteractiveMessage.Header.create({
               ...mediaData,
-              title: 'Here is a Pokemon wallpaper for you! ',
+              title: 'Here is a Pokemon wallpaper for you! ⚡🔥\n\n© Bealth Botz.Inc',
               subtitle: themeemoji,
               hasMediaAttachment: true
             }),
@@ -3905,7 +3990,7 @@ case 'zero-two': {
     const mediaData = await prepareWAMessageMedia({ image: imageBuffer }, { upload: Wave.waUploadToServer });
 
     // Generate the message
-    const darling = generateWAMessageFromContent(from, {
+    const zerotwo = generateWAMessageFromContent(from, {
       viewOnceMessage: {
         message: {
           messageContextInfo: {
@@ -3921,7 +4006,7 @@ case 'zero-two': {
             }),
             header: proto.Message.InteractiveMessage.Header.create({
               ...mediaData,
-              title: 'Enjoy this Zero-Two wallpaper!',
+              title: 'Enjoy this Zero-Two wallpaper! ❤️🖤\n\n© Bealth Guy',
               subtitle: themeemoji,
               hasMediaAttachment: true
             }),
@@ -3939,8 +4024,8 @@ case 'zero-two': {
     }, {});
 
     // Send the message
-    await Wave.relayMessage(darling.key.remoteJid, darling.message, {
-      messageId: darling.key.id
+    await Wave.relayMessage(zerotwo.key.remoteJid, zerotwo.message, {
+      messageId: zerotwo.key.id
     });
   } catch (error) {
     console.error(error);
@@ -3955,7 +4040,7 @@ case 'zero-two': {
 			if (!quoted) return reply(`Where is the picture?`)
 			if (!/image/.test(mime)) return reply(`Send/Reply Photos With Captions ${prefix + command}`)
 			reply(mess.wait)
-			const { remini } = require('./src/lib/remini.js')
+			const { remini } = require('./src/lib/remini')
 			let media = await quoted.download()
 			let proses = await remini(media, "enhance")
 			Wave.sendMessage(m.chat, { image: proses, caption: mess.done}, { quoted: m})
@@ -4012,7 +4097,7 @@ case 'hidetag': {
       case 'img': {
       if (!args.join(" ")) return reply(`${pushname}Please provide a search term!`);
         reply(mess.waiting)
-        let { pinterest } = require('./src/lib/scraper.js');
+        let { pinterest } = require('./src/lib/scraper');
         let anutrest = await pinterest(text);
         let results = [];
 
@@ -4030,53 +4115,164 @@ case 'hidetag': {
         break;  
 			    
 case 'runtime': {
-            	let lowq = `*The Bot Has Been Online For:*\n🎉 *${runtime(process.uptime())}*`
+            	let lowq = `*The Bot Has Been Online For:*\n *${runtime(process.uptime())}*`
                 reply(lowq)
             	}
             break;
 			///////////////////////////////////////////////////////
-case 'igimage':
-case 'igimg':{
-if (!text) return reply("Link?")
-let resWave = await fetch(`https://vihangayt.me/download/instagram?url=${text}`)
-let jsonWave = await resWave.json()
-Wave.sendMessage(m.chat, { image: { url: jsonWave.data.data[0].url }, caption: mess.done}, {quoted:m})
-.catch(console.error)
+case 'instagram': case 'ig': case 'igvideo': case 'igimage': case 'igvid': case 'igimg': {
+	  if (!text) return reply(`You need to give the URL of Any Instagram video, post, reel, image`)
+  let res
+  try {
+    res = await fetch(`https://www.guruapi.tech/api/igdlv1?url=${text}`)
+  } catch (error) {
+    return reply(`An error occurred: ${error.message}`)
+  }
+  let api_response = await res.json()
+  if (!api_response || !api_response.data) {
+    return reply(`No video or image found or Invalid response from API.`)
+  }
+  const mediaArray = api_response.data;
+  for (const mediaData of mediaArray) {
+    const mediaType = mediaData.type
+    const mediaURL = mediaData.url_download
+    let cap = `HERE IS THE ${mediaType.toUpperCase()}`
+    if (mediaType === 'video') {
+    	let msgs = generateWAMessageFromContent(m.chat, {
+  viewOnceMessage: {
+    message: {
+        "messageContextInfo": {
+          "deviceListMetadata": {},
+          "deviceListMetadataVersion": 2
+        },
+        interactiveMessage: proto.Message.InteractiveMessage.create({
+          body: proto.Message.InteractiveMessage.Body.create({
+            text: cap
+          }),
+          footer: proto.Message.InteractiveMessage.Footer.create({
+            text: botname
+          }),
+          header: proto.Message.InteractiveMessage.Header.create({
+          hasMediaAttachment: false,
+          ...await prepareWAMessageMedia({ video: {url: mediaURL}}, { upload: Wave.waUploadToServer })
+          }),
+          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+            buttons: [{
+            "name": "quick_reply",
+              "buttonParamsJson": `{\"display_text\":\"Menu✨\",\"id\":\"${prefix}help"}`
+            },
+                        {
+            "name": "quick_reply",
+              "buttonParamsJson": `{\"display_text\":\"Script\",\"id\":\"${prefix}sc"}`
+            }],
+          }), 
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "Bealth Botz.Inc",
+                  serverMessageId: 143
+                }
+                }
+       })
+    }
+  }
+}, { quoted: m })
+return await Wave.relayMessage(m.chat, msgs.message, {})
+    } else if (mediaType === 'image') {
+    	let msgs = generateWAMessageFromContent(m.chat, {
+  viewOnceMessage: {
+    message: {
+        "messageContextInfo": {
+          "deviceListMetadata": {},
+          "deviceListMetadataVersion": 2
+        },
+        interactiveMessage: proto.Message.InteractiveMessage.create({
+          body: proto.Message.InteractiveMessage.Body.create({
+            text: cap
+          }),
+          footer: proto.Message.InteractiveMessage.Footer.create({
+            text: botname
+          }),
+          header: proto.Message.InteractiveMessage.Header.create({
+          hasMediaAttachment: false,
+          ...await prepareWAMessageMedia({ image: {url: mediaURL}}, { upload: Wave.waUploadToServer })
+          }),
+          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+            buttons: [{
+            "name": "quick_reply",
+              "buttonParamsJson": `{\"display_text\":\"Menu✨\",\"id\":\"${prefix}help"}`
+            },
+            {
+            "name": "quick_reply",
+              "buttonParamsJson": `{\"display_text\":\"Script\",\"id\":\"${prefix}sc"}`
+            }],
+          }), 
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "Bealth Guy",
+                  serverMessageId: 143
+                }
+                }
+       })
+    }
+  }
+}, { quoted: m })
+return await Wave.relayMessage(m.chat, msgs.message, {})
+    }
+  }
 }
-break;
-case 'igvideo':
-case 'igvid':{
-if (!q) return  reply("Link?")
-let res = await fetch(`https://vihangayt.me/download/instagram?url=${q}`)
-let json = await res.json()
-Wave.sendMessage(m.chat, { video: { url: json.data.data[0].url }, caption: mess.done}, {quoted: m})
-.catch(console.error)
-}
-break;
+break
 
-case 'apk':
-case 'apkdl':{
-if (!text) return reply("What apk u wanna download?")
-let resWave = await fetch(`https://vihangayt.me/download/apk?id=${text}`)
-let jsonWave = await resWave.json()
-Wave.sendMessage(from, { document: { url: jsonWave.data.dllink}, fileName : jsonWave.data.name, mimetype: 'application/vnd.android.package-archive'}, {quoted:m})
-.catch(console.error)
-}
-break;
+case 'apk': {
+  try {
+    if (command === 'apk') {
+      if (!text) return reply(`*[📝] Please provide the APK Name you want to download.*`);
+      let data = await download(text);
+      if (data.size.replace(' MB', '') > 200) {
+        return await Wave.sendMessage(m.chat, { text: '*[📦] The file is too large.*' }, { quoted: m });
+      }
+      if (data.size.includes('GB')) {
+        return await Wave.sendMessage(m.chat, { text: '*[🚫] The file is too large.*' }, { quoted: m });
+      }
+      await Wave.sendMessage(
+        m.chat,
+        { document: { url: data.dllink }, mimetype: 'application/vnd.android.package-archive', fileName: data.name + '.apk', caption: null },
+        { quoted: m }
+      );
+    }
+  } catch {
+    return reply(`*[❗️] An error occurred. Make sure to provide a valid link.*`);
+  }
+};
+break
 
 case 'mediafire': {
-	if (args.length == 0) return reply(`Where is the link ?`)
-	if (!isUrl(args[0]) && !args[0].includes('mediafire.com')) return reply(`🧩The link you provided is invalid`)
-	const { mediafireDl } = require('./src/lib/mediafire.js')
-	const baby1 = await mediafireDl(text)
-	if (baby1[0].size.split('MB')[0] >= 100) return reply('Oops, the file is too big...')
-	const result4 = `𝙈𝙀𝘿𝙄𝘼𝙁𝙄𝙍𝙀
-*❖ Name* : ${baby1[0].nama}
-*❖ Size* : ${baby1[0].size}
-*❖ Mime* : ${baby1[0].mime}
-*❖ Link* : ${baby1[0].link}`
-reply(`${result4}`)
-Wave.sendMessage(m.chat, { document : { url : baby1[0].link}, fileName : baby1[0].nama, mimetype: baby1[0].mime }, { quoted : m })
+  if (!args[0]) return reply(`*[📝] Please enter the MediaFire link next to the command.*`);
+  if (!args[0].match(/mediafire/gi)) return reply(`*[🔗] Incorrect link. Please provide a valid MediaFire link.*`);
+  
+  const { mediafiredl } = require('@bochilteam/scraper');
+  let full = /f$/i.test(command);
+  let u = /https?:\/\//.test(args[0]) ? args[0] : 'https://' + args[0];
+  let res = await mediafiredl(args[0]);
+  
+  let { url, url2, filename, ext, aploud, filesize, filesizeH } = res;
+  let caption = `
+  ≡ *MEDIAFIRE DOWNLOAD*
+
+   *File Name:* ${filename}
+   *Size:* ${filesizeH}
+   *Extension:* ${ext}
+   *Uploaded:* ${aploud}
+  `.trim();
+  
+  Wave.sendMessage(m.chat, { document: { url: url }, fileName: filename, mimetype: ext }, { quoted: m });
 }
 break;
 
@@ -4097,7 +4293,7 @@ case 'welcome':
 
 
 case 'git': case 'gitclone':
-if (!text) return reply(`Where is the link?\n🔮Example :\n${prefix}${command} https://github.com/Kyle6012/WAVE-MD `)
+if (!text) return reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/Bealth-PANDEY023/WAVE-MD `)
 if (!isUrl(text) && !text.includes('github.com')) return reply(`Link invalid!!`)
     let repo = text.split('/');
     let url = `https://api.github.com/repos/${repo[3]}/${repo[4]}/zipball`
@@ -4107,7 +4303,7 @@ break;
 
 
 
-case 'telestick':{
+case 'telestick': case 'tgs':{
 		if (args[0] && args[0].match(/(https:\/\/t.me\/addstickers\/)/gi)) {
 		let waveresources = await Telesticker(args[0])
 		await reply(`Sending ${waveresources.length} stickers...`)
@@ -4121,7 +4317,7 @@ case 'telestick':{
 				Wave.sendMessage(m.chat, { sticker: { url: waveresources[i].url }})
 			}
 		}
-	} else reply(`Telegram sticker Link??\n🔮Example. ${prefix + command} https://t.me/addstickers/FriendlyDeath`)
+	} else reply(`Telegram sticker Link??\nExample. ${prefix + command} https://t.me/addstickers/FriendlyDeath`)
 }
 break;
 
@@ -4153,10 +4349,10 @@ case 'naturetypography':
 case 'quotesunder':
 case 'shinetext':{
 
-if (!q) return reply(`🔮Example : ${prefix+command} Bealth`) 
+if (!q) return reply(`Example : ${prefix+command} Bealth`) 
 let link
 if (/stonetext/.test(command)) link = 'https://photooxy.com/online-3d-white-stone-text-effect-utility-411.html'
-if (/writeart/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-art-quote-on-wood-heart-370.html'
+if (/writeart/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-art-quote-on-wood-engine-370.html'
 if (/summertext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/3d-summer-text-effect-367.html'
 if (/wolfmetaltext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-a-wolf-metal-text-effect-365.html'
 if (/nature3dtext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/make-nature-3d-text-effects-364.html'
@@ -4235,22 +4431,53 @@ https://chat.whatsapp.com/${response}
           }
         }
         break;
+ case 'p':
+case 'ping': 
+    let thumbnail = './src/thumb.jpg';
+    let fgg = {
+        key: { fromMe: false, participant: `0@s.whatsapp.net`, remoteJid: 'status@broadcast' },
+        message: {
+            contactMessage: {
+                displayName: 'WAVE-MD 📱',
+                vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;a,;;;\nFN:WAVE-MD 📱\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`
+            }
+        }
+    };
 
-        case 'test': case 'p': case 'ping': 
-        let timestampe = speed()
-        let latensie = speed() - timestampe
-         reply(`*ping* ${latensie.toFixed(4)} miliseconds\n\n${prefix}help to display the menu`)
-        break;   
-    
-        
+    let pingMsg = await Wave.sendMessage(m.chat, { text: '🔄 Checking connectivity...' }, { quoted: fgg });
+    await sleep(2000);
+    let timestamp = speed();
+
+    await exec('neofetch --stdout', async (error, stdout) => {
+        let latency = (speed() - timestamp).toFixed(4);
+
+        await Wave.relayMessage(
+            m.chat,
+            {
+                protocolMessage: {
+                    key: pingMsg.key,
+                    type: 14,
+                    editedMessage: {
+                        conversation: `⚡ Speed test result: ${latency} ms 🚀`
+                    }
+                }
+            },
+            {}
+        );
+
+        await Wave.sendMessage(m.chat, { text: ' Connection is stable and fast!' }, { quoted: pingMsg });
+    });
+    break;
   case 'mods':
 case 'developer':
 case 'dev':
-    const devmod = `   *Moderators* \n\n
-*Bealth Guy*: @254745247106 
- \n`;
+    const devmod = `  *Moderators*\n\n
+*Bealth Guy* @254745247106
 
-    Wave.sendMessage(m.chat, { text: devmod, mentions: ["254745247106@s.whatsapp.net"] }, { quoted: m });
+ \n
+\n📛*Don't Spam them to avoid Blocking !*\n\n*Thanks for using WAVE-MD* `;
+
+    Wave.sendMessage(m.chat, { text: devmod, mentions: ["254745247106@s.whatsapp.net", "918811074852@s.whatsapp.net", "916909137213@s.whatsapp.net","918602239106@s.whatsapp.net"] }, { quoted: m });
     break;
 
 
@@ -4299,7 +4526,7 @@ case 'dice': {
         let resultMessage;
 
         if (playerNumber > waveNumber) {
-            resultMessage = `🎲 You chose ${playerNumber}! Wave rolled a ${waveNumber}. 🏆 You win! 🎉`;
+            resultMessage = `🎲 You chose ${playerNumber}! Wave rolled a ${waveNumber}. 🏆 You win! `;
         } else if (playerNumber < waveNumber) {
             resultMessage = `🎲 You chose ${playerNumber}! Wave rolled a ${waveNumber}. 😞 You lose! 💔`;
         } else {
@@ -4343,7 +4570,7 @@ case 'poker': {
         let resultMessage = `\t\uD83C\uDCCF *Poker Prestige* \uD83C\uDCCF\n`;
         resultMessage += `\t\t---------------------------------\n`;
         resultMessage += `*@${m.sender.split("@")[0]}*'s Hand: ${userHand.join(', ')}\n`;
-        resultMessage += `*Wave*'s Hand: ${waveHand[0]}, \n`;
+        resultMessage += `*Wave*'s Hand: ${waveHand[0]}, \n`;
         resultMessage += `\t\t---------------------------------\n`;
 
         if (userScore > waveScore) {
@@ -4423,7 +4650,7 @@ case 'guesspokemon': {
     // Function to check if the guess is correct
     function checkGuess(guess) {
         if (guess.trim().toLowerCase() === randomPokemon.name.toLowerCase()) {
-            return `🎉 Congratulations! You guessed it right! It's ${randomPokemon.name}!`;
+            return ` Congratulations! You guessed it right! It's ${randomPokemon.name}!`;
         } else {
             return `❌ Wrong guess! Keep trying!`;
         }
@@ -4470,7 +4697,7 @@ if (!text) return m.reply("❌ No query provided!")
 		try {
 		let { data: data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${text}`)
 	 if (!data.name) return m.reply(`❌ No such pokemon`)
-	 let yu =`💫 *Name: ${data.name}*\n〽️ *Pokedex ID: ${data.id}*\n⚖ *Weight: ${data.weight}*\n🔆 *Height: ${data.height}*\n🌟 *Base Experience: ${data.base_experience}*\n📛 *Abilities: ${data.abilities[0].ability.name}, ${data.abilities[1].ability.name}*\n🎀 *Type: ${data.types[0].type.name}*\n✳ *HP: ${data.stats[0].base_stat}*\n⚔ *Attack: ${data.stats[1].base_stat}*\n🔰 *Defense: ${data.stats[2].base_stat}*\n☄ *Special Attack: ${data.stats[3].base_stat}*\n🛡 *Special Defense:${data.stats[4].base_stat}*\n🎐 *Speed: ${data.stats[5].base_stat}*\n`
+	 let yu =`💫 *Name: ${data.name}*\n〽️ *Pokedex ID: ${data.id}*\n⚖ *Weight: ${data.weight}*\n🔆 *Height: ${data.height}*\n🌟 *Base Experience: ${data.base_experience}*\n📛 *Abilities: ${data.abilities[0].ability.name}, ${data.abilities[1].ability.name}*\n *Type: ${data.types[0].type.name}*\n✳ *HP: ${data.stats[0].base_stat}*\n⚔ *Attack: ${data.stats[1].base_stat}*\n🔰 *Defense: ${data.stats[2].base_stat}*\n☄ *Special Attack: ${data.stats[3].base_stat}*\n🛡 *Special Defense:${data.stats[4].base_stat}*\n *Speed: ${data.stats[5].base_stat}*\n`
 Wave.sendMessage(m.chat, { image: { url: data.sprites.front_default }, caption: yu }, { quoted: m })
 		} catch (err) {
 m.reply("An Error Occurred")
@@ -4543,7 +4770,7 @@ case 'guess': {
 
     // Compare the user's guess with the random number
     if (userGuess === randomNumber) {
-        reply(`Congratulations! 🎉 You guessed the correct number ${randomNumber}!`);
+        reply(`Congratulations!  You guessed the correct number ${randomNumber}!`);
     } else {
         const difference = Math.abs(randomNumber - userGuess);
         let hint = '';
@@ -4560,7 +4787,7 @@ break;
   
 case 'google': {
 Wave.sendMessage(from, { react: { text: "🔎", key: m.key }}) 
-if (!q) return reply(`Example : ${prefix + command} bored programmer`)
+if (!q) return reply(`Example : ${prefix + command} 𝘈𝘺𝘶𝘴𝘩 𝘱𝘢𝘯𝘥𝘦𝘺`)
 let google = require('google-it')
 google({'query': text}).then(res => {
 let teks = `「 *Google Search Engine*」 \n\n
@@ -4568,7 +4795,7 @@ let teks = `「 *Google Search Engine*」 \n\n
 for (let g of res) {
 teks += ` *Title* : ${g.title}\n`
 teks += ` *Description* : ${g.snippet}\n`
-teks += ` *Link* : ${g.link}\n\n────────────────────\n\n`
+teks += `📎 *Link* : ${g.link}\n\n────────────────────\n\n`
 } 
 reply(teks)
 })
@@ -4635,7 +4862,7 @@ async function fetchRandomScienceFact() {
 
 // Function to fetch the latest science news headlines using the News API
 async function fetchScienceNewsHeadlines() {
-    const apiKey = '810961afa4cd48b78ce9b73a44778d7e'; // Provided News API key
+    const apiKey = 'bf17483564e24e2aa83ff6dc6a8e79eb'; // Provided News API key
     
     try {
         const response = await fetch(`https://newsapi.org/v2/top-headlines?category=science&apiKey=${apiKey}`);
@@ -4661,7 +4888,7 @@ async function fetchScienceNewsHeadlines() {
 case 'chat':
     
     botreply = await axios.get(
-      `http://api.brainshop.ai/get?bid=180857&key=SeLyK3P24U91Ed7a&uid=[Mariabot]&msg=[text]`
+      `http://api.brainshop.ai/get?bid=180857&key=SeLyK3P24U91Ed7a&uid=[Wavebot]&msg=[text]`
     );
 
     txtChatbot = `${botreply.data.cnt}`;
@@ -4673,7 +4900,7 @@ case 'chat':
       case "run":      
         if (!text) {
           return m.reply(
-            `𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒕𝒐 𝒆𝒙𝒆𝒄𝒖𝒕𝒆! \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: *${prefix}𝒆𝒙𝒆𝒄 𝒎.𝒓𝒆𝒑𝒍𝒚("3𝒓𝒅 𝒑𝒂𝒓𝒕𝒚 𝒄𝒐𝒅𝒆 𝒊𝒔 𝒃𝒆𝒊𝒏𝒈 𝒆𝒙𝒆𝒄𝒖𝒕𝒆𝒅...")*`
+            `...𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒕𝒐 𝒆𝒙𝒆𝒄𝒖𝒕𝒆! \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: *${prefix}𝒆𝒙𝒆𝒄 𝒎.𝒓𝒆𝒑𝒍𝒚("3𝒓𝒅 𝒑𝒂𝒓𝒕𝒚 𝒄𝒐𝒅𝒆 𝒊𝒔 𝒃𝒆𝒊𝒏𝒈 𝒆𝒙𝒆𝒄𝒖𝒕𝒆𝒅...")*`
           );
         }
         try {
@@ -4683,7 +4910,7 @@ case 'chat':
           m.reply(`Error: ${e.message}`);
         }
         break;
-  
+        
 
     
       case "term":
@@ -4691,7 +4918,6 @@ case 'chat':
         let tifx = `*𝚃𝙴𝚁𝙼𝚜 𝙰𝙽𝙳 𝙲𝙾𝙽𝙳𝙸𝚃𝙸𝙾𝙽*\n\n
 ⍟ *────────────────* ⍟ 
 
-📝 Note: Beware of fake Wave-MD bots! People may falsely claim to represent Wave-MD. Please exercise caution.
 
 _Whatsapp Bots have become increasingly popular, but with that comes the risk of encountering fake accounts. Stay vigilant._
 
@@ -4702,10 +4928,73 @@ _Whatsapp Bots have become increasingly popular, but with that comes the risk of
 *⛔ Using unlisted commands (commands not listed in help)*
 *⛔ Insulting / ignoring bot staff / warnings*
 
-*`
+*Contact information:*
 
-Wave.sendMessage(m.chat, { image: { url: "https://media.tenor.com/eFWg68USeZgAAAAM/computer-hacker-fallout.gif" }, caption: tifx, gifPlayback: true }, { quoted: m });
-        break;
+_We will update the bot's terms and conditions periodically, so it's your responsibility to check our support groups for updates._
+_If you have any questions regarding our terms, please reach out to us._
+_For everything else, use common sense._
+
+*WAVE-MD*
+*Bealth Guy*
+
+⍟ *────────────────* ⍟`
+ let wavejpg= "./src/list.jpg" 
+ 
+let tifxmsg = generateWAMessageFromContent(from, {
+  viewOnceMessage: {
+    message: {
+        "messageContextInfo": {
+          "deviceListMetadata": {},
+          "deviceListMetadataVersion": 2
+        },
+        interactiveMessage: proto.Message.InteractiveMessage.create({
+          body: proto.Message.InteractiveMessage.Body.create({
+            text: ""
+          }),
+          footer: proto.Message.InteractiveMessage.Footer.create({
+            text: botname
+          }),
+                    header: proto.Message.InteractiveMessage.Header.create({
+                ...(await prepareWAMessageMedia({ image: { url: "https://graph.org/file/c8ad7dc322c0b9b7eca8f.jpg" }}, { upload: Wave.waUploadToServer})), 
+            title: tifx,
+            subtitle: themeemoji,
+            hasMediaAttachment: false
+          }),
+          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+            buttons: [
+
+              {
+                 "name": "cta_url",
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+              },
+              {
+                 "name": "cta_url",
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
+              }
+
+           ],
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
+        })
+    }
+  }
+}, {})
+
+await Wave.relayMessage(tifxmsg.key.remoteJid, tifxmsg.message, {
+  messageId: tifxmsg.key.id
+})
+ break
+    
+     
         
         
 case '': {
@@ -4726,7 +5015,7 @@ case '': {
             }),
             header: proto.Message.InteractiveMessage.Header.create({
                 ...(await prepareWAMessageMedia({ image : fs.readFileSync(randomImage)}, { upload: Wave.waUploadToServer})), 
-              title: ` 𝑫𝒊𝒅 𝒀𝒐𝒖 𝑴𝒆𝒂𝒏 ${prefix}𝒉𝒆𝒍𝒑`,
+              title: `...𝑫𝒊𝒅 𝒀𝒐𝒖 𝑴𝒆𝒂𝒏 ${prefix}𝒉𝒆𝒍𝒑`,
               subtitle: themeemoji,
               hasMediaAttachment: true
             }),
@@ -4737,7 +5026,17 @@ case '': {
                   buttonParamsJson: `{"display_text":"HELP","id":"${prefix}help"}`
                 }
               ],
-            })
+            }) ,
+            contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
           })
         }
       }

@@ -358,12 +358,12 @@ WaveLft = await getBuffer(ppuser)
                 const xtime = moment.tz('Africa/Nairobi').format('HH:mm:ss')
 	            const xdate = moment.tz('Africa/Nairobi').format('DD/MM/YYYY')
 	            const xmembers = metadata.participants.length
-Wavebody = `┌──⊰  𝑾𝑬𝑳𝑪𝑶𝑴𝑬 
+Wavebody = `┌──  𝑾𝑬𝑳𝑪𝑶𝑴𝑬 
 │⊳ To: ${metadata.subject}
 │⊳ Name: @${WaveName.split("@")[0]}
 │⊳ Members: ${xmembers}th
 │⊳ Joined: ${xtime} ${xdate}
-└──────────⊰`
+└──────────`
 Wave.sendMessage(anu.id,
  { text: Wavebody,
  contextInfo:{
@@ -382,13 +382,13 @@ Wave.sendMessage(anu.id,
 	                const Wavedate = moment.tz('Africa/Nairobi').format('DD/MM/YYYY')
                 	let WaveName = num
                     const Wavemembers = metadata.participants.length  
-     Wavebody = `┌──⊰ LEFT 
+     Wavebody = `┌── LEFT 
 │⊳ From: ${metadata.subject}
 │⊳ Reason: Left
 │⊳ Name: @${WaveName.split("@")[0]}
 │⊳ Members: ${Wavemembers}th
 │⊳ Time: ${Wavetime} ${Wavedate}
-└──────────⊰`
+└──────────`
 Wave.sendMessage(anu.id,
  { text: Wavebody,
  contextInfo:{

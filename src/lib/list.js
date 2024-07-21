@@ -2,7 +2,7 @@ const prefix = global.prefa
   const pushname = m.pushName || "No Name"
 
 const listmenu=`
-*❯❯❯❯🎐 Command List🎐 ❮❮❮❮*
+*❯❯❯❯ Command List ❮❮❮❮*
 
 𝐇𝐞𝐥𝐥𝐨 𝐦𝐲 𝐝𝐚𝐫𝐥𝐢𝐧𝐠  *${pushname}*
 𝐡𝐞𝐫𝐞 𝐦𝐲 𝐜𝐨𝐦𝐦𝐚𝐧𝐝 𝐥𝐢𝐬𝐭 ༒

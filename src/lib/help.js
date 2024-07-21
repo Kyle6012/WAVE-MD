@@ -8,7 +8,7 @@ const helpmenu=`
   ♡ۣۜۜ፝͜͜͡͡✿➤ Version: 1.0
   ♡ۣۜۜ፝͜͜͡͡✿➤ Type: VPS
   ♡ۣۜۜ፝͜͜͡͡✿➤ Owner: 𝑨𝒚𝒖𝒔𝒉-𝒑𝒂𝒏𝒅𝒆𝒚
-  ♡ۣۜۜ፝͜͜͡͡✿➤ wa.me/919931122319
+  ♡ۣۜۜ፝͜͜͡͡✿➤ wa.me/254745247106
   ♡ۣۜۜ፝͜͜͡͡✿➤ Prefix: 「  ${prefix}  」
  ♡ۣۜۜ፝͜͜͡͡✿➤ Total cmd: 51
  ♡ۣۜۜ፝͜͜͡͡✿➤Menu Type: 𝑯𝒆𝒍𝒑-𝑴𝒆𝒏𝒖
@@ -82,6 +82,6 @@ const helpmenu=`
 『 Wave-Md 』
    Based on: Miku, 
    created by : Bealth pandey
-   ©️ Bealth botz inc 
+   ©️ bealth guy 
 `
 module.exports = helpmenu

@@ -2,7 +2,7 @@ const prefix = global.prefa
   const pushname = m.pushName || "No Name"
 
 const reactmenu=`
-┌── _*🎐SnapBlend🎐*_
+┌── _*SnapBlend*_
 │⊳ ${prefix}shadow
 │⊳ ${prefix}write
 │⊳ ${prefix}smoke
