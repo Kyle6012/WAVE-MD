@@ -1,7 +1,5 @@
 const fs = require('fs');
 const chalk = require('chalk');
-require('dotenv').config();
-
 //contact details
 global.ownernumber = [ process.env.OWNER_NUMBER || "254745247106"],
 global.ownername = process.env.OWNER_NAME || "ꪶ♱ꫂ 𝐵𝐸𝐴𝐿𝑇𝐻 𝐺𝑈𝑌 ⛧",
