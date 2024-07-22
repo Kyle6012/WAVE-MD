@@ -1281,7 +1281,7 @@ case 'tag': case 'tagall': case 'all':{
             
             case "sc": case "script": case"repo": {
 const axios = require("axios");
-let repoInfo = await axios.get("https://api.github.com/repos/Bealth-PANDEY023/WAVE-MD");
+let repoInfo = await axios.get("https://api.github.com/repos/Kyle6012/WAVE-MD");
         let repo = repoInfo.data;
         console.log(repo);
 
@@ -4293,7 +4293,7 @@ case 'welcome':
 
 
 case 'git': case 'gitclone':
-if (!text) return reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/Bealth-PANDEY023/WAVE-MD `)
+if (!text) return reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/Kyle6012/WAVE-MD `)
 if (!isUrl(text) && !text.includes('github.com')) return reply(`Link invalid!!`)
     let repo = text.split('/');
     let url = `https://api.github.com/repos/${repo[3]}/${repo[4]}/zipball`
