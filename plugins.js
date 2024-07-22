@@ -122,7 +122,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
 	for (let i of kon) {
 	    list.push({
 	    	displayName: await Wave.getName(i + '@s.whatsapp.net'),
-	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await Wave.getName(i + '@s.whatsapp.net')}\nFN:${await Wave.getName(i + '@s.whatsapp.net')}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Ponsel\nitem2.EMAIL;type=INTERNET:okeae2410@gmail.com\nitem2.X-ABLabel:Email\nitem3.URL:https://instagram.com/cak_haho\nitem3.X-ABLabel:Instagram\nitem4.ADR:;;Indonesia;;;;\nitem4.X-ABLabel:Region\nEND:VCARD`
+	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await Wave.getName(i + '@s.whatsapp.net')}\nFN:${await Wave.getName(i + '@s.whatsapp.net')}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Ponsel\nitem2.EMAIL;type=INTERNET:bealthguy@proton.me\nitem2.X-ABLabel:Email\nitem3.URL:https://instagram.com/bealthguy\nitem3.X-ABLabel:Instagram\nitem4.ADR:;;Kenya;;;;\nitem4.X-ABLabel:Region\nEND:VCARD`
 	    })
 	}
 	Wave.sendMessage(jid, { contacts: { displayName: global.ownername, contacts: list }, ...opts }, { quoted })

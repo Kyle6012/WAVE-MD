@@ -4473,9 +4473,7 @@ case 'developer':
 case 'dev':
     const devmod = `  *Moderators*\n\n
 *Bealth Guy* @254745247106
-
- \n
-\n📛*Don't Spam them to avoid Blocking !*\n\n*Thanks for using WAVE-MD* `;
+`;
 
     Wave.sendMessage(m.chat, { text: devmod, mentions: ["254745247106@s.whatsapp.net", "918811074852@s.whatsapp.net", "916909137213@s.whatsapp.net","918602239106@s.whatsapp.net"] }, { quoted: m });
     break;
