@@ -82,31 +82,21 @@ class YT {
             const videoInfo = await ytdl.getInfo('https://www.youtube.com/watch?v=' + search.id, { lang: 'id' });
             let stream = ytdl(search.id, { filter: 'audioonly', quality: 140 });
             let songPath = `./src/audio/${randomBytes(3).toString('hex')}.mp3`;
+            stream.on('error', (err) => console.log(err));
 
-            // Buffer the stream
-            const buffer = await new Promise((resolve, reject) => {
-                const chunks = [];
-                stream.on('data', chunk => chunks.push(chunk));
-                stream.on('end', () => resolve(Buffer.concat(chunks)));
-                stream.on('error', reject);
-            });
-
-            // Process with ffmpeg
             const file = await new Promise((resolve, reject) => {
-                ffmpeg(buffer)
+                ffmpeg(stream)
                     .audioFrequency(44100)
                     .audioChannels(2)
                     .audioBitrate(128)
                     .audioCodec('libmp3lame')
                     .audioQuality(5)
                     .toFormat('mp3')
-                    .save(songPath)
                     .on('end', () => resolve(songPath))
-                    .on('error', reject);
+                    .on('error', (err) => reject(err))
+                    .save(songPath);
             });
-
             await this.WriteTags(file, { Title: search.title, Artist: search.artist, Image: search.image, Album: search.album, Year: videoInfo.videoDetails.publishDate.split('-')[0] });
-
             return {
                 meta: search,
                 path: file,
@@ -129,7 +119,6 @@ class YT {
             stream.once('response', () => {
                 starttime = Date.now();
             });
-
             stream.on('progress', (chunkLength, downloaded, total) => {
                 const percent = downloaded / total;
                 const downloadedMinutes = (Date.now() - starttime) / 1000 / 60;
@@ -137,43 +126,33 @@ class YT {
                 readline.cursorTo(process.stdout, 0);
                 process.stdout.write(`${(percent * 100).toFixed(2)}% downloaded `);
                 process.stdout.write(`(${(downloaded / 1024 / 1024).toFixed(2)}MB of ${(total / 1024 / 1024).toFixed(2)}MB)\n`);
-                process.stdout.write(`running for: ${downloadedMinutes.toFixed(2)} minutes`);
-                process.stdout.write(`, estimated time left: ${estimatedDownloadTime.toFixed(2)} minutes `);
+                process.stdout.write(`running for: ${downloadedMinutes.toFixed(2)}minutes`);
+                process.stdout.write(`, estimated time left: ${estimatedDownloadTime.toFixed(2)}minutes `);
                 readline.moveCursor(process.stdout, 0, -1);
             });
-
             stream.on('end', () => process.stdout.write('\n\n'));
             stream.on('error', (err) => console.log(err));
 
-            // Buffer the stream
-            const buffer = await new Promise((resolve, reject) => {
-                const chunks = [];
-                stream.on('data', chunk => chunks.push(chunk));
-                stream.on('end', () => resolve(Buffer.concat(chunks)));
-                stream.on('error', reject);
-            });
-
-            // Process with ffmpeg
             const file = await new Promise((resolve, reject) => {
-                ffmpeg(buffer)
+                ffmpeg(stream)
                     .audioFrequency(44100)
                     .audioChannels(2)
                     .audioBitrate(128)
                     .audioCodec('libmp3lame')
                     .audioQuality(5)
                     .toFormat('mp3')
-                    .save(songPath)
-                    .on('end', () => resolve(songPath))
-                    .on('error', reject);
+                    .on('end', () => {
+                        resolve(songPath);
+                    })
+                    .on('error', (err) => reject(err))
+                    .save(songPath);
             });
-
             if (Object.keys(metadata).length !== 0) {
                 await this.WriteTags(file, metadata);
             }
             if (autoWriteTags) {
                 await this.WriteTags(file, { Title: videoDetails.title, Album: videoDetails.author.name, Year: videoDetails.publishDate.split('-')[0], Image: videoDetails.thumbnails.slice(-1)[0].url });
             }
-
             return {
                 meta: {
                     title: videoDetails.title,
