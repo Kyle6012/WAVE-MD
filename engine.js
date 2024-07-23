@@ -438,7 +438,7 @@ const wavefeature = () =>{
 }
   
             switch (command) {
-            	
+            const axios = require('axios');	
             case 'tutorial':{
 	const slides = [
     [
