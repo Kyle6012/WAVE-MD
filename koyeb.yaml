@@ -1,0 +1,20 @@
+name: wave-md
+
+services:
+  - name: web
+    type: web
+    description: "My Node.js web service"
+    instances:
+      count: 1
+      max: 1
+    ports:
+      - port: 3000
+        protocol: HTTP
+    build:
+      type: docker
+      dockerfile: Dockerfile
+    env:
+      - key: NODE_ENV
+        value: production
+    regions:
+      - us-east-1
