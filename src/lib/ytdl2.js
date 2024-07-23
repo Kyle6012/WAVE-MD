@@ -107,6 +107,29 @@ class YT {
         }
     }
 
+
+    static mp4 = async (query, quality = 134) => {
+         try {
+             if (!query) throw new Error('Video ID or YouTube Url is required')
+             const videoId = this.isYTUrl(query) ? this.getVideoID(query) : query
+             const videoInfo = await ytdl.getInfo('https://www.youtube.com/watch?v=' + videoId, { lang: 'id' });
+             const format = ytdl.chooseFormat(videoInfo.formats, { format: quality, filter: 'videoandaudio' })
+             return {
+                 title: videoInfo.videoDetails.title,
+                 thumb: videoInfo.videoDetails.thumbnails.slice(-1)[0],
+                 date: videoInfo.videoDetails.publishDate,
+                 duration: videoInfo.videoDetails.lengthSeconds,
+                 channel: videoInfo.videoDetails.ownerChannelName,
+                 quality: format.qualityLabel,
+                 contentLength: format.contentLength,
+                 description:videoInfo.videoDetails.description,
+                 videoUrl: format.url
+             }
+         } catch (error) {
+             throw error
+         }
+     }
+
     static mp3 = async (url, metadata = {}, autoWriteTags = false) => {
         try {
             if (!url) throw new Error('Video ID or YouTube Url is required');
