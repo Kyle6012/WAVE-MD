@@ -1,35 +1,35 @@
-const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getAggregateVotesInPollMessage,getContentType, delay, decodeJid } = require('@whiskeysockets/baileys')
-const { SendGroupInviteMessageToUser } = require("@queenanya/invite")
-const Config = require("./Config")
-const os = require('os')
-const fs = require('fs')
-const mathjs = require('mathjs')
-const fsx = require('fs-extra')
-const path = require('path')
-const util = require('util')
-const googleTTS = require('google-tts-api')
-const jsobfus = require('javascript-obfuscator')
-const chalk = require('chalk')
-    const dictionary = require('word-definition');
+const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getAggregateVotesInPollMessage,getContentType, delay, decodeJid } = require('@whiskeysockets/baileys');
+const { SendGroupInviteMessageToUser } = require("@queenanya/invite");
+const Config = require("./Config");
+const os = require('os');
+const fs = require('fs');
+const mathjs = require('mathjs');
+const fsx = require('fs-extra');
+const path = require('path');
+const util = require('util');
+const googleTTS = require('google-tts-api');
+const jsobfus = require('javascript-obfuscator');
+const chalk = require('chalk');
+const dictionary = require('word-definition');
 const wikipedia = require('wikipedia');
 const npt = require("node-periodic-table");
 const pTable = require("ptable"); 
-const mver = require('./package.json').version
-const moment = require('moment-timezone')
-const speed = require('performance-now')
-const ms = toMs = require('ms')
-const axios = require('axios')
-const fetch = require('node-fetch')
-const { exec, spawn, execSync } = require("child_process")
-const { performance } = require('perf_hooks')
-const more = String.fromCharCode(8206)
-const readmore = more.repeat(4001)
-const { TelegraPh, UploadFileUgu, webp2mp4File, floNime } = require('./src/lib/uploader')
-const { toAudio, toPTT, toVideo, ffmpeg, addExifAvatar } = require('./src/lib/converter')
-const { smsg, getGroupAdmins, formatp, jam, formatDate, getTime, isUrl, await, sleep, clockString, msToDate, sort, toNumber, enumGetKey, runtime, fetchJson, getBuffer, json, format, logic, generateProfilePicture, parseMention, getRandom, pickRandom, reSize } = require('./src/lib/myfunc')
+const mver = require('./package.json').version;
+const moment = require('moment-timezone');
+const speed = require('performance-now');
+const ms = toMs = require('ms');
+const axios = require('axios');
+const fetch = require('node-fetch');
+const { exec, spawn, execSync } = require("child_process");
+const { performance } = require('perf_hooks');
+const more = String.fromCharCode(8206);
+const readmore = more.repeat(4001);
+const { TelegraPh, UploadFileUgu, webp2mp4File, floNime } = require('./src/lib/uploader');
+const { toAudio, toPTT, toVideo, ffmpeg, addExifAvatar } = require('./src/lib/converter');
+const { smsg, getGroupAdmins, formatp, jam, formatDate, getTime, isUrl, await, sleep, clockString, msToDate, sort, toNumber, enumGetKey, runtime, fetchJson, getBuffer, json, format, logic, generateProfilePicture, parseMention, getRandom, pickRandom, reSize } = require('./src/lib/myfunc');
 let afk = require("./src/lib/afk");
 const { download } = require('aptoide-scraper');
-const { fetchBuffer, buffergif } = require("./src/lib/myfunc2")
+const { fetchBuffer, buffergif } = require("./src/lib/myfunc2");
 
 /////log
  global.modnumber = '254745247106' 
@@ -436,7 +436,7 @@ const wavefeature = () =>{
             var numUpper = (mytext.match(/case '/g) || []).length
             return numUpper
 }
-
+  
             switch (command) {
             	
             case 'tutorial':{
@@ -1402,7 +1402,6 @@ break;
             }
             break;
             case 'checkdeath':
-             const axios = require('axios');
              if (!text) return replay(`Use Someone's Name, Example : ${prefix + command} Bealth`)
               predea = await axios.get(`https://api.agify.io/?name=${q}`)
               reply(`Name : ${predea.data.name}\n*Dead At Age :* ${predea.data.age} Year.\n\n_Quick, Quick, Repent Bro, Because No One Knows About Death_`)
@@ -1618,7 +1617,7 @@ break;
 
 case 'chatgpt':
       case 'gpt':
-      case 'chatbot': {
+      case 'chatbot':
        const axios = require("axios");
         if (!args[0]) {
           return reply(`Please provide a message to chat with the Wave chatbot. Example: ${prefix}chat How are you Wave ?`);
@@ -1635,7 +1634,6 @@ case 'chatgpt':
           console.error('Error fetching AI chatbot response:', error);
           reply('An error occurred while fetching the Wave chatbot response. Please try again later.');
         }
-      }
         break;
                
              case 'dalle': {
@@ -4886,9 +4884,9 @@ async function fetchScienceNewsHeadlines() {
 
 //Function of games
 case 'chat':
-    const axios = require('axios');
+    
     botreply = await axios.get(
-      `http://api.brainshop.ai/get?bid=180857&key=SeLyK3P24U91Ed7a&uid=[Mariabot]&msg=[text]`
+      `http://api.brainshop.ai/get?bid=180857&key=SeLyK3P24U91Ed7a&uid=[Wavebot]&msg=[text]`
     );
 
     txtChatbot = `${botreply.data.cnt}`;
