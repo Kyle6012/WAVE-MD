@@ -436,9 +436,9 @@ const wavefeature = () =>{
             var numUpper = (mytext.match(/case '/g) || []).length
             return numUpper
 }
-  
+const axios = require('axios')  
             switch (command) {
-            const axios = require('axios');	
+
             case 'tutorial':{
 	const slides = [
     [
