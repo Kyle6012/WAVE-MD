@@ -87,6 +87,8 @@ async function startWave() {
             console.log(chalk.black(chalk.bgGreen(`Your Pairing Code: `)), chalk.black(chalk.white(code)))
             rl.close()
         }, 3000)
+    } else {
+       rl.close();
     }
 
     Wave.ev.on('messages.upsert', async chatUpdate => {
