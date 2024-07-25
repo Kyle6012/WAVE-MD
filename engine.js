@@ -1616,42 +1616,42 @@ break;
 //////////////////////////Ai menu/////////////////////////
 
 case 'chatgpt':
-      case 'gpt':
-      case 'chatbot':
-       const axios = require("axios");
-        if (!args[0]) {
-          return reply(`Please provide a message to chat with the Wave chatbot. Example: ${prefix}chat How are you Wave ?`);
-        }
+case 'gpt':
+case 'chatbot': {
+    if (!args[0]) {
+        return await Wave.sendMessage(m.chat, { text: `Please provide a message to chat with the Wave chatbot. Example: ${prefix}chat How are you Wave?` }, { quoted: m });
+    }
 
-        const message = encodeURIComponent(args.join(' '));
-        const gptapi = `https://api.maher-zubair.tech/ai/chatgpt3?q=${message}`;
+    const message = encodeURIComponent(args.join(' '));
+    const gptapi = `https://api.maher-zubair.tech/ai/chatgpt3?q=${message}`;
 
-        try {
-          const response = await axios.get(gptapi);
-          const result = response.data.result;
-          reply(result);
-        } catch (error) {
-          console.error('Error fetching AI chatbot response:', error);
-          reply('An error occurred while fetching the Wave chatbot response. Please try again later.');
-        }
-        break;
-               
-             case 'dalle': {
-       
+    try {
+        const response = await axios.get(gptapi);
+        const result = response.data.result;
+        await Wave.sendMessage(m.chat, { text: result }, { quoted: m });
+    } catch (error) {
+        console.error('Error fetching AI chatbot response:', error);
+        await Wave.sendMessage(m.chat, { text: 'An error occurred while fetching the Wave chatbot response. Please try again later.' }, { quoted: m });
+    }
+    break;
+}
 
-        if (!q) return reply(`Please provide a query to generate an image. Example: ${prefix + command} Beautiful landscape`);
+case 'dalle': {
+    if (!args[0]) {
+        return await Wave.sendMessage(m.chat, { text: `Please provide a query to generate an image. Example: ${prefix + command} Beautiful landscape` }, { quoted: m });
+    }
 
-        const apiUrl = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(q)}`;
+    const query = encodeURIComponent(args.join(' '));
+    const apiUrl = `https://gurugpt.cyclic.app/dalle?prompt=${query}`;
 
-        try {
-          await Wave.sendMessage(m.chat, { image: { url: apiUrl } }, { quoted: m });
-        } catch (error) {
-          console.error(error);
-          reply("An error occurred while generating the image.");
-        }
-      }
-        break;
-
+    try {
+        await Wave.sendMessage(m.chat, { image: { url: apiUrl } }, { quoted: m });
+    } catch (error) {
+        console.error('Error generating image:', error);
+        await Wave.sendMessage(m.chat, { text: 'An error occurred while generating the image. Please try again later.' }, { quoted: m });
+    }
+    break;
+}
 
          
 /////////////////////////////////////_//////////////
@@ -4954,51 +4954,62 @@ break;
 
   
 case 'google': {
-Wave.sendMessage(from, { react: { text: "🔎", key: m.key }}) 
-if (!q) return reply(`Example : ${prefix + command} 𝘈𝘺𝘶𝘴𝘩 𝘱𝘢𝘯𝘥𝘦𝘺`)
-let google = require('google-it')
-google({'query': text}).then(res => {
-let teks = `「 *Google Search Engine*」 \n\n
-`
-for (let g of res) {
-teks += ` *Title* : ${g.title}\n`
-teks += ` *Description* : ${g.snippet}\n`
-teks += `📎 *Link* : ${g.link}\n\n────────────────────\n\n`
-} 
-reply(teks)
-})
+    Wave.sendMessage(m.chat, { react: { text: "🔎", key: m.key }});
+    if (!text) return Wave.sendMessage(m.chat, { text: `Example: ${prefix}google Ayush pandey` }, { quoted: m });
+
+    const google = require('google-it');
+    google({ 'query': text }).then(res => {
+        let teks = `「 *Google Search Engine*」\n\n`;
+        for (let g of res) {
+            teks += `*Title*: ${g.title}\n`;
+            teks += `*Description*: ${g.snippet}\n`;
+            teks += `📎 *Link*: ${g.link}\n\n────────────────────\n\n`;
+        }
+        Wave.sendMessage(m.chat, { text: teks }, { quoted: m });
+    }).catch(err => {
+        console.error(err);
+        Wave.sendMessage(m.chat, { text: 'Error fetching search results. Please try again later.' }, { quoted: m });
+    });
+    break;
 }
-break
 
 
+ case 'define': {
+    if (!args[0]) {
+        return await Wave.sendMessage(m.chat, { text: `Please specify a word to define. For example: ${prefix}define computer` }, { quoted: m });
+    }
 
-case 'define':
-    if (!args[0]) return reply(`Please specify a word to define. For example: ${prefix}define computer`);
-    
     const word = args[0];
 
     dictionary.getDef(word, 'en', null, async function(definition) {
         if (!definition || !definition.definition) {
-            return reply(`Definition for "${word}" not found.`);
+            return await Wave.sendMessage(m.chat, { text: `Definition for "${word}" not found.` }, { quoted: m });
         }
 
         const meaning = definition.definition;
 
-        await Wave.sendMessage(from, ` *Definition of ${word}*\n\n${meaning}`, { quoted: m });
+        await Wave.sendMessage(m.chat, { text: `*Definition of ${word}*\n\n${meaning}` }, { quoted: m });
     });
     break;
+}
                    
-                   case 'sciencefact':
-    // Call a function to fetch a random science fact
-    const scienceFact = await fetchRandomScienceFact();
-    
-    if (scienceFact) {
-        reply(`*Random Science Fact:*\n\n${scienceFact}`);
-    } else {
-        reply('Failed to fetch a random science fact.');
+ case 'sciencefact': {
+    const { key } = await Wave.sendMessage(m.chat, { text: 'Fetching a random science fact, please wait...' }, { quoted: m });
+
+    try {
+        const scienceFact = await fetchRandomScienceFact();
+
+        if (scienceFact) {
+            await Wave.sendMessage(m.chat, { text: `*Random Science Fact:*\n\n${scienceFact}` }, { quoted: key });
+        } else {
+            await Wave.sendMessage(m.chat, { text: 'Failed to fetch a random science fact.' }, { quoted: key });
+        }
+    } catch (error) {
+        console.error(error);
+        await Wave.sendMessage(m.chat, { text: 'Error fetching a random science fact. Please try again later.' }, { quoted: key });
     }
     break;
-
+}
 // Function to fetch a random science fact
 async function fetchRandomScienceFact() {
     try {
@@ -5017,37 +5028,49 @@ async function fetchRandomScienceFact() {
     }
 }
     
-    case 'sciencenews':
-    // Call a function to fetch the latest science news headlines
-    const headlines = await fetchScienceNewsHeadlines();
-    
-    if (headlines && headlines.length > 0) {
-        reply(`*Latest Science News Headlines:*\n\n${headlines.join('\n')}`);
-    } else {
-        reply('Failed to fetch science news headlines.');
-    }
-    break;
+ case 'sciencenews': {
+    async function fetchScienceNewsHeadlines() {
+        const apiKey = 'bf17483564e24e2aa83ff6dc6a8e79eb'; // Your News API key
 
-// Function to fetch the latest science news headlines using the News API
-async function fetchScienceNewsHeadlines() {
-    const apiKey = 'bf17483564e24e2aa83ff6dc6a8e79eb'; // Provided News API key
-    
-    try {
-        const response = await fetch(`https://newsapi.org/v2/top-headlines?category=science&apiKey=${apiKey}`);
-        const data = await response.json();
-        
-        if (data.articles && data.articles.length > 0) {
-            // Extract the headlines from the response
-            const headlines = data.articles.map(article => article.title);
-            return headlines;
-        } else {
-            console.error('No articles found in the response.');
+        try {
+            const response = await axios.get(`https://newsapi.org/v2/top-headlines`, {
+                params: {
+                    category: 'science',
+                    apiKey: apiKey
+                }
+            });
+
+            const articles = response.data.articles;
+
+            if (articles && articles.length > 0) {
+                // Extract the headlines from the response
+                const headlines = articles.map(article => article.title);
+                return headlines;
+            } else {
+                console.error('No articles found in the response.');
+                return null;
+            }
+        } catch (error) {
+            console.error('Error fetching science news headlines:', error);
             return null;
         }
-    } catch (error) {
-        console.error('Error fetching science news headlines:', error);
-        return null;
     }
+
+    const { key } = await Wave.sendMessage(m.chat, { text: 'Fetching the latest science news headlines, please wait...' }, { quoted: m });
+
+    try {
+        const headlines = await fetchScienceNewsHeadlines();
+
+        if (headlines && headlines.length > 0) {
+            await Wave.sendMessage(m.chat, { text: `*Latest Science News Headlines:*\n\n${headlines.join('\n')}` }, { quoted: key });
+        } else {
+            await Wave.sendMessage(m.chat, { text: 'Failed to fetch science news headlines.' }, { quoted: key });
+        }
+    } catch (error) {
+        console.error(error);
+        await Wave.sendMessage(m.chat, { text: 'Error fetching science news headlines. Please try again later.' }, { quoted: key });
+    }
+    break;
 }
 
 // Add more cases for other games as needed
@@ -5055,7 +5078,7 @@ async function fetchScienceNewsHeadlines() {
 //Function of games
 case 'chat':
     
-    botreply = await axios.get(
+    botreply = await fetch(
       `http://api.brainshop.ai/get?bid=180857&key=SeLyK3P24U91Ed7a&uid=[Wavebot]&msg=[text]`
     );
 
