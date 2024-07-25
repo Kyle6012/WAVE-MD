@@ -3619,7 +3619,7 @@ let liistmsg = generateWAMessageFromContent(from, {
   "name": "quick_reply",
   "buttonParamsJson": `{"display_text":"OTHERS","id":"${prefix}othersmenu"}`
    },
-   {7
+   {
   "name": "quick_reply",
   "buttonParamsJson": `{"display_text":"Games","id":"${prefix}Gamemenu"}`
    },
