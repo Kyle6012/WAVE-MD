@@ -4478,25 +4478,27 @@ case 'dev':
     Wave.sendMessage(m.chat, { text: devmod, mentions: ["254745247106@s.whatsapp.net", "918811074852@s.whatsapp.net", "916909137213@s.whatsapp.net","918602239106@s.whatsapp.net"] }, { quoted: m });
     break;
 
-      case 'nmap': {
-	    const scanTarget = require('./src/pentest/nmap');
-            const [target, portRange] = text.split(' ');
-            if (!target || !portRange) return m.reply('Please provide a target and a range of ports to be scanned. Example: nmap 192.168.1.1 22-80');
-            
-            const { key } = await m.reply('Scanning, please wait...');
-            
-            try {
-                const openPorts = await scanTarget(target, portRange);
-                const resultMessage = openPorts.length > 0 
-                    ? `Open ports:\n${openPorts.map(port => `Port: ${port.port}, Protocol: ${port.protocol}`).join('\n')}` 
-                    : 'No open ports found.';
-                m.edit(resultMessage, key);
-            } catch (error) {
-                console.error(error);
-                m.edit('Error during scan. Please try again later.', key);
-            }
-            break;
-        }
+case 'nmap': {
+    const scanTarget = require('./src/pentest/nmap');
+    const [target, portRange] = text.split(' ');
+    if (!target || !portRange) return m.reply('Please provide a target and a range of ports to be scanned. Example: nmap 192.168.1.1 22-80');
+
+    const { key } = await m.reply('Scanning, please wait...');
+
+    try {
+        const openPorts = await scanTarget(target, portRange);
+        const resultMessage = openPorts.length > 0
+            ? `Open ports:\n${openPorts.map(port => `Port: ${port.port}, Protocol: ${port.protocol}`).join('\n')}`
+            : 'No open ports found.';
+
+        await Wave.sendMessage(m.chat, { text: resultMessage }, { quoted: m });
+    } catch (error) {
+        console.error(error);
+        m.reply('Error during scan. Please try again later.');
+    }
+    break;
+}
+
     
     
     ////games 
