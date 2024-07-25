@@ -2173,6 +2173,14 @@ break;
 │⊳ ${prefix}run
 │⊳ ${prefix}gitclone
 └──────────
+┌── _*Hacking*_
+│⊳ ${prefix}nmap
+│⊳ ${prefix}dnslookup
+│⊳ ${prefix}gitclone
+│⊳ ${prefix}nslookup
+│⊳ ${prefix}subdomain
+│⊳ ${prefix}ipinfo 
+└──────────
 ┌── _*OWNER*_
 │⊳  ${prefix}session
 │⊳  ${prefix}join
@@ -2716,8 +2724,82 @@ await Wave.relayMessage(cmsg.key.remoteJid, cmsg.message, {
   messageId: cmsg.key.id
 })
  break
-         
-   
+       
+
+case 'hackingmenu':
+    const codingmenu = `┌── _*Hacking*_
+│⊳ ${prefix}nmap
+│⊳ ${prefix}dnslookup
+│⊳ ${prefix}gitclone
+│⊳ ${prefix}nslookup
+│⊳ ${prefix}subdomain
+│⊳ ${prefix}ipinfo
+└──────────
+`
+ let hackmsg = generateWAMessageFromContent(from, {
+  viewOnceMessage: {
+    message: {
+        "messageContextInfo": {
+          "deviceListMetadata": {},
+          "deviceListMetadataVersion": 2
+        },
+        interactiveMessage: proto.Message.InteractiveMessage.create({
+          body: proto.Message.InteractiveMessage.Body.create({
+            text: ""
+          }),
+          footer: proto.Message.InteractiveMessage.Footer.create({
+            text: botname
+          }),
+                    header: proto.Message.InteractiveMessage.Header.create({
+                ...(await prepareWAMessageMedia({ image : fs.readFileSync('./src/ch4.jpg')}, { upload: Wave.waUploadToServer})),
+            title: hackingmenu,
+            subtitle: themeemoji,
+            hasMediaAttachment: false
+          }),
+          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+            buttons: [
+                             {
+  "name": "quick_reply",
+  "buttonParamsJson": `{"display_text":"Back ","id":"${prefix}list"}`
+   },
+
+                               {
+  "name": "quick_reply",
+  "buttonParamsJson": `{"display_text":"Script","id":"${prefix}sc"}`
+   },
+              {
+                 "name": "cta_url",
+                 "buttonParamsJson": "{\"display_text\":\"Website \",\"url\":\"https://bealthguy.netlify.app\",\"merchant_url\":\"https://www.google.com\"}"
+              },
+              {
+                 "name": "cta_url",
+                 "buttonParamsJson": "{\"display_text\":\"Instagram \",\"url\":\"https://www.instagram.com/bealth.guy\",\"merchant_url\":\"https://www.google.com\"}"
+              }
+
+
+           ],
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender],
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363213314329067@newsletter',
+                  newsletterName: "bealth guy",
+                  serverMessageId: 143
+                }
+                }
+        })
+    }
+  }
+}, {})
+
+await Wave.relayMessage(hackmsg.key.remoteJid, hackmsg.message, {
+  messageId: hackmsg.key.id
+})
+ break;
+
+
  case 'ownermenu':
     const ownermenu = `┌── _*OWNER*_
 │⊳  ${prefix}session
@@ -3497,12 +3579,16 @@ let liistmsg = generateWAMessageFromContent(from, {
    },
                  {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Education","id":"${prefix}educationmenu"}`
+  "buttonParamsJson": `{"display_text":"EDUCATION","id":"${prefix}educationmenu"}`
    },
    
                  {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"Coding","id":"${prefix}codingmenu"}`
+  "buttonParamsJson": `{"display_text":"CODING","id":"${prefix}codingmenu"}`
+   },
+                 {
+  "name": "quick_reply",
+  "buttonParamsJson": `{"display_text":"HACKING","id":"${prefix}hackingmenu"}`
    },
                  {
   "name": "quick_reply",
@@ -3518,7 +3604,7 @@ let liistmsg = generateWAMessageFromContent(from, {
    },
    {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"download","id":"${prefix}downloadmenu"}`
+  "buttonParamsJson": `{"display_text":"DOWNLOAD","id":"${prefix}downloadmenu"}`
    },
    {
   "name": "quick_reply",
@@ -3526,13 +3612,13 @@ let liistmsg = generateWAMessageFromContent(from, {
    },
    {
   "name": "quick_reply",
-  "buttonParamsJson": `{"display_text":"SnapBlend","id":"${prefix}snapblendmenu"}`
+  "buttonParamsJson": `{"display_text":"SNAPBLEND","id":"${prefix}snapblendmenu"}`
    },
    {
   "name": "quick_reply",
   "buttonParamsJson": `{"display_text":"OTHERS","id":"${prefix}othersmenu"}`
    },
-   {
+   {7
   "name": "quick_reply",
   "buttonParamsJson": `{"display_text":"Games","id":"${prefix}Gamemenu"}`
    },
@@ -3561,7 +3647,7 @@ await Wave.relayMessage(liistmsg.key.remoteJid, liistmsg.message, {
   messageId: liistmsg.key.id
 })
 }
-break
+break;
 
 
 case 'nobg': case 'removebg': case 'remove-bg': {
