@@ -1257,7 +1257,7 @@ case 'tag': case 'tagall': case 'all':{
                   if (!isBotAdmins) return reply(mess.botAdmin)            
 
           let response = await Wave.groupInviteCode(m.chat);
-          Wave.sendText(
+          Wave.sendMessage(
             m.sender,
             ` 𝐵𝑜𝑡 𝑛𝑎𝑚𝑒:- Wave Bot\n\n𝐺𝑟𝑜𝑢𝑝 𝑛𝑎𝑚𝑒:- ${groupMetadata.subject}\n\n𝐺𝑟𝑜𝑢𝑝 𝑙𝑖𝑛𝑘:- https://chat.whatsapp.com/${response}`,
             m,
@@ -4971,7 +4971,7 @@ let tifxmsg = generateWAMessageFromContent(from, {
             text: botname
           }),
                     header: proto.Message.InteractiveMessage.Header.create({
-                ...(await prepareWAMessageMedia({ image: { url: "https://graph.org/file/c8ad7dc322c0b9b7eca8f.jpg" }}, { upload: Wave.waUploadToServer})), 
+                ...(await prepareWAMessageMedia({ image: { url: "./src/Mariach.jpg" }}, { upload: Wave.waUploadToServer})), 
             title: tifx,
             subtitle: themeemoji,
             hasMediaAttachment: false
