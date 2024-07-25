@@ -2728,7 +2728,7 @@ await Wave.relayMessage(cmsg.key.remoteJid, cmsg.message, {
        
 
 case 'hackingmenu':
-    const codingmenu = `┌── _*Hacking*_
+    const hackingmenu = `┌── _*Hacking*_
 │⊳ ${prefix}nmap
 │⊳ ${prefix}dnslookup
 │⊳ ${prefix}gitclone
