@@ -4504,6 +4504,150 @@ case 'nmap': {
     break;
 }
 
+case 'subdomain': {
+    const discoverSubdomains = require('./src/pentest/subdomainDiscovery');
+    const [domain] = text.split(' ');
+
+    if (!domain) {
+        await Wave.sendMessage(m.chat, { text: 'Please provide a domain. Example: subdomain example.com' }, { quoted: m });
+        return;
+    }
+
+    const { key } = await Wave.sendMessage(m.chat, { text: 'Discovering subdomains, please wait...' }, { quoted: m });
+
+    try {
+        const subdomains = await discoverSubdomains(domain);
+        const resultMessage = subdomains.length > 0
+            ? `Discovered subdomains:\n${subdomains.map(sd => `- ${sd.subdomain}: ${sd.addresses.join(', ')}`).join('\n')}`
+            : 'No subdomains discovered.';
+
+        await Wave.sendMessage(m.chat, { text: resultMessage }, { quoted: m });
+    } catch (error) {
+        console.error(error);
+        await Wave.sendMessage(m.chat, { text: 'Error during subdomain discovery. Please try again later.' }, { quoted: m });
+    }
+    break;
+}
+
+case 'dnslookup': {
+    const lookupDNS = require('./src/pentest/dnsLookup');
+    const [domain] = text.split(' ');
+
+    if (!domain) {
+        await Wave.sendMessage(m.chat, { text: 'Please provide a domain. Example: dns example.com' }, { quoted: m });
+        return;
+    }
+
+    const { key } = await Wave.sendMessage(m.chat, { text: 'Performing DNS lookup, please wait...' }, { quoted: m });
+
+    try {
+        const results = await lookupDNS(domain);
+        const resultMessage = `
+DNS Lookup Results for ${domain}:
+
+A Records:
+${results.A.length > 0 ? results.A.join('\n') : 'None'}
+
+AAAA Records:
+${results.AAAA.length > 0 ? results.AAAA.join('\n') : 'None'}
+
+MX Records:
+${results.MX.length > 0 ? results.MX.map(record => `${record.exchange} (Priority: ${record.priority})`).join('\n') : 'None'}
+
+TXT Records:
+${results.TXT.length > 0 ? results.TXT.map(record => record.join(' ')).join('\n') : 'None'}
+
+CNAME Records:
+${results.CNAME.length > 0 ? results.CNAME.join('\n') : 'None'}
+
+NS Records:
+${results.NS.length > 0 ? results.NS.join('\n') : 'None'}
+
+SOA Record:
+${results.SOA.host ? `
+Primary: ${results.SOA.nsname}
+Responsible: ${results.SOA.hostmaster}
+Serial: ${results.SOA.serial}
+Refresh: ${results.SOA.refresh}
+Retry: ${results.SOA.retry}
+Expire: ${results.SOA.expire}
+TTL: ${results.SOA.minttl}
+` : 'None'}
+`;
+
+        await Wave.sendMessage(m.chat, { text: resultMessage }, { quoted: m });
+    } catch (error) {
+        console.error(error);
+        await Wave.sendMessage(m.chat, { text: 'Error during DNS lookup. Please try again later.' }, { quoted: m });
+    }
+    break;
+}
+
+case 'nslookup': {
+    const nslookup = require('./src/pentest/nsLookup');
+    const [domain] = text.split(' ');
+
+    if (!domain) {
+        await Wave.sendMessage(m.chat, { text: 'Please provide a domain. Example: nslookup example.com' }, { quoted: m });
+        return;
+    }
+
+    const { key } = await Wave.sendMessage(m.chat, { text: 'Performing nslookup, please wait...' }, { quoted: m });
+
+    try {
+        const results = await nslookup(domain);
+        const resultMessage = `
+NSLookup Results for ${domain}:
+
+IPv4 Addresses:
+${results.A.length > 0 ? results.A.join('\n') : 'None'}
+
+IPv6 Addresses:
+${results.AAAA.length > 0 ? results.AAAA.join('\n') : 'None'}
+`;
+
+        await Wave.sendMessage(m.chat, { text: resultMessage }, { quoted: m });
+    } catch (error) {
+        console.error(error);
+        await Wave.sendMessage(m.chat, { text: 'Error during DNS lookup. Please try again later.' }, { quoted: m });
+    }
+    break;
+}
+
+case 'ipinfo': {
+    const getIpInfo = require('./src/pentest/ipinfo');
+    const [ip] = text.split(' ');
+
+    if (!ip) {
+        await Wave.sendMessage(m.chat, { text: 'Please provide an IP address. Example: ipinfo 8.8.8.8' }, { quoted: m });
+        return;
+    }
+
+    const { key } = await Wave.sendMessage(m.chat, { text: 'Fetching IP information, please wait...' }, { quoted: m });
+
+    try {
+        const ipInfo = await getIpInfo(ip);
+        const resultMessage = `
+IP Information for ${ip}:
+
+- **IP**: ${ipInfo.ip}
+- **City**: ${ipInfo.city || 'N/A'}
+- **Region**: ${ipInfo.region || 'N/A'}
+- **Country**: ${ipInfo.country || 'N/A'}
+- **Location**: ${ipInfo.loc || 'N/A'}
+- **Organization**: ${ipInfo.org || 'N/A'}
+- **Hostname**: ${ipInfo.hostname || 'N/A'}
+- **Website**: ${ipInfo.as && ipInfo.as.name ? ipInfo.as.name : 'N/A'}
+`;
+
+        await Wave.sendMessage(m.chat, { text: resultMessage }, { quoted: m });
+    } catch (error) {
+        console.error(error);
+        await Wave.sendMessage(m.chat, { text: 'Error fetching IP information. Please try again later.' }, { quoted: m });
+    }
+    break;
+}
+
 
     
     
