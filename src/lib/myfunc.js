@@ -335,7 +335,7 @@ exports.smsg = (Wave, m, store) => {
      */
     m.reply = (text, chatId = m.chat, options = {}) => Buffer.isBuffer(text) ? Wave.sendMedia(chatId, text, 'file', '', m, {
         ...options
-    }) : Wave.sendText(chatId, text, m, {
+    }) : Wave.sendMessage(chatId, text, m, {
         ...options
     })
     m.edit = (text, key, options = {}) => Wave.sendMessage(m.chat, { text: text, mentions: options.mentions, edit: key })
