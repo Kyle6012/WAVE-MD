@@ -4481,23 +4481,29 @@ case 'dev':
 case 'nmap': {
     const scanTarget = require('./src/pentest/nmap');
     const [target, portRange] = text.split(' ');
-    if (!target || !portRange) return m.reply('Please provide a target and a range of ports to be scanned. Example: nmap 192.168.1.1 22-80');
+    if (!target || !portRange) {
+        // Ensure m.reply sends a properly formatted object
+        await Wave.sendMessage(m.chat, { text: 'Please provide a target and a range of ports to be scanned. Example: nmap 192.168.1.1 22-80' }, { quoted: m });
+        return;
+    }
 
-    const { key } = await m.reply('Scanning, please wait...');
+    const { key } = await Wave.sendMessage(m.chat, { text: 'Scanning, please wait...' }, { quoted: m });
 
     try {
         const openPorts = await scanTarget(target, portRange);
         const resultMessage = openPorts.length > 0
             ? `Open ports:\n${openPorts.map(port => `Port: ${port.port}, Protocol: ${port.protocol}`).join('\n')}`
             : 'No open ports found.';
-
+        
+        // Send the result message with a properly formatted object
         await Wave.sendMessage(m.chat, { text: resultMessage }, { quoted: m });
     } catch (error) {
         console.error(error);
-        m.reply('Error during scan. Please try again later.');
+        await Wave.sendMessage(m.chat, { text: 'Error during scan. Please try again later.' }, { quoted: m });
     }
     break;
 }
+
 
     
     
