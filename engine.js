@@ -750,6 +750,7 @@ break;
                 }
                 break;
 
+	       case 'couple':
                 case 'ship': {
     let usep = m.sender;
     let recp = '';
