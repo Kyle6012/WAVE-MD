@@ -5078,7 +5078,7 @@ async function fetchRandomScienceFact() {
 //Function of games
 case 'chat':
     
-    botreply = await fetch(
+    botreply = await axios.get(
       `http://api.brainshop.ai/get?bid=180857&key=SeLyK3P24U91Ed7a&uid=[Wavebot]&msg=[text]`
     );
 
