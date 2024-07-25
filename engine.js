@@ -5113,7 +5113,7 @@ if(isCmd){
                 }
         }
     } catch (err) {
-        Wave.sendText(m.chat, util.format(err), m)
+        Wave.sendMessage(m.chat, util.format(err), m)
         console.log(util.format(err))
     }
 }
