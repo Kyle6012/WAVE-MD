@@ -4606,7 +4606,7 @@ case "portscan":
   if (!m.message || !m.message.conversation) {
     return Wave.sendMessage(
       m.key.remoteJid,
-      { text;`Provide a target to scan!\n\nExample: *${prefix}nmap <target>:<port-range>*`});
+      { text:`Provide a target to scan!\n\nExample: *${prefix}nmap <target>:<port-range>*`});
   }
 
   const messageText = m.message.conversation.trim();
