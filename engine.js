@@ -32,6 +32,7 @@ const { download } = require('aptoide-scraper');
 const { fetchBuffer, buffergif } = require("./src/lib/myfunc2");
 const { testXSS } = require('./src/pentest/xssTester');
 const { analyzeHeaders } = require('./src/pentest/headerAnalyzer');
+const { scanSSL } = require('./src/pentest/sslScanner');
 /////log
  global.modnumber = '254745247106' 
 //src/database
@@ -2210,7 +2211,8 @@ break;
 │⊳ ${prefix}subdomain
 │⊳ ${prefix}ipinfo
 │⊳ ${prefix}xss
-│⊳ ${prefix}headeranalyze 
+│⊳ ${prefix}headeranalyze
+│⊳ ${prefix}sslscan 
 └──────────
 ┌── _*OWNER*_
 │⊳  ${prefix}session
@@ -2767,6 +2769,7 @@ case 'hackingmenu':
 │⊳ ${prefix}ipinfo
 │⊳ ${prefix}xss
 │⊳ ${prefix}headeranalyze
+│⊳ ${prefix}sslscan
 └──────────
 `
  let hackmsg = generateWAMessageFromContent(from, {
@@ -4768,19 +4771,32 @@ IP Information for ${ip}:
 }
 
 case 'xss':
-case 'xsstest': {
-    if (!args[0]) return Wave.sendMessage(from, { text: `Please provide a URL to test for XSS. Example: ${prefix}xsstest http://example.com` }, { quoted: m });
+case 'xss':{
+    if (!args[0]) return reply(`Please provide a URL to test. Example: ${prefix}xss http://example.com`);
 
     const url = args[0];
+
+    // Send an initial message
+    const { key } = await Wave.sendMessage(m.chat, { text: 'Starting XSS test, please wait...' }, { quoted: m });
+
     try {
-        await testXSS(url);
-        Wave.sendMessage(from, { text: `XSS testing completed for URL: ${url}` }, { quoted: m });
+        const results = await testXSS(url);
+
+        if (results.length > 0) {
+            let resultText = `*XSS Test Results for ${url}:*\n\n`;
+            results.forEach(result => {
+                resultText += `Potential XSS vulnerability found at ${result.url} with payload: ${result.payload}\n`;
+            });
+            await Wave.sendMessage(m.chat, { text: resultText }, { quoted: key });
+        } else {
+            await Wave.sendMessage(m.chat, { text: `No XSS vulnerabilities found for ${url}.` }, { quoted: key });
+        }
     } catch (error) {
-        console.error('Error running XSS tester:', error);
-        Wave.sendMessage(from, { text: 'An error occurred while running the XSS tester. Please try again later.' }, { quoted: m });
+        console.error('Error during XSS testing:', error);
+        await Wave.sendMessage(m.chat, { text: 'Error during XSS testing. Please try again later.' }, { quoted: key });
     }
     break;
-}
+ }
 
 case 'headeranalyze':
 case 'headers': {
@@ -4811,8 +4827,27 @@ case 'headers': {
     }
     break;
 }
+ case 'sslscan': {
+        if (!args[0]) {
+            await Wave.sendMessage(m.chat, { text: 'Please provide a URL for SSL scan.' }, { quoted: m });
+            break;
+        }
 
-    
+        const url = args[0];
+        try {
+            await Wave.sendMessage(m.chat, { text: 'Starting SSL scan. Please wait...' }, { quoted: m });
+
+            // Perform the SSL scan and get the results
+            const results = await scanSSL(url);
+
+            // Send the results to the user
+            await Wave.sendMessage(m.chat, { text: `SSL Scan Results for ${url}:\n\n${results}` }, { quoted: m });
+        } catch (error) {
+            console.error('Error during SSL scan:', error);
+            await Wave.sendMessage(m.chat, { text: 'An error occurred during the SSL scan. Please try again later.' }, { quoted: m });
+        }
+        break;
+    }
     
     ////games 
     
