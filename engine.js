@@ -696,35 +696,60 @@ reply(`𝑺𝒖𝒄𝒄𝒆𝒔𝒔, 𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐�
 }
 break;
 
-            case 'deletesession':
-            case 'delsession':
-            case 'clearsession': {
-                if (!isCreator) return reply(mess.owner)
-                fs.readdir("./session", async function(err, files) {
-                    if (err) {
-                        console.log('Unable to scan directory: ' + err);
-                        return reply('Unable to scan directory: ' + err);
-                    }
-                    let filteredArray = await files.filter(item => item.startsWith("pre-key") ||
-                        item.startsWith("sender-key") || item.startsWith("session-") || item.startsWith("app-state")
-                    )
-                    console.log(filteredArray.length);
-                    let teks = `Detected ${filteredArray.length} junk files\n\n`
-                    if (filteredArray.length == 0) return reply(teks)
-                    filteredArray.map(function(e, i) {
-                        teks += (i + 1) + `. ${e}\n`
-                    })
-                    reply(teks)
-                    await sleep(2000)
-                    reply("Delete junk files...")
-                    await filteredArray.forEach(function(file) {
-                        fs.unlinkSync(`./session/${file}`)
-                    });
-                    await sleep(2000)
-                    reply("Successfully deleted all the trash in the session folder")
-                });
+case 'cls':
+case 'deletesession':
+case 'delsession':
+case 'clearsession': {
+    if (!isCreator) return await Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
+
+    fs.readdir("./session", async function(err, files) {
+        if (err) {
+            console.log('Unable to scan directory: ' + err);
+            return await Wave.sendMessage(m.chat, { text: 'Unable to scan directory: ' + err }, { quoted: m });
+        }
+
+        let filteredArray = await files.filter(item => item.startsWith("pre-key") ||
+            item.startsWith("sender-key") || item.startsWith("session-"));
+
+        console.log(filteredArray.length);
+        let teks = `Detected ${filteredArray.length} junk files\n\n`;
+        if (filteredArray.length === 0) return await Wave.sendMessage(m.chat, { text: teks }, { quoted: m });
+
+        filteredArray.map(function(e, i) {
+            teks += (i + 1) + `. ${e}\n`;
+        });
+
+        await Wave.sendMessage(m.chat, { text: teks }, { quoted: m });
+        await sleep(2000);
+        await Wave.sendMessage(m.chat, { text: "Deleting junk files..." }, { quoted: m });
+
+        filteredArray.forEach(function(file) {
+            fs.unlinkSync(`./session/${file}`);
+        });
+
+        await sleep(2000);
+        await Wave.sendMessage(m.chat, { text: "Successfully deleted all the trash in the session folder" }, { quoted: m });
+
+        // Deleting .mp3 files in ./src/audio/
+        fs.readdir("./src/audio", async function(err, audioFiles) {
+            if (err) {
+                console.log('Unable to scan directory: ' + err);
+                return await Wave.sendMessage(m.chat, { text: 'Unable to scan audio directory: ' + err }, { quoted: m });
             }
-            break;
+
+            let mp3Files = audioFiles.filter(file => path.extname(file).toLowerCase() === '.mp3');
+            if (mp3Files.length === 0) return await Wave.sendMessage(m.chat, { text: 'No .mp3 files found in the audio directory.' }, { quoted: m });
+
+            mp3Files.forEach(function(file) {
+                fs.unlinkSync(`./src/audio/${file}`);
+            });
+
+            await Wave.sendMessage(m.chat, { text: 'Successfully deleted all .mp3 files in the audio directory.' }, { quoted: m });
+        });
+    });
+    break;
+}
+
             case 'join': {
                 try {
                     if (!isCreator) return reply(mess.owner)
@@ -2141,7 +2166,7 @@ break;
 │⋊ 𝔹𝕠𝕥:  ${botname}
 │⋊ ℙ𝕣𝕖𝕗𝕚𝕩:  *${prefix}*
 │⋊ 𝔻𝕒𝕥𝕖: ${bealthxdate}
-│⋊ 𝕋𝕚𝕞𝕖:  ${xtime}
+│⋊ 𝕋𝕚𝕞𝕖:  ${time2}
 │⋊ 𝕆𝕨𝕟𝕖𝕣: ${ownername}
 │⋊ 𝕧𝕖𝕣𝕤𝕚𝕠𝕟: ${mver}
 │⋊ ℍ𝕠𝕤𝕥: ${os.hostname()}
