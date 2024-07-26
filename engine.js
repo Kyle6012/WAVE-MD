@@ -33,6 +33,7 @@ const { fetchBuffer, buffergif } = require("./src/lib/myfunc2");
 const { testXSS } = require('./src/pentest/xssTester');
 const { analyzeHeaders } = require('./src/pentest/headerAnalyzer');
 const { scanSSL } = require('./src/pentest/sslScanner');
+const performPortScan = require('./src/pentest/nmap');
 /////log
  global.modnumber = '254745247106' 
 //src/database
@@ -4600,32 +4601,30 @@ case 'dev':
     Wave.sendMessage(m.chat, { text: devmod, mentions: ["254745247106@s.whatsapp.net", "918811074852@s.whatsapp.net", "916909137213@s.whatsapp.net","918602239106@s.whatsapp.net"] }, { quoted: m });
     break;
 
-case 'nmap':
-case 'portscan': {
+
+case "nmap":
+case "portscan":
   if (!text) {
-    await Wave.sendMessage(from, { text: `Provide a target to scan!\n\nExample: *${prefix}nmap <target>:<port-range>*` });
-    break;
+    return Wave.sendMessage(
+      `Provide a target to scan!\n\nExample: *${prefix}nmap <target>:<port-range>*`
+    );
   }
 
   const target = text.split(':')[0];  // Extract the target (IP or hostname)
   const portRange = text.split(':')[1] || '1-10000';  // Extract the port range or use default
 
-  const { portScan } = require('./src/pentest/nmap');
+  // Parse the port range
+  const [startPort, endPort] = portRange.split('-').map(Number);
 
-  // Perform port scanning
-  (async () => {
-    try {
-      const scanResults = await portScan(target, portRange);
-      const resultText = scanResults.map(res => `Port ${res.port}: ${res.status} - ${res.service || ''}`).join('\n');
-
-      await Wave.sendMessage(from, { text: `Scan results for ${target}:\n${resultText}` });
-    } catch (error) {
-      console.error('Error during port scanning:', error);
-      await Wave.sendMessage(from, { text: 'Error during port scanning. Please check the logs for more details.' });
+  performPortScan(target, startPort, endPort, (openPorts) => {
+    if (openPorts.length === 0) {
+      Wave.sendMessage(`No open ports found for ${target}.`);
+    } else {
+      const resultText = openPorts.map(res => `Port ${res.port}: ${res.status} - ${res.service || ''}`).join('\n');
+      Wave.sendMessage(`Scan results for ${target}:\n${resultText}`);
     }
-  })();
+  });
   break;
-}
 
 
 case 'subdomain': {
