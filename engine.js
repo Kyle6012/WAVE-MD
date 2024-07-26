@@ -4721,7 +4721,7 @@ case 'nslookup': {
     try {
         const results = await nslookup(domain);
         const resultMessage = `
-NSLookup Results for ${domain}:
+Lookup Results for ${domain}:
 
 IPv4 Addresses:
 ${results.A.length > 0 ? results.A.join('\n') : 'None'}
