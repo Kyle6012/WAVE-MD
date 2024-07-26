@@ -91,7 +91,7 @@ module.exports = Wave = async (Wave, m, msg, chatUpdate, store) => {
     m.text :
   ''
 );
-        var body = (typeof m.text === 'string' ? m.text : '');
+        var budy = (typeof m.text === 'string' ? m.text : '');
 
 	const prefix = global.prefa || ".";
 	const isCmdWithPrefix = body.startsWith(prefix);
