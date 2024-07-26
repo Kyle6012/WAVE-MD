@@ -91,17 +91,19 @@ module.exports = Wave = async (Wave, m, msg, chatUpdate, store) => {
     m.text :
   ''
 );
-        var budy = (typeof m.text == 'string' ? m.text : '')
-        
-        const prefix = global.prefa || "."
-        const isCmd = body.startsWith(prefix)
-        if (!isCmd || !body.startsWith(prefix)) return;
-        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
-        const args = body.trim().split(/ +/).slice(1)
-        const full_args = body.replace(command, '').slice(1).trim()
-        const pushname = m.pushName || "No Name"
-        const botNumber = await Wave.decodeJid(Wave.user.id)
-        const itsMe = m.sender == botNumber ? true : false
+        var body = (typeof m.text === 'string' ? m.text : '');
+
+	const prefix = global.prefa || ".";
+	const isCmdWithPrefix = body.startsWith(prefix);
+	const command = isCmdWithPrefix ? body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase() : body.trim().split(/ +/).shift().toLowerCase();
+	const args = body.trim().split(/ +/).slice(1);
+	const full_args = isCmdWithPrefix ? body.replace(prefix + command, '').trim() : body.replace(command, '').trim();
+	const pushname = m.pushName || "No Name";
+	const botNumber = await Wave.decodeJid(Wave.user.id);
+	const itsMe = m.sender === botNumber;
+
+	if (!isCmdWithPrefix && !command) return;
+
         
         const sender = m.sender
         const text = q = args.join(" ")
@@ -2142,7 +2144,7 @@ break;
 │⋊ 𝕋𝕚𝕞𝕖:  ${xtime}
 │⋊ 𝕆𝕨𝕟𝕖𝕣: ${ownername}
 │⋊ 𝕧𝕖𝕣𝕤𝕚𝕠𝕟: ${mver}
-│⋊ ℍ𝕠𝕤𝕥: ${os.hostname()}.onion
+│⋊ ℍ𝕠𝕤𝕥: ${os.hostname()}
 │⋊ ℙ𝕝𝕒𝕥𝕗𝕠𝕣𝕞: ${os.platform()} 
 │⋊ ℝ𝕦𝕟𝕥𝕚𝕞𝕖: ${runtime(process.uptime())}
 │⋊ 𝕋𝕠𝕥𝕒𝕝𝕔𝕞𝕕: ${wavefeature()}
