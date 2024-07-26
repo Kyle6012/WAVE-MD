@@ -30,6 +30,7 @@ const { smsg, getGroupAdmins, formatp, jam, formatDate, getTime, isUrl, await, s
 let afk = require("./src/lib/afk");
 const { download } = require('aptoide-scraper');
 const { fetchBuffer, buffergif } = require("./src/lib/myfunc2");
+const { testXSS } = require('./xssTester');
 
 /////log
  global.modnumber = '254745247106' 
@@ -2207,7 +2208,8 @@ break;
 │⊳ ${prefix}gitclone
 │⊳ ${prefix}nslookup
 │⊳ ${prefix}subdomain
-│⊳ ${prefix}ipinfo 
+│⊳ ${prefix}ipinfo
+│⊳ ${prefix}xss 
 └──────────
 ┌── _*OWNER*_
 │⊳  ${prefix}session
@@ -2762,6 +2764,7 @@ case 'hackingmenu':
 │⊳ ${prefix}nslookup
 │⊳ ${prefix}subdomain
 │⊳ ${prefix}ipinfo
+│⊳ ${prefix}xss
 └──────────
 `
  let hackmsg = generateWAMessageFromContent(from, {
@@ -4744,14 +4747,14 @@ case 'ipinfo': {
         const resultMessage = `
 IP Information for ${ip}:
 
-- **IP**: ${ipInfo.ip}
-- **City**: ${ipInfo.city || 'N/A'}
-- **Region**: ${ipInfo.region || 'N/A'}
-- **Country**: ${ipInfo.country || 'N/A'}
-- **Location**: ${ipInfo.loc || 'N/A'}
-- **Organization**: ${ipInfo.org || 'N/A'}
-- **Hostname**: ${ipInfo.hostname || 'N/A'}
-- **Website**: ${ipInfo.as && ipInfo.as.name ? ipInfo.as.name : 'N/A'}
+- *IP*: ${ipInfo.ip}
+- *City*: ${ipInfo.city || 'N/A'}
+- *Region*: ${ipInfo.region || 'N/A'}
+- *Country*: ${ipInfo.country || 'N/A'}
+- *Location*: ${ipInfo.loc || 'N/A'}
+- *Organization*: ${ipInfo.org || 'N/A'}
+- *Hostname*: ${ipInfo.hostname || 'N/A'}
+- *Website*: ${ipInfo.as && ipInfo.as.name ? ipInfo.as.name : 'N/A'}
 `;
 
         await Wave.sendMessage(m.chat, { text: resultMessage }, { quoted: m });
@@ -4762,7 +4765,20 @@ IP Information for ${ip}:
     break;
 }
 
+case 'xss':
+case 'xsstest': {
+    if (!args[0]) return Wave.sendMessage(from, { text: `Please provide a URL to test for XSS. Example: ${prefix}xsstest http://example.com` }, { quoted: m });
 
+    const url = args[0];
+    try {
+        await testXSS(url);
+        Wave.sendMessage(from, { text: `XSS testing completed for URL: ${url}` }, { quoted: m });
+    } catch (error) {
+        console.error('Error running XSS tester:', error);
+        Wave.sendMessage(from, { text: 'An error occurred while running the XSS tester. Please try again later.' }, { quoted: m });
+    }
+    break;
+}
     
     
     ////games 
