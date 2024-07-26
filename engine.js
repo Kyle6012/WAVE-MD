@@ -4770,33 +4770,39 @@ IP Information for ${ip}:
     break;
 }
 
-case 'xss':
-case 'xss':{
-    if (!args[0]) return reply(`Please provide a URL to test. Example: ${prefix}xss http://example.com`);
+case 'xsstest':
+case 'xss': {
+    if (!args[0]) {
+        await Wave.sendMessage(from, { text: `Please provide a URL to test for XSS. Example: ${prefix}xss https://example.com` });
+        break;
+    }
 
     const url = args[0];
 
-    // Send an initial message
-    const { key } = await Wave.sendMessage(m.chat, { text: 'Starting XSS test, please wait...' }, { quoted: m });
-
     try {
-        const results = await testXSS(url);
+        await testXSS(url, async (result) => {
+            const { url, payloads } = result;
 
-        if (results.length > 0) {
-            let resultText = `*XSS Test Results for ${url}:*\n\n`;
-            results.forEach(result => {
-                resultText += `Potential XSS vulnerability found at ${result.url} with payload: ${result.payload}\n`;
-            });
-            await Wave.sendMessage(m.chat, { text: resultText }, { quoted: key });
-        } else {
-            await Wave.sendMessage(m.chat, { text: `No XSS vulnerabilities found for ${url}.` }, { quoted: key });
-        }
+            let message = `*XSS Test Results for ${url}*\n\n`;
+
+            if (payloads.length > 0) {
+                message += 'Detected potential XSS vulnerabilities:\n';
+                payloads.forEach(({ payload }) => {
+                    message += `- ${payload}\n`;
+                });
+            } else {
+                message += 'No XSS vulnerabilities detected.';
+            }
+
+            await Wave.sendMessage(from, { text: message });
+        });
     } catch (error) {
         console.error('Error during XSS testing:', error);
-        await Wave.sendMessage(m.chat, { text: 'Error during XSS testing. Please try again later.' }, { quoted: key });
+        await Wave.sendMessage(from, { text: 'Error during XSS testing. Please check the logs for more details.' });
     }
     break;
- }
+}
+
 
 case 'headeranalyze':
 case 'headers': {
