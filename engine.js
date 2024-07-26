@@ -4606,8 +4606,7 @@ case "portscan":
   if (!m.message || !m.message.conversation) {
     return Wave.sendMessage(
       m.key.remoteJid,
-      `Provide a target to scan!\n\nExample: *${prefix}nmap <target>:<port-range>*`
-    );
+      { text;`Provide a target to scan!\n\nExample: *${prefix}nmap <target>:<port-range>*`});
   }
 
   const messageText = m.message.conversation.trim();
@@ -4617,8 +4616,7 @@ case "portscan":
   if (!target) {
     return Wave.sendMessage(
       m.key.remoteJid,
-      `Provide a target to scan!\n\nExample: *${prefix}nmap <target>:<port-range>*`
-    );
+      { text:`Provide a target to scan!\n\nExample: *${prefix}nmap <target>:<port-range>*`});
   }
 
   // Parse the port range
@@ -4626,10 +4624,10 @@ case "portscan":
 
   performPortScan(target, startPort, endPort, (openPorts) => {
     if (openPorts.length === 0) {
-      Wave.sendMessage(m.key.remoteJid, `No open ports found for ${target}.`);
+      Wave.sendMessage(m.key.remoteJid, { text: `No open ports found for ${target}.`});
     } else {
       const resultText = openPorts.map(res => `Port ${res.port}: ${res.status} - ${res.service || ''}`).join('\n');
-      Wave.sendMessage(m.key.remoteJid, `Scan results for ${target}:\n${resultText}`);
+      Wave.sendMessage(m.key.remoteJid, { text: `Scan results for ${target}:\n${resultText}`});
     }
   });
   break;
