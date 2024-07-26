@@ -4949,29 +4949,43 @@ case 'guesspokemon': {
 }
 break;
 
-case 'element':
-    if(!args[0]) return reply(`Please use this command like this: ${prefix}element br`);
+case 'element': {
+    if (!args[0]) {
+        await Wave.sendMessage(from, { text: `Please use this command like this: ${prefix}element br` }, { quoted: m });
+        break;
+    }
+    
     const queryy = args.join(" ");
-   const search = await pTable(queryy);
-   if (search === undefined) return reply(`❗️Please provide me a valid element by visiting here !\n\nhttps://en.m.wikipedia.org/wiki/Periodic_table`);
+    const search = await pTable(queryy);
+    
+    if (search === undefined) {
+        await Wave.sendMessage(from, { text: `❗️Please provide me a valid element by visiting here !\n\nhttps://en.m.wikipedia.org/wiki/Periodic_table` }, { quoted: m });
+        break;
+    }
 
-   const responsee = await npt.getByNumber(search.number);
-   let caption  = "";
+    const responsee = await npt.getByNumber(search.number);
+    let caption  = "";
     caption = "              *『  Element Details  』*\n\n";
-    caption += `🔴 *Elelment:* ${responsee.name}\n`;
-caption += `⬜ *Atomic Number:* ${responsee.number}\n`;
-caption += `🟡 *Atomic Mass:* ${responsee.atomic_mass}\n`;
-caption += `⬛ *Symbol:* ${responsee.symbol}\n`;
-caption += `❓ *Appearance:* ${responsee.apearance}\n`;
-caption += `🟢 *Phase:* ${responsee.phase}\n`;
-caption += `♨️ *Boiling Point:* ${responsee.boil} K\n️`;
-caption += `💧 *Melting Point:* ${responsee.melt} K\n`;
-caption += `🟣 *Density:* ${responsee.density} g/mL\n`;
-caption += `⚫ *Shells:* ${responsee.shells.join(", ")}\n`;
-caption += `🌐 *URL:* ${responsee.source}\n\n`;
-caption += `💬 *Summary:* ${responsee.summary}\n`;
-    await Wave.sendMessage(from,  {image: {url: 'https://graph.org/file/c8ad7dc322c0b9b7eca8f.jpg'},caption: caption}, {quoted: m });
-break;
+    caption += `🔴 *Element:* ${responsee.name}\n`;
+    caption += `⬜ *Atomic Number:* ${responsee.number}\n`;
+    caption += `🟡 *Atomic Mass:* ${responsee.atomic_mass}\n`;
+    caption += `⬛ *Symbol:* ${responsee.symbol}\n`;                                                                                                                                  
+    caption += `❓ *Appearance:* ${responsee.appearance}\n`;
+    caption += `🟢 *Phase:* ${responsee.phase}\n`;
+    caption += `♨️ *Boiling Point:* ${responsee.boil} K\n`;
+    caption += `💧 *Melting Point:* ${responsee.melt} K\n`;
+    caption += `🟣 *Density:* ${responsee.density} g/mL\n`;
+    caption += `⚫ *Shells:* ${responsee.shells.join(", ")}\n`;                                                                                                                      
+    caption += `🌐 *URL:* ${responsee.source}\n\n`;
+    caption += `💬 *Summary:* ${responsee.summary}\n`;
+
+    await Wave.sendMessage(from, {
+        image: { url: 'https://graph.org/file/c8ad7dc322c0b9b7eca8f.jpg' },
+        caption: caption
+    }, { quoted: m });
+    break;
+}
+
 
 
 case 'pokemon': {
@@ -5108,39 +5122,37 @@ case 'google': {
 }
                    
  case 'sciencefact': {
-    const { key } = await Wave.sendMessage(m.chat, { text: 'Fetching a random science fact, please wait...' }, { quoted: m });
-
     try {
+        const sentMessage = await Wave.sendMessage(m.chat, { text: 'Fetching a random science fact, please wait...' }, { quoted: m });
+
         const scienceFact = await fetchRandomScienceFact();
 
         if (scienceFact) {
-            await Wave.sendMessage(m.chat, { text: `*Random Science Fact:*\n\n${scienceFact}` }, { quoted: key });
+            await Wave.sendMessage(m.chat, { text: `*Random Science Fact:*\n\n${scienceFact}` }, { quoted: sentMessage.key });
         } else {
-            await Wave.sendMessage(m.chat, { text: 'Failed to fetch a random science fact.' }, { quoted: key });
+            await Wave.sendMessage(m.chat, { text: 'Failed to fetch a random science fact.' }, { quoted: sentMessage.key });
         }
     } catch (error) {
         console.error(error);
-        await Wave.sendMessage(m.chat, { text: 'Error fetching a random science fact. Please try again later.' }, { quoted: key });
+        await Wave.sendMessage(m.chat, { text: 'Error fetching a random science fact. Please try again later.' }, { quoted: sentMessage.key });
     }
     break;
 }
+
 // Function to fetch a random science fact
 async function fetchRandomScienceFact() {
     try {
-        // Call an API or fetch data from a science facts database
-        // Example:
         const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
         const data = await response.json();
-        
-        // Extract the science fact from the response
+
         const fact = data.text;
-        
         return fact;
     } catch (error) {
         console.error('Error fetching random science fact:', error);
         return null;
     }
 }
+
     
  case 'sciencenews': {
     async function fetchScienceNewsHeadlines() {
@@ -5176,13 +5188,13 @@ async function fetchRandomScienceFact() {
         const headlines = await fetchScienceNewsHeadlines();
 
         if (headlines && headlines.length > 0) {
-            await Wave.sendMessage(m.chat, { text: `*Latest Science News Headlines:*\n\n${headlines.join('\n')}` }, { quoted: key });
+            await Wave.sendMessage(m.chat, { text: `*Latest Science News Headlines:*\n\n${headlines.join('\n')}` }, { quoted: sentMessage.key });
         } else {
-            await Wave.sendMessage(m.chat, { text: 'Failed to fetch science news headlines.' }, { quoted: key });
+            await Wave.sendMessage(m.chat, { text: 'Failed to fetch science news headlines.' }, { quoted: sentMessage.key });
         }
     } catch (error) {
         console.error(error);
-        await Wave.sendMessage(m.chat, { text: 'Error fetching science news headlines. Please try again later.' }, { quoted: key });
+        await Wave.sendMessage(m.chat, { text: 'Error fetching science news headlines. Please try again later.' }, { quoted: sentMessage.key });
     }
     break;
 }
