@@ -4601,18 +4601,25 @@ case 'dev':
     Wave.sendMessage(m.chat, { text: devmod, mentions: ["254745247106@s.whatsapp.net", "918811074852@s.whatsapp.net", "916909137213@s.whatsapp.net","918602239106@s.whatsapp.net"] }, { quoted: m });
     break;
 
-
 case "nmap":
 case "portscan":
-  if (!text) {
+  if (!m.message || !m.message.conversation) {
     return Wave.sendMessage(
       m.key.remoteJid,
       `Provide a target to scan!\n\nExample: *${prefix}nmap <target>:<port-range>*`
     );
   }
 
-  const target = text.split(' ')[0];  // Extract the target (IP or hostname)
-  const portRange = text.split(' ')[1] || '1-10000';  // Extract the port range or use default
+  const messageText = m.message.conversation.trim();
+  const target = messageText.split(' ')[1];  // Extract the target (IP or hostname)
+  const portRange = messageText.split(' ')[2] || '1-10000';  // Extract the port range or use default
+
+  if (!target) {
+    return Wave.sendMessage(
+      m.key.remoteJid,
+      `Provide a target to scan!\n\nExample: *${prefix}nmap <target>:<port-range>*`
+    );
+  }
 
   // Parse the port range
   const [startPort, endPort] = portRange.split('-').map(Number);
