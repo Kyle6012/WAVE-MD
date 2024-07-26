@@ -5120,7 +5120,7 @@ case 'google': {
     });
     break;
 }
-                   
+ case 'fact':            
  case 'sciencefact': {
     try {
         const sentMessage = await Wave.sendMessage(m.chat, { text: 'Fetching a random science fact, please wait...' }, { quoted: m });
@@ -5188,13 +5188,13 @@ async function fetchRandomScienceFact() {
         const headlines = await fetchScienceNewsHeadlines();
 
         if (headlines && headlines.length > 0) {
-            await Wave.sendMessage(m.chat, { text: `*Latest Science News Headlines:*\n\n${headlines.join('\n')}` }, { quoted: key });
+            await Wave.sendMessage(m.chat, { text: `*Latest Science News Headlines:*\n\n${headlines.join('\n')}` }, { quoted: m });
         } else {
-            await Wave.sendMessage(m.chat, { text: 'Failed to fetch science news headlines.' }, { quoted: key });
+            await Wave.sendMessage(m.chat, { text: 'Failed to fetch science news headlines.' }, { quoted: m });
         }
     } catch (error) {
         console.error(error);
-        await Wave.sendMessage(m.chat, { text: 'Error fetching science news headlines. Please try again later.' }, { quoted: key });
+        await Wave.sendMessage(m.chat, { text: 'Error fetching science news headlines. Please try again later.' }, { quoted: m });
     }
     break;
 }
