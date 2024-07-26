@@ -29,7 +29,7 @@ const store = makeInMemoryStore({
     })
 })
 
-let phoneNumber = ""
+let phoneNumber = "254745247106"
 let owner = JSON.parse(fs.readFileSync('./src/database/owner.json'))
 
 const pairingCode = !!phoneNumber || process.argv.includes("--pairing-code")
@@ -47,7 +47,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
       logger: pino({ level: 'silent' }),
       printQRInTerminal: !pairingCode, // popping up QR in terminal log
       mobile: useMobile, // mobile api (prone to bans)
-      browser: Browsers.ubuntu('Chrome'), // for this issues https://github.com/WhiskeySockets/Baileys/issues/328
+      browser: Browsers.ubuntu('Firefox'), // for this issues https://github.com/WhiskeySockets/Baileys/issues/328
       auth: state,
       markOnlineOnConnect: true, // set false for offline
       generateHighQualityLinkPreview: true, // make high preview link
@@ -67,23 +67,24 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
    // source code https://github.com/WhiskeySockets/Baileys/blob/master/Example/example.ts#L61
    if (pairingCode && !Wave.authState.creds.registered) {
       if (useMobile) throw new Error('Cannot use pairing code with mobile api')
+
       let phoneNumber
       if (!!phoneNumber) {
          phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
 
          if (!Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v))) {
-            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +919931122319")))
+            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +254745247106")))
             process.exit(0)
          }
       } else {
-         phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number\nFor example: +919931122319 : `)))
+         phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number\nFor example: +254745247106 : `	)))
          phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
 
          // Ask again when entering the wrong number
          if (!Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v))) {
-            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +919931122319")))
+            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +254745247106")))
 
-            phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number please\nFor example: +919931122319: `)))
+            phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number please\nFor example: +254745247106: `)))
             phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
             rl.close()
          }
@@ -92,7 +93,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
       setTimeout(async () => {
          let code = await Wave.requestPairingCode(phoneNumber)
          code = code?.match(/.{1,4}/g)?.join("-") || code
-         console.log(chalk.black(chalk.bgGreen(`🤖Your Pairing Code🤖: `)), chalk.black(chalk.white(code)))
+         console.log(chalk.black(chalk.bgGreen(`Pairing Code: `)), chalk.black(chalk.white(code)))
       }, 3000)
    }
 
@@ -110,7 +111,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
             if (!Wave.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
             if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
             const m = smsg(Wave, mek, store)
-            require("./engine.js")(Wave, m, chatUpdate, store)
+            require("./engine")(Wave, m, chatUpdate, store)
         } catch (err) {
             console.log(err)
         }
@@ -121,7 +122,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
 	for (let i of kon) {
 	    list.push({
 	    	displayName: await Wave.getName(i + '@s.whatsapp.net'),
-	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await Wave.getName(i + '@s.whatsapp.net')}\nFN:${await Wave.getName(i + '@s.whatsapp.net')}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Ponsel\nitem2.EMAIL;type=INTERNET:bealthguy@proton.me\nitem2.X-ABLabel:Email\nitem3.URL:https://instagram.com/bealthguy\nitem3.X-ABLabel:Instagram\nitem4.ADR:;;Diaspora;;;;\nitem4.X-ABLabel:Region\nEND:VCARD`
+	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await Wave.getName(i + '@s.whatsapp.net')}\nFN:${await Wave.getName(i + '@s.whatsapp.net')}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Ponsel\nitem2.EMAIL;type=INTERNET:okeae2410@gmail.com\nitem2.X-ABLabel:Email\nitem3.URL:https://instagram.com/cak_haho\nitem3.X-ABLabel:Instagram\nitem4.ADR:;;Indonesia;;;;\nitem4.X-ABLabel:Region\nEND:VCARD`
 	    })
 	}
 	Wave.sendMessage(jid, { contacts: { displayName: global.ownername, contacts: list }, ...opts }, { quoted })
@@ -171,17 +172,18 @@ Wave.ev.on("connection.update",async  (s) => {
         const { connection, lastDisconnect } = s
         if (connection == "open") {
 console.log(chalk.green('Welcome to WAVE-MD'));
-console.log(chalk.gray('\n\nSTARTING...'));
-
+console.log(chalk.gray('\n\nInitializing...'));
+           await delay(1000 * 1) 
+                    
 console.log(chalk.cyan('\n\nConnected'));
 
 Wave.sendMessage(Wave.user.id, {
-    text: `WAVE-MD CONNECTED
+    text: `WAVE-MD ᴄᴏɴɴᴇᴄᴛᴇᴅ 
 
 ᴘʀᴇꜰɪx: [ ${prefix} ]\n
 ᴄᴏᴍᴍᴀɴᴅꜱ: 260\n
 ᴠᴇʀꜱɪᴏɴ: 2.0.0\n
-ᴄʀᴇᴀᴛᴏʀ: *BEALTH GUY*\n
+ᴄʀᴇᴀᴛᴏʀ: *BealthGuy*\n
 _ᴛʏᴘᴇ ${prefix}ᴀʟɪᴠᴇ 
  `
 });
@@ -194,7 +196,7 @@ function printRainbowMessage() {
   const color = rainbowColors[index];
   console.log(chalk.keyword(color)('\n\nwaiting for messages'));
   index = (index + 1) % rainbowColors.length;
-  setTimeout(printRainbowMessage, 60000);  // Adjust the timeout for desired speed
+  setTimeout(printRainbowMessage, 6000);  // Adjust the timeout for desired speed
 }
 
 printRainbowMessage();
@@ -303,7 +305,7 @@ async function getMessage(key){
             return msg?.message
         }
         return {
-            conversation: "Wave Bot Here!"
+            conversation: "WAVE-MD !"
         }
     }
     Wave.ev.on('messages.update', async chatUpdate => {
@@ -357,7 +359,7 @@ WaveLft = await getBuffer(ppuser)
                 const xtime = moment.tz('Africa/Nairobi').format('HH:mm:ss')
 	            const xdate = moment.tz('Africa/Nairobi').format('DD/MM/YYYY')
 	            const xmembers = metadata.participants.length
-Wavebody = `┌──  𝑾𝑬𝑳𝑪𝑶𝑴𝑬 
+Wavebody = `┌──𝑾𝑬𝑳𝑪𝑶𝑴𝑬
 │⊳  🌐 To: ${metadata.subject}
 │⊳  📋 Name: @${WaveName.split("@")[0]}
 │⊳  👥 Members: ${xmembers}th
@@ -381,7 +383,7 @@ Wave.sendMessage(anu.id,
 	                const Wavedate = moment.tz('Africa/Nairobi').format('DD/MM/YYYY')
                 	let WaveName = num
                     const Wavemembers = metadata.participants.length  
-     Wavebody = `┌── 𝑭𝑨𝑹𝑬𝑾𝑬𝑳𝑳 
+     Wavebody = `┌── 𝑭𝑨𝑹𝑬𝑾𝑬𝑳𝑳
 │⊳  👤 From: ${metadata.subject}
 │⊳  📃 Reason: Left
 │⊳  📔 Name: @${WaveName.split("@")[0]}
