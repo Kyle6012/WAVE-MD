@@ -4600,31 +4600,33 @@ case 'dev':
     Wave.sendMessage(m.chat, { text: devmod, mentions: ["254745247106@s.whatsapp.net", "918811074852@s.whatsapp.net", "916909137213@s.whatsapp.net","918602239106@s.whatsapp.net"] }, { quoted: m });
     break;
 
-case 'nmap': {
-    const scanTarget = require('./src/pentest/nmap');
-    const [target, portRange] = text.split(' ');
-    if (!target || !portRange) {
-        // Ensure m.reply sends a properly formatted object
-        await Wave.sendMessage(m.chat, { text: 'Please provide a target and a range of ports to be scanned. Example: nmap 192.168.1.1 22-80' }, { quoted: m });
-        return;
-    }
-
-    const { key } = await Wave.sendMessage(m.chat, { text: 'Scanning, please wait...' }, { quoted: m });
-
-    try {
-        const openPorts = await scanTarget(target, portRange);
-        const resultMessage = openPorts.length > 0
-            ? `Open ports:\n${openPorts.map(port => `Port: ${port.port}, Protocol: ${port.protocol}`).join('\n')}`
-            : 'No open ports found.';
-        
-        // Send the result message with a properly formatted object
-        await Wave.sendMessage(m.chat, { text: resultMessage }, { quoted: m });
-    } catch (error) {
-        console.error(error);
-        await Wave.sendMessage(m.chat, { text: 'Error during scan. Please try again later.' }, { quoted: m });
-    }
+case 'nmap':
+case 'portscan': {
+  if (!text) {
+    await Wave.sendMessage(from, { text: `Provide a target to scan!\n\nExample: *${prefix}nmap <target>:<port-range>*` });
     break;
+  }
+
+  const target = text.split(':')[0];  // Extract the target (IP or hostname)
+  const portRange = text.split(':')[1] || '1-10000';  // Extract the port range or use default
+
+  const { portScan } = require('./src/pentest/nmap');
+
+  // Perform port scanning
+  (async () => {
+    try {
+      const scanResults = await portScan(target, portRange);
+      const resultText = scanResults.map(res => `Port ${res.port}: ${res.status} - ${res.service || ''}`).join('\n');
+
+      await Wave.sendMessage(from, { text: `Scan results for ${target}:\n${resultText}` });
+    } catch (error) {
+      console.error('Error during port scanning:', error);
+      await Wave.sendMessage(from, { text: 'Error during port scanning. Please check the logs for more details.' });
+    }
+  })();
+  break;
 }
+
 
 case 'subdomain': {
     const discoverSubdomains = require('./src/pentest/subdomainDiscovery');
