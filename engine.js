@@ -4980,7 +4980,7 @@ case 'element': {
     caption += `💬 *Summary:* ${responsee.summary}\n`;
 
     await Wave.sendMessage(from, {
-        image: { url: 'https://graph.org/file/c8ad7dc322c0b9b7eca8f.jpg' },
+        image: { url: './src/themes/ch3.jpg' },
         caption: caption
     }, { quoted: m });
     break;
@@ -5128,13 +5128,13 @@ case 'google': {
         const scienceFact = await fetchRandomScienceFact();
 
         if (scienceFact) {
-            await Wave.sendMessage(m.chat, { text: `*Random Science Fact:*\n\n${scienceFact}` }, { quoted: sentMessage.key });
+            await Wave.sendMessage(m.chat, { text: `*Random Science Fact:*\n\n${scienceFact}` }, { quoted: m });
         } else {
-            await Wave.sendMessage(m.chat, { text: 'Failed to fetch a random science fact.' }, { quoted: sentMessage.key });
+            await Wave.sendMessage(m.chat, { text: 'Failed to fetch a random science fact.' }, { quoted: m });
         }
     } catch (error) {
         console.error(error);
-        await Wave.sendMessage(m.chat, { text: 'Error fetching a random science fact. Please try again later.' }, { quoted: sentMessage.key });
+        await Wave.sendMessage(m.chat, { text: 'Error fetching a random science fact. Please try again later.' }, { quoted: m });
     }
     break;
 }
@@ -5188,13 +5188,13 @@ async function fetchRandomScienceFact() {
         const headlines = await fetchScienceNewsHeadlines();
 
         if (headlines && headlines.length > 0) {
-            await Wave.sendMessage(m.chat, { text: `*Latest Science News Headlines:*\n\n${headlines.join('\n')}` }, { quoted: sentMessage.key });
+            await Wave.sendMessage(m.chat, { text: `*Latest Science News Headlines:*\n\n${headlines.join('\n')}` }, { quoted: key });
         } else {
-            await Wave.sendMessage(m.chat, { text: 'Failed to fetch science news headlines.' }, { quoted: sentMessage.key });
+            await Wave.sendMessage(m.chat, { text: 'Failed to fetch science news headlines.' }, { quoted: key });
         }
     } catch (error) {
         console.error(error);
-        await Wave.sendMessage(m.chat, { text: 'Error fetching science news headlines. Please try again later.' }, { quoted: sentMessage.key });
+        await Wave.sendMessage(m.chat, { text: 'Error fetching science news headlines. Please try again later.' }, { quoted: key });
     }
     break;
 }
