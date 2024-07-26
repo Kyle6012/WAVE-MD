@@ -55,7 +55,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
          let jid = jidNormalizedUser(key.remoteJid)
          let msg = await store.loadMessage(jid, key.id)
 
-         return msg?.message || ""
+         return msg.message || ""
       },
       msgRetryCounterCache, // Resolve waiting messages
       defaultQueryTimeoutMs: undefined, // for this issues https://github.com/WhiskeySockets/Baileys/issues/276
@@ -86,7 +86,6 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
 
             phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number please\nFor example: +254745247106: `)))
             phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
-            rl.close()
          }
       }
 
@@ -94,7 +93,8 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
          let code = await Wave.requestPairingCode(phoneNumber)
          code = code?.match(/.{1,4}/g)?.join("-") || code
          console.log(chalk.black(chalk.bgGreen(`Pairing Code: `)), chalk.black(chalk.white(code)))
-      }, 3000)
+	}, 3000)
+        rl.close();
    }
 
     Wave.ev.on('messages.upsert', async chatUpdate => {
