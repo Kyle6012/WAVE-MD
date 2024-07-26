@@ -30,8 +30,8 @@ const { smsg, getGroupAdmins, formatp, jam, formatDate, getTime, isUrl, await, s
 let afk = require("./src/lib/afk");
 const { download } = require('aptoide-scraper');
 const { fetchBuffer, buffergif } = require("./src/lib/myfunc2");
-const { testXSS } = require('./xssTester');
-
+const { testXSS } = require('./src/pentest/xssTester');
+const { analyzeHeaders } = require('./src/pentest/headerAnalyzer');
 /////log
  global.modnumber = '254745247106' 
 //src/database
@@ -2209,7 +2209,8 @@ break;
 │⊳ ${prefix}nslookup
 │⊳ ${prefix}subdomain
 │⊳ ${prefix}ipinfo
-│⊳ ${prefix}xss 
+│⊳ ${prefix}xss
+│⊳ ${prefix}headeranalyze 
 └──────────
 ┌── _*OWNER*_
 │⊳  ${prefix}session
@@ -2765,6 +2766,7 @@ case 'hackingmenu':
 │⊳ ${prefix}subdomain
 │⊳ ${prefix}ipinfo
 │⊳ ${prefix}xss
+│⊳ ${prefix}headeranalyze
 └──────────
 `
  let hackmsg = generateWAMessageFromContent(from, {
@@ -4779,6 +4781,37 @@ case 'xsstest': {
     }
     break;
 }
+
+case 'headeranalyze':
+case 'headers': {
+    if (!args[0]) {
+        return Wave.sendMessage(from, { text: `Please provide a URL to analyze. Example: ${prefix}headers http://example.com` }, { quoted: m });
+    }
+
+    const url = args[0];
+    try {
+        const { responseTime, headers, analysis, error } = await analyzeHeaders(url);
+
+        let resultText = `HTTP Headers Analysis for ${url}:\n\n`;
+        if (error) {
+            resultText += error;
+        } else {
+            resultText += `Response Time: ${responseTime}\n\n`;
+            resultText += `Headers:\n${Object.entries(headers).map(([key, value]) => `${key}: ${value}`).join('\n')}\n\n`;
+            resultText += `Detailed Analysis:\n`;
+            for (const [header, status] of Object.entries(analysis)) {
+                resultText += `${header}: ${status}\n`;
+            }
+        }
+
+        await Wave.sendMessage(from, { text: resultText }, { quoted: m });
+    } catch (error) {
+        console.error('Error running header analyzer:', error);
+        await Wave.sendMessage(from, { text: 'An error occurred while analyzing headers. Please try again later.' }, { quoted: m });
+    }
+    break;
+}
+
     
     
     ////games 
