@@ -4281,7 +4281,7 @@ case 'instagram': case 'ig': case 'igvideo': case 'igimage': case 'igvid': case 
           nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
             buttons: [{
             "name": "quick_reply",
-              "buttonParamsJson": `{\"display_text\":\"Menu✨\",\"id\":\"${prefix}help"}`
+              "buttonParamsJson": `{\"display_text\":\"Menu\",\"id\":\"${prefix}help"}`
             },
                         {
             "name": "quick_reply",
@@ -4294,7 +4294,7 @@ case 'instagram': case 'ig': case 'igvideo': case 'igimage': case 'igvid': case 
                   isForwarded: true,
                 forwardedNewsletterMessageInfo: {
                   newsletterJid: '120363213314329067@newsletter',
-                  newsletterName: "Bealth Botz.Inc",
+                  newsletterName: "Bealh Guy",
                   serverMessageId: 143
                 }
                 }
