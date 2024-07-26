@@ -112,7 +112,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
             if (!Wave.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
             if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
             const m = smsg(Wave, mek, store)
-            require("./Heart")(Wave, m, chatUpdate, store)
+            require("./engine")(Wave, m, chatUpdate, store)
         } catch (err) {
             console.log(err)
         }
@@ -178,12 +178,12 @@ console.log(chalk.gray('\n\nStarting...'));
 console.log(chalk.cyan('\n\nConnected'));
 
 Wave.sendMessage(Wave.user.id, {
-    text: `ᴍᴀʀɪᴀ-ᴍᴅ ᴄᴏɴɴᴇᴄᴛᴇᴅ 
+    text: `*wave*-ᴍᴅ ᴄᴏɴɴᴇᴄᴛᴇᴅ 
 
 ᴘʀᴇꜰɪx: [ ${prefix} ]\n
 ᴄᴏᴍᴍᴀɴᴅꜱ: 262\n
 ᴠᴇʀꜱɪᴏɴ: 2.0.0\n
-ᴄʀᴇᴀᴛᴏʀ: Bealth Guy\n
+ᴄʀᴇᴀᴛᴏʀ: *Bealth Guy*\n
 _ᴛʏᴘᴇ ${prefix}ᴀʟɪᴠᴇ `
 });
 
