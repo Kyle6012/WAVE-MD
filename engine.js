@@ -5140,7 +5140,6 @@ case "csrf":
   break;
 
  case "vpn":
-  const action = args[0];
 
   if (action === 'on') {
     const localIp = getLocalIp();
