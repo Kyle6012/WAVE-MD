@@ -34,6 +34,16 @@ const { testXSS } = require('./src/pentest/xssTester');
 const { analyzeHeaders } = require('./src/pentest/headerAnalyzer');
 const { scanSSL } = require('./src/pentest/sslScanner');
 const performPortScan = require('./src/pentest/nmap');
+const testHttpMethods = require('./src/pentest/httpMethodTester');
+const axios = require('axios');
+const testAuthBypass = require('./src/pentest/authBypassTester');
+const testCommandInjection = require('.src/pentest/commandInjectionTester');
+const testSqlInjection = require('./src/pentest/sqlInjectionTester');
+const testInclusion = require('./src/pentest/lfiRfiTester');
+const testCSRF = require('./src/pentest/csrfTester');
+const { getHelpMessage } = require('./src/pentest/helper');
+const { startFlood, stopFlood } = require('./src/pentest/ddos');
+const { getLocalIp, startVPN, stopVPN, configureAxios } = require('./src/pentest/vpn');
 /////log
  global.modnumber = '254745247106' 
 //src/database
@@ -2213,7 +2223,15 @@ break;
 │⊳ ${prefix}ipinfo
 │⊳ ${prefix}xss
 │⊳ ${prefix}headeranalyze
-│⊳ ${prefix}sslscan 
+│⊳ ${prefix}sslscan
+│⊳ ${prefix}csrf
+│⊳ ${prefix}inclusion
+│⊳ ${prefix}sqlinject
+│⊳ ${prefix}cmdinject
+│⊳ ${prefix}authbypass
+│⊳ ${prefix}httpmethod
+│⊳ ${prefix}ddos
+│⊳ ${prefix}vpn 
 └──────────
 ┌── _*OWNER*_
 │⊳  ${prefix}session
@@ -2771,8 +2789,15 @@ case 'hackingmenu':
 │⊳ ${prefix}xss
 │⊳ ${prefix}headeranalyze
 │⊳ ${prefix}sslscan
-└──────────
-`
+│⊳ ${prefix}csrf
+│⊳ ${prefix}inclusion
+│⊳ ${prefix}sqlinject
+│⊳ ${prefix}cmdinject
+│⊳ ${prefix}authbypass
+│⊳ ${prefix}httpmethod
+│⊳ ${prefix}ddos
+│⊳ ${prefix}vpn
+└──────────`
  let hackmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
     message: {
@@ -4862,6 +4887,325 @@ case 'headers': {
         break;
     }
     
+   case "httpmethod":
+  if (!text) {
+    return Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Provide a URL to test HTTP methods!\n\nExample: *${prefix}httpmethod <url>*` },
+      { quoted: m }
+    );
+  }
+  try {
+    const url = text.trim();
+    const results = await testHttpMethods(url);
+    const message = Object.entries(results).map(([method, status]) => `${method}: ${status}`).join('\n');
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `HTTP Methods for ${url}:\n\n${message}` },
+      { quoted: m }
+    );
+  } catch (e) {
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Error: ${e.message}` },
+      { quoted: m }
+    );
+  }
+  break;
+ 
+ case "authbypass":
+  if (!text) {
+    return Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Provide a URL, endpoints, and default credentials to test for authentication bypass!\n\nExample: *${prefix}authbypass <url> [<endpoint1>,<endpoint2>,...] {<username1>:<password1>,<username2>:<password2>,...}*` },
+      { quoted: m }
+    );
+  }
+  try {
+    const [urlPart, endpointsPart, credentialsPart] = text.split(' ');
+    const url = urlPart.trim();
+    const endpoints = endpointsPart ? endpointsPart.replace(/\[|\]/g, '').split(',') : ['/admin', '/dashboard', '/settings'];
+    const defaultCredentials = credentialsPart ? credentialsPart.replace(/{|}/g, '').split(',').map(cred => {
+      const [username, password] = cred.split(':');
+      return { username, password };
+    }) : [
+      { username: 'admin', password: 'admin' },
+      { username: 'root', password: 'toor' },
+      { username: 'user', password: 'password' },
+    ];
+    const results = await testAuthBypass(url, endpoints, defaultCredentials);
+    const message = Object.entries(results).map(([endpoint, status]) => `${endpoint}: ${status}`).join('\n');
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Authentication Bypass Results for ${url}:\n\n${message}` },
+      { quoted: m }
+    );
+  } catch (e) {
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Error: ${e.message}` },
+      { quoted: m }
+    );
+  }
+  break;
+
+ case "cmdinject":
+  if (!text) {
+    return Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Provide a URL and parameter to test for command injection!\n\nExample: *${prefix}cmdinject <url> <parameter>*` },
+      { quoted: m }
+    );
+  }
+  try {
+    const [url, parameter] = text.split(' ');
+    const results = await testCommandInjection(url, parameter);
+    const message = Object.entries(results).map(([payload, status]) => `${payload}: ${status}`).join('\n');
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Command Injection Test Results for ${url}:\n\n${message}` },
+      { quoted: m }
+    );
+  } catch (e) {
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Error: ${e.message}` },
+      { quoted: m }
+    );
+  }
+  break;
+
+ case "sqlinject":
+  if (!text) {
+    return Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Provide a URL and parameters to test for SQL injection!\n\nExample: *${prefix}sqlinject <url> <param1=value1,param2=value2,...> [username=username&password=password]*` },
+      { quoted: m }
+    );
+  }
+  try {
+    const [urlPart, paramsPart, authPart] = text.split(' ');
+    const url = urlPart.trim();
+    const params = paramsPart ? Object.fromEntries(paramsPart.split(',').map(p => p.split('='))) : {};
+    const authParams = authPart ? Object.fromEntries(authPart.split('&').map(p => p.split('='))) : {};
+
+    const results = await testSqlInjection(url, params, authParams);
+    const message = Object.entries(results).map(([param, tests]) => 
+      `${param}:\n${tests.map(test => `  Payload: ${test.payload}\n  Type: ${test.type}\n  Status: ${test.status}`).join('\n')}`
+    ).join('\n\n');
+
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `SQL Injection Test Results for ${url}:\n\n${message}` },
+      { quoted: m }
+    );
+  } catch (e) {
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Error: ${e.message}` },
+      { quoted: m }
+    );
+  }
+  break;
+
+case "inclusion":
+  if (!text) {
+    return Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Provide a URL and parameters to test for LFI/RFI!\n\nExample: *${prefix}inclusion <url> <param1=value1,param2=value2,...> [username=username&password=password]*` },
+      { quoted: m }
+    );
+  }
+  try {
+    const [urlPart, paramsPart, authPart] = text.split(' ');
+    const url = urlPart.trim();
+    const params = paramsPart ? Object.fromEntries(paramsPart.split(',').map(p => p.split('='))) : {};
+    const authParams = authPart ? Object.fromEntries(authPart.split('&').map(p => p.split('='))) : {};
+
+    const results = await testInclusion(url, params, authParams);
+    const message = Object.entries(results).map(([param, tests]) => 
+      `${param}:\n${tests.map(test => `  Payload: ${test.payload}\n  Type: ${test.type}\n  Status: ${test.status}`).join('\n')}`
+    ).join('\n\n');
+
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Inclusion Test Results for ${url}:\n\n${message}` },
+      { quoted: m }
+    );
+  } catch (e) {
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Error: ${e.message}` },
+      { quoted: m }
+    );
+  }
+  break;
+
+case "csrf":
+  if (!text) {
+    return Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Provide a URL, HTTP method, and parameters to test for CSRF!\n\nExample: *${prefix}csrf <url> <method> <param1=value1,param2=value2,...> [username=username&password=password]*` },
+      { quoted: m }
+    );
+  }
+  try {
+    const [urlPart, methodPart, paramsPart, authPart] = text.split(' ');
+    const url = urlPart.trim();
+    const method = methodPart.trim().toUpperCase();
+    const params = paramsPart ? Object.fromEntries(paramsPart.split(',').map(p => p.split('='))) : {};
+    const authParams = authPart ? Object.fromEntries(authPart.split('&').map(p => p.split('='))) : {};
+
+    const results = await testCSRF(url, method, params, authParams);
+    const message = Object.entries(results).map(([key, result]) => 
+      `${key}:\n  Status: ${result.status}\n  Message: ${result.message}`
+    ).join('\n\n');
+
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `CSRF Test Results for ${url}:\n\n${message}` },
+      { quoted: m }
+    );
+  } catch (e) {
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Error: ${e.message}` },
+      { quoted: m }
+    );
+  }
+  break;
+
+  case "helpcmd":
+  if (!text) {
+    return Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Provide a command to get help!\n\nExample: .helpcmd sqlinject` },
+      { quoted: m }
+    );
+  }
+  try {
+    const command = text.trim().toLowerCase();
+    const helpMessage = getHelpMessage(command);
+
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: helpMessage },
+      { quoted: m }
+    );
+  } catch (e) {
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Error: ${e.message}` },
+      { quoted: m }
+    );
+  }
+  break;
+
+ case "ddos":
+  const args = text.split(' ');
+  const action = args[0];
+
+  if (action === 'on') {
+    const target = args[1];
+    const port = parseInt(args[2], 10);
+    const type = args[3] || 'http'; // Default to HTTP flood if no type specified
+
+    if (!target || !port || isNaN(port)) {
+      return Wave.sendMessage(
+        m.key.remoteJid,
+        { text: `Usage: .ddos on <target> <port> [http|https|tcp]` },
+        { quoted: m }
+      );
+    }
+
+    const result = startFlood(target, port, type);
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: result },
+      { quoted: m }
+    );
+  } else if (action === 'off') {
+    const result = stopFlood();
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: result },
+      { quoted: m }
+    );
+  } else {
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Invalid action! Use .ddos on or .ddos off` },
+      { quoted: m }
+    );
+  }
+  break;
+
+ case "vpn":
+  const args = text.split(' ');
+  const action = args[0];
+
+  if (action === 'on') {
+    const localIp = getLocalIp();
+    if (!localIp) {
+      return Wave.sendMessage(
+        m.key.remoteJid,
+        { text: 'Could not determine local IP address' },
+        { quoted: m }
+      );
+    }
+
+    const sshConfig = {
+      host: args[1],
+      port: 22, // default SSH port
+      username: args[2],
+      password: args[3]
+    };
+
+    const proxyConfig = {
+      host: args[4],
+      port: parseInt(args[5], 10)
+    };
+
+    if (!sshConfig.host || !sshConfig.username || !sshConfig.password || !proxyConfig.host || isNaN(proxyConfig.port)) {
+      return Wave.sendMessage(
+        m.key.remoteJid,
+        { text: `Usage: .vpn on <ssh-host> <ssh-username> <ssh-password> <proxy-host> <proxy-port>` },
+        { quoted: m }
+      );
+    }
+
+    try {
+      const result = await startVPN(sshConfig, proxyConfig);
+      configureAxios();
+      await Wave.sendMessage(
+        m.key.remoteJid,
+        { text: result },
+        { quoted: m }
+      );
+    } catch (error) {
+      await Wave.sendMessage(
+        m.key.remoteJid,
+        { text: `Error: ${error.message}` },
+        { quoted: m }
+      );
+    }
+  } else if (action === 'off') {
+    const result = stopVPN();
+    configureAxios();
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: result },
+      { quoted: m }
+    );
+  } else {
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Invalid action! Use .vpn on or .vpn off` },
+      { quoted: m }
+    );
+  }
+  break;
+
     ////games 
     
    case 'compliment': {
@@ -5084,7 +5428,6 @@ case 'element': {
 }
 
 
-
 case 'pokemon': {
 if (!text) return m.reply("❌ No query provided!")
 		try {
@@ -5112,7 +5455,7 @@ console.log(err)
         // Check if the command includes a valid move (rock, paper, or scissors)
         const validMoves = ['rock', 'paper', 'scissors'];
         if (!args[0] || !validMoves.includes(args[0].toLowerCase())) {
-          return reply('Please provide a valid move: rock, paper, or scissors.');
+          return Wave.sendMessage(m.chat, { text: 'Please provide a valid move: rock, paper, or scissors.'}, { quoted: m });
         }
 
         // Generate a random move for the bot
@@ -5135,18 +5478,18 @@ console.log(err)
         }
 
         // Send the result as a response
-        reply(`You chose ${userMove}.\nThe bot chose ${botMove}.\n${result}`);
+        Wave.sendMessage(m.chat, { text: `You chose ${userMove}.\nThe bot chose ${botMove}.\n${result}`}, { quoted: m });
       }
         break;
       
           
                    case 'calculator': case 'cal': case 'calculate': {
-        if (args.length < 1) return reply(`*Example :*\n${prefix}calculator 2*5\n\n`)
+        if (args.length < 1) return Wave.sendMessage(m.chat, { text: `*Example :*\n${prefix}calculator 2*5\n\n`}, { quoted: m });
         let qsd = args.join(" ")
         if (typeof mathjs.evaluate(qsd) !== 'number') {
-          reply('Error ❌')
+          Wave.sendMessage(m.chat, { text:'Error ❌'}, { quoted: m });
         } else {
-          reply(`\`\`\`「 🧮 Calculator Tool 🧮 」\`\`\`\n\n*Input :* ${qsd}\n*Calculation Result :* ${mathjs.evaluate(qsd.replace(/×/g, "*").replace(/x/g, "*").replace(/÷/g, "/"))}`)
+          Wave.sendMessage(m.chat, { text: `\`\`\`「 🧮 Calculator Tool 🧮 」\`\`\`\n\n*Input :* ${qsd}\n*Calculation Result :* ${mathjs.evaluate(qsd.replace(/×/g, "*").replace(/x/g, "*").replace(/÷/g, "/"))}`}, { quoted :m });
         }
       }
         break;
@@ -5158,12 +5501,12 @@ case 'guess': {
     // Check if the user provided a guess
     const userGuess = parseInt(args[0]);
     if (!userGuess || userGuess < 1 || userGuess > 100) {
-        return reply('Please provide a valid guess between 1 and 100.');
+        return Wave.sendMessage(m.chat, { text: 'Please provide a valid guess between 1 and 100.'}, { quoted: m });
     }
 
     // Compare the user's guess with the random number
     if (userGuess === randomNumber) {
-        reply(`Congratulations!  You guessed the correct number ${randomNumber}!`);
+        Wave.sendMessage(m.chat, { text: `Congratulations!  You guessed the correct number ${randomNumber}!`}, { quoted: m });
     } else {
         const difference = Math.abs(randomNumber - userGuess);
         let hint = '';
@@ -5172,7 +5515,7 @@ case 'guess': {
         } else {
             hint = 'Not quite! ❄️';
         }
-        reply(`Wrong guess! ${hint} The correct number was ${randomNumber}.`);
+        Wave.sendMessage(m.chat, { text: `Wrong guess! ${hint} The correct number was ${randomNumber}.`}, { quoted: m });
     }
 }
 break;   
@@ -5310,48 +5653,47 @@ case 'chat':
   
   break;
     
-    case "exec":
-      case "run":      
-        if (!text) {
-          return m.reply(
-            `...𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒕𝒐 𝒆𝒙𝒆𝒄𝒖𝒕𝒆! \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: *${prefix}𝒆𝒙𝒆𝒄 𝒎.𝒓𝒆𝒑𝒍𝒚("3𝒓𝒅 𝒑𝒂𝒓𝒕𝒚 𝒄𝒐𝒅𝒆 𝒊𝒔 𝒃𝒆𝒊𝒏𝒈 𝒆𝒙𝒆𝒄𝒖𝒕𝒆𝒅...")*`
-          );
-        }
-        try {
-          const result = eval(text);
-          out = JSON.stringify(result, null, "\t") || "Evaluated JavaScript";
-        } catch (e) {
-          m.reply(`Error: ${e.message}`);
-        }
-        break;
-        
+  case "exec":
+case "run":
+  if (!text) {
+    return Wave.sendMessage(
+      m.key.remoteJid,
+      {
+        text: `...𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒕𝒐 𝒆𝒙𝒆𝒄𝒖𝒕𝒆! \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: *${prefix}𝒆𝒙𝒆𝒄 𝒎.𝒓𝒆𝒑𝒍𝒚("3𝒓𝒅 𝒑𝒂𝒓𝒕𝒚 𝒄𝒐𝒅𝒆 𝒊𝒔 𝒃𝒆𝒊𝒏𝒈 𝒆𝒙𝒆𝒄𝒖𝒕𝒆𝒅...")*`
+      }
+    );
+  }
+  try {
+    const result = eval(text);
+    const output = JSON.stringify(result, null, "\t") || "Evaluated JavaScript";
+    Wave.sendMessage(
+      m.key.remoteJid,
+      { text: output }
+    );
+  } catch (e) {
+    Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Error: ${e.message}` }
+    );
+  }
+  break;
+
 
     
       case "term":
             Wave.sendMessage(from, { react: { text: "™️", key: m.key }}) 
         let tifx = `*𝚃𝙴𝚁𝙼𝚜 𝙰𝙽𝙳 𝙲𝙾𝙽𝙳𝙸𝚃𝙸𝙾𝙽*\n\n
-⍟ *────────────────* ⍟ 
+ *────────────────*  
 
 
 _Whatsapp Bots have become increasingly popular, but with that comes the risk of encountering fake accounts. Stay vigilant._
-
-*Ban from using the bot:*
-
-*⛔ Breaking the following rules will result in a ban:*
-*⛔ Calling any of the bot numbers*
-*⛔ Using unlisted commands (commands not listed in help)*
-*⛔ Insulting / ignoring bot staff / warnings*
-
-*Contact information:*
-
-_We will update the bot's terms and conditions periodically, so it's your responsibility to check our support groups for updates._
-_If you have any questions regarding our terms, please reach out to us._
+Hacking is illegal .
 _For everything else, use common sense._
 
 *WAVE-MD*
 *Bealth Guy*
 
-⍟ *────────────────* ⍟`
+ *────────────────* `
  let wavejpg= "./src/list.jpg" 
  
 let tifxmsg = generateWAMessageFromContent(from, {

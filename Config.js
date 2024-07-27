@@ -14,7 +14,7 @@ global.stickername = process.env.STICKER || "ꪶ♱ꫂ 𝐵𝐸𝐴𝐿𝑇𝐻 
 global.packname = 'Sticker By'
 global.author = process.env.AUTHOR || "ꪶ♱ꫂ 𝐵𝐸𝐴𝐿𝑇𝐻 𝐺𝑈𝑌 ⛧",
 //console view/theme
-global.themeemoji = '🔥'
+global.themeemoji = '🎭'
 global.wm = "bealthguy"
 
 //theme link
