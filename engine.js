@@ -158,7 +158,6 @@ module.exports = Wave = async (Wave, m, msg, chatUpdate, store) => {
       const isNsfw = m.isGroup ? isnsfw.includes(from) : false;
       const AntiNsfw = m.isGroup ? isnsfw.includes(from) : false
  /////
-const action = args[0];
 const pickRandom = (arr) => {
 return arr[Math.floor(Math.random() * arr.length)]
 }
@@ -451,7 +450,10 @@ const wavefeature = () =>{
             var numUpper = (mytext.match(/case '/g) || []).length
             return numUpper
 }
-const axios = require('axios')  
+const axios = require('axios')
+const args = text.split(' ');
+const action = args[0];
+  
             switch (command) {
 
             case 'tutorial':{
