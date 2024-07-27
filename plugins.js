@@ -181,10 +181,10 @@ Wave.sendMessage(Wave.user.id, {
     text: `*wave*-ᴍᴅ ᴄᴏɴɴᴇᴄᴛᴇᴅ 
 
 ᴘʀᴇꜰɪx: [ ${prefix} ]\n
-ᴄᴏᴍᴍᴀɴᴅꜱ: 262\n
+ᴄᴏᴍᴍᴀɴᴅꜱ: 272\n
 ᴠᴇʀꜱɪᴏɴ: 2.0.0\n
 ᴄʀᴇᴀᴛᴏʀ: *Bealth Guy*\n
-_ᴛʏᴘᴇ ${prefix}ᴀʟɪᴠᴇ `
+ᴛʏᴘᴇ ${prefix}ᴀʟɪᴠᴇ `
 });
 
 

@@ -43,7 +43,6 @@ const testCSRF = require('./src/pentest/csrfTester');
 const { getHelpMessage } = require('./src/pentest/helper');
 const { startFlood, stopFlood } = require('./src/pentest/ddos');
 const { getLocalIp, startVPN, stopVPN, configureAxios } = require('./src/pentest/vpn');
-const action = args[0];
 /////log
  global.modnumber = '254745247106' 
 //src/database
@@ -159,6 +158,7 @@ module.exports = Wave = async (Wave, m, msg, chatUpdate, store) => {
       const isNsfw = m.isGroup ? isnsfw.includes(from) : false;
       const AntiNsfw = m.isGroup ? isnsfw.includes(from) : false
  /////
+const action = args[0];
 const pickRandom = (arr) => {
 return arr[Math.floor(Math.random() * arr.length)]
 }
