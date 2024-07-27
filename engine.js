@@ -451,7 +451,6 @@ const wavefeature = () =>{
             return numUpper
 }
 const axios = require('axios')
-const args = text.split(' ');
 const action = args[0];
   
             switch (command) {
