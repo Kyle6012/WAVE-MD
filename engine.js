@@ -35,7 +35,6 @@ const { analyzeHeaders } = require('./src/pentest/headerAnalyzer');
 const { scanSSL } = require('./src/pentest/sslScanner');
 const performPortScan = require('./src/pentest/nmap');
 const testHttpMethods = require('./src/pentest/httpMethodTester');
-const axios = require('axios');
 const testAuthBypass = require('./src/pentest/authBypassTester');
 const testCommandInjection = require('.src/pentest/commandInjectionTester');
 const testSqlInjection = require('./src/pentest/sqlInjectionTester');
