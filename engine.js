@@ -5140,7 +5140,6 @@ case "csrf":
   break;
 
  case "vpn":
-  const args = text.split(' ');
   const action = args[0];
 
   if (action === 'on') {
