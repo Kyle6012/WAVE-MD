@@ -43,6 +43,7 @@ const testCSRF = require('./src/pentest/csrfTester');
 const { getHelpMessage } = require('./src/pentest/helper');
 const { startFlood, stopFlood } = require('./src/pentest/ddos');
 const { getLocalIp, startVPN, stopVPN, configureAxios } = require('./src/pentest/vpn');
+const action = args[0];
 /////log
  global.modnumber = '254745247106' 
 //src/database
@@ -5101,8 +5102,6 @@ case "csrf":
   break;
 
  case "ddos":
-  const args = text.split(' ');
-  const action = args[0];
 
   if (action === 'on') {
     const target = args[1];
