@@ -57,7 +57,7 @@ let hit = JSON.parse(fs.readFileSync('./src/database/total-hit-user.json'))
 
 //time
 const replay = (teks) => {
-            Wave.sendMessage(m.chat, { text: teks}, { quoted: m})
+            Wave.sendMessage(m.chat, { text: teks}, { quoted: m});
         }
 const xtime = moment.tz('Africa/Nairobi').format('HH:mm:ss')
         const bealthxdate = moment.tz('Africa/Nairobi').format('DD/MM/YYYY')
@@ -2235,7 +2235,8 @@ break;
 │⊳ ${prefix}httpmethod
 │⊳ ${prefix}ddos
 │⊳ ${prefix}proxy
-│⊳ ${prefix}ssh
+│⊳ ${prefix}ssh    
+│⊳ ${prefix}scrape
 └──────────
 ┌── _*OWNER*_
 │⊳  ${prefix}session
@@ -2801,7 +2802,8 @@ case 'hackingmenu':
 │⊳ ${prefix}httpmethod
 │⊳ ${prefix}ddos
 │⊳ ${prefix}proxy
-│⊳ ${prefix}ssh
+│⊳ ${prefix}ssh    
+│⊳ ${prefix}scrape
 └──────────`
  let hackmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
