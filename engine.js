@@ -1,11 +1,11 @@
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getAggregateVotesInPollMessage,getContentType, delay, decodeJid } = require('@whiskeysockets/baileys');
 const { SendGroupInviteMessageToUser } = require("@queenanya/invite");
-const Config = require("./Config");
+const Config = require("./config");
 const os = require('os');
 const fs = require('fs');
 const mathjs = require('mathjs');
 const fsx = require('fs-extra');
-const path = require('path');
+const path = require('path');m.reply
 const util = require('util');
 const googleTTS = require('google-tts-api');
 const jsobfus = require('javascript-obfuscator');
@@ -42,7 +42,8 @@ const testInclusion = require('./src/pentest/lfiRfiTester');
 const testCSRF = require('./src/pentest/csrfTester');
 const { getHelpMessage } = require('./src/pentest/helper');
 const { startFlood, stopFlood } = require('./src/pentest/ddos');
-const { getLocalIp, startVPN, stopVPN, configureAxios } = require('./src/pentest/vpn');
+const { startProxy, stopProxy, ponfigureAxios } = require('./src/pentest/proxy');
+const { startSSH, stopSSH, configureAxios } = require('./src/pentest/ssh');
 /////log
  global.modnumber = '254745247106' 
 //src/database
@@ -244,7 +245,7 @@ async function obfus(query) {
 
 async function Telesticker(url) {
     return new Promise(async (resolve, reject) => {
-        if (!url.match(/(https:\/\/t.me\/addstickers\/)/gi)) return reply('Enter your url telegram sticker link')
+        if (!url.match(/(https:\/\/t.me\/addstickers\/)/gi)) return Wave.sendMessage(m.chat, { text: 'Enter your url telegram sticker link'}, { quoted: m });
         packName = url.replace("https://t.me/addstickers/", "")
         data = await axios(`https://api.telegram.org/bot891038791:AAHWB1dQd-vi0IbH2NjKYUk-hqQ8rQuzPD4/getStickerSet?name=${encodeURIComponent(packName)}`, {method: "GET",headers: {"User-Agent": "GoogleBot"}})
         const waveyresult = []
@@ -355,7 +356,7 @@ async function Telesticker(url) {
                     let getReason2 = afk.getAfkReason(getId2, _afk)
                     let getTimee = Date.now() - afk.getAfkTime(getId2, _afk)
                     let heheh2 = ms(getTimee)
-                    reply(`Don't tag him, he's afk\n\n*Reason :* ${getReason2}`)
+                    Wave.sendMessage(m.chat, { text: `Don't tag him, he's afk\n\n*Reason :* ${getReason2}`}, { quoted: m });
                 }
             }
             if (afk.checkAfkUser(m.sender, _afk)) {
@@ -389,11 +390,11 @@ async function Telesticker(url) {
      // anti bot
         if (Config.ANTI_BOT == 'true' && m.isBaileys) {
     if (!isBotAdmins) {
-     m.reply("\`\`\`Bot Detected!!\`\`\`\n_but I'm not an admin_");
+      Wave.sendMessage(m.chat, { text: "\`\`\`Bot Detected!!\`\`\`\n_but I'm not an admin_"}, { quoted: m });
       return;
     }
 
-   m.reply(`\`\`\`🤖 Bot Detected!!\`\`\`\n\n_✅ Kicked *@${m.sender.split("@")[0]}*_`, { mentions: [m.sender] });
+   Wave.sendMessage(m.chat, { text: `\`\`\`🤖 Bot Detected!!\`\`\`\n\n_✅ Kicked *@${m.sender.split("@")[0]}*_`}, { mentions: [m.sender] }, { quoted: m });
    Wave.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
    m.deleteMsg(m.key);
     return;
@@ -407,9 +408,9 @@ async function Telesticker(url) {
    {
 if (!isBotAdmins) return
 bvl = `\`\`\`「 Link Detected 」\`\`\`\n\nyou are a group admin thats why i wont kick you, but remember from next time`
-if (isAdmins) return reply(bvl)
-if (m.key.fromMe) return reply(bvl)
-if (isCreator) return reply(bvl)
+if (isAdmins) return Wave.sendMessage(m.chat, { text: bvl }, { quoted: m });
+if (m.key.fromMe) return Wave.sendMessage(m.chat, { text: bvl }, { quoted: m });
+if (isCreator) return Wave.sendMessage(m.chat, { text: bvl }, { quoted: m });
         await Wave.sendMessage(m.chat,
 			    {
 			        delete: {
@@ -599,8 +600,8 @@ break
             
             case 'stealdp': {
             const user = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
-        if (user === botNumber) return m.reply('_🙅🏻 I can not steal my own profile picture,  _');
-        const {key} = await m.reply("𝒑𝒍𝒆𝒂𝒔𝒆 𝒘𝒂𝒊𝒕 ...");
+        if (user === botNumber) return Wave.sendMessage(m.chat, { text: '_🙅🏻 I can not steal my own profile picture,  _'}, { quoted: m });
+        const {key} = await Wave.sendMessage(m.chat, { text: "𝒑𝒍𝒆𝒂𝒔𝒆 𝒘𝒂𝒊𝒕 ..."});
         let picture;
         try {
             picture = await getBuffer(await Wave.profilePictureUrl(user, 'image'));
@@ -637,7 +638,7 @@ mems.push(adm.id.replace('c.us', 's.whatsapp.net'))
 })
 Wave.sendMessage(from, {text: `\`\`\`「 ⚠️Warning⚠️ 」\`\`\`\n\nDont DM or PM or Inbox To The Bot Else You'll Be Blocked l`, contextInfo: { mentionedJid : mems }}, {quoted:m})
 } else if (args[0] === "off") {
-if (!AutoBlock) return reply('Already deactivated')
+if (!AutoBlock) return ('Already deactivated')
 let off = ntilinkall.indexOf(from)
 ntilinkall.splice(off, 1)
 fs.writeFileSync('./src/database/autoblock.json', JSON.stringify(ntilinkall))
@@ -654,10 +655,10 @@ reply('Success in turning off all autoblock in this group')
                 if (!isAdmins && !isCreator) return reply(mess.admin)
                 if (!isBotAdmins) return reply(mess.botAdmin)
 if (args[0] === "on") {
-if (AntiLinkAll) return reply('Already activated')
+if (AntiLinkAll) return Wave.sendMessage(m.chat, { text: 'Already activated'}, { quoted: m });
 ntilinkall.push(from)
 fs.writeFileSync('./src/database/antilink.json', JSON.stringify(ntilinkall))
-reply('Success in turning on all antilink in this group')
+Wave.sendMessage(m.chat, { text: 'Success in turning on all antilink in this group'}, { quoted: m });
 var groupe = await Wave.groupMetadata(from)
 var members = groupe['participants']
 var mems = []
@@ -666,22 +667,22 @@ mems.push(adm.id.replace('c.us', 's.whatsapp.net'))
 })
 Wave.sendMessage(from, {text: `\`\`\`「 ⚠️Warning⚠️ 」\`\`\`\n\nIf you're not an admin, don't send any link in this group or u will be kicked immediately!`, contextInfo: { mentionedJid : mems }}, {quoted:m})
 } else if (args[0] === "off") {
-if (!AntiLinkAll) return reply('Already deactivated')
+if (!AntiLinkAll) return Wave.sendMessage(m.chat, { text: 'Already activated'}, { quoted: m });
 let off = ntilinkall.indexOf(from)
 ntilinkall.splice(off, 1)
 fs.writeFileSync('./src/database/antilinkall.json', JSON.stringify(ntilinkall))
-reply('Success in turning off all antilink in this group')
+Wave.sendMessage(m.chat, { text: 'Success in turning off all antilink in this group'}, { quoted: m });
 } else {
-  await reply(`Please Type The Option\n\nExample: ${prefix + command} on\nExample: ${prefix + command} off\n\non to enable\noff to disable`)
+  await Wave.sendMessage(m.chat, { text: `Please Type The Option\n\nExample: ${prefix + command} on\nExample: ${prefix + command} off\n\non to enable\noff to disable`}, { quoted: m });
   }
   }
   break;
   
   case 'setppbot': case 'setbotpp': {
 if (!isCreator) return replay(mess.botowner)
-if (!quoted) return reply(`Send/Reply Image With Caption ${prefix + command}`)
-if (!/image/.test(mime)) return reply(`Send/Reply Image With Caption ${prefix + command}`)
-if (/webp/.test(mime)) return reply(`Send/Reply Image With Caption ${prefix + command}`)
+if (!quoted) return Wave.sendMessage(m.chat, {text: `Send/Reply Image With Caption ${prefix + command}`}, { quoted: m });
+if (!/image/.test(mime)) return Wave.sendMessage(m.chat, {text: `Send/Reply Image With Caption ${prefix + command}`}, { quoted: m });
+if (/webp/.test(mime)) return Wave.sendMessage(m.chat, {text: `Send/Reply Image With Caption ${prefix + command}`}, { quoted: m });
 var medis = await Wave.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
 if (args[0] == `full`) {
 var { img } = await generateProfilePicture(medis)
@@ -705,7 +706,7 @@ reply(`Succes`)
 } else {
 var memeg = await Wave.updateProfilePicture(botNumber, { url: medis })
 fs.unlinkSync(medis)
-reply(`𝑺𝒖𝒄𝒄𝒆𝒔𝒔, 𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒕𝒉𝒆 𝒏𝒆𝒘 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒑𝒉𝒐𝒕𝒐, ..`)
+Wave.sendMessage(m.chat, { text: `𝑺𝒖𝒄𝒄𝒆𝒔𝒔, 𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒕𝒉𝒆 𝒏𝒆𝒘 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒑𝒉𝒐𝒕𝒐, ..`}, { quoted: m });
 }
 }
 break;
@@ -767,19 +768,19 @@ case 'clearsession': {
             case 'join': {
                 try {
                     if (!isCreator) return reply(mess.owner)
-                    if (!text) return reply('Enter Group Link!')
+                    if (!text) return Wave.sendMessage(m.chat, { text: 'Enter Group Link!'}, { quoted: m });
                     if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) return reply('Link Invalid!')
                     reply(mess.wait)
                     let result = args[0].split('https://chat.whatsapp.com/')[1]
                     await Wave.groupAcceptInvite(result).then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 } catch {
-                    reply('Failed to join the Group')
+                    Wave.sendMessage(m.chat, { text: 'Failed to join the Group'}, { quoted: m });
                 }
                 break;     
                 }
             case 'session': {
                 if (!isCreator) return reply(mess.owner)
-                reply('Wait a moment, currently retrieving your session file')
+                Wave.sendMessage(m.chat, { text: 'Wait a moment, currently retrieving your session file'}, { quoted: m });
                 let sesi = await fs.readFileSync('./session/creds.json')
                 Wave.sendMessage(m.chat, {
                     document: sesi,
@@ -855,74 +856,74 @@ break;
 
             case 'shutdown': {
                 if (!isCreator) return reply(mess.owner)
-                reply(`Goodbye........`)
+                Wave.sendMessage(m.chat, { text: `*SHUTTING DOWN ...*`}, { quoted: m });
                 await sleep(3000)
                 process.exit()
                 }
                 break;
                 
             case 'restart': {
-                if (!isCreator) return reply(mess.owner)
-                reply('In Process....')
+                if (!isCreator) return (mess.owner)
+                Wave.sendMesage(m.chat, { text: 'In Process....'}, { quoted: m });
                 exec('pm2 restart all')
                 }
                 break;
                 
             case 'autoread': {
                 if (!isCreator) return reply(mess.owner)
-                if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
+                if (args.length < 1) return Wave.sendMessage(m.chat, {text: `Example ${prefix + command} on/off`}, { quoted: m });
                 if (q === 'on') {
                     autoread = true
-                    reply(`Successfully changed autoread to ${q}`)
+                    Wave.sendMessage(m.chat, { text: `Successfully changed autoread to ${q}`}, { quoted: m });
                 } else if (q === 'off') {
                     autoread = false
-                    reply(`Successfully changed autoread to ${q}`)
+                    Wave.sendMessage(m.chat, { text: `Successfully changed autoread to ${q}`}, { quoted: m });
                 }
                 }
                 break;
                 
                 case 'autotyping': {
                 if (!isCreator) return reply(mess.owner)
-                if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
+                if (args.length < 1) return Wave.Message(m.chat, { text: `Example ${prefix + command} on/off`}, { quoted: m });
                 if (q === 'on') {
                     autoTyping = true
-                    reply(`Successfully changed auto-typing to ${q}`)
+                    Wave.sendMessage(m.chat, { text: `Successfully changed auto-typing to ${q}`}, { quoted: m });
                 } else if (q === 'off') {
                     autoTyping = false
-                    reply(`Successfully changed auto-typing to ${q}`)
+                    Wave.sendMessage(m.chat, { text: `Successfully changed auto-typing to ${q}`}, { quoted: m });
                 }
                 }
                 break;
                 
                 case 'autorecording': {
                 if (!isCreator) return reply(mess.owner)
-                if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
+                if (args.length < 1) return Wave.Message(m.chat, { text: `Example ${prefix + command} on/off`}, { quoted: m });
                 if (q === 'on') {
                     autoRecording = true
-                    reply(`Successfully changed auto-recording to ${q}`)
+                    Wave.sendMessage(m.chat, { text: `Successfully changed auto-recording to ${q}`}, { quoted: m });
                 } else if (q === 'off') {
                     autoRecording = false
-                    reply(`Successfully changed auto-recording to ${q}`)
+                    Wave.sendMessage(m.chat, { text: `Successfully changed auto-recording to ${q}`},{ quoted: m });
                 }
                 }
                 break;
                 
                 case 'autorecordtype': {
                 if (!isCreator) return reply(mess.owner)
-                if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
+                if (args.length < 1) return Wave.Message(m.chat, { text: `Example ${prefix + command} on/off`}, { quoted: m });
                 if (q === 'on') {
                     autorecordtype = true
-                    reply(`Successfully changed auto recording and typing to ${q}`)
+                    Wave.sendMessage(m.chat, { text: `Successfully changed auto recording and typing to ${q}`}, { quoted: m });
                 } else if (q === 'off') {
                     autorecordtype = false
-                    reply(`Successfully changed auto recording and typing to ${q}`)
+                    Wave.sendMessage(m.chat, { text: `Successfully changed auto recording and typing to ${q}`}, { quoted: m });
                 }
                 }
                 break;
                 
                 case 'autoswview': {
                 if (!isCreator) return reply(mess.owner)
-                if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
+                if (args.length < 1) return Wave.Message(m.chat, { text: `Example ${prefix + command} on/off`}, { quoted: m });
                 if (q === 'on') {
                     autoread_status = true
                     reply(`....Successfully changed auto status/story view to ${q}`)
@@ -1163,12 +1164,12 @@ break;
             } else 
             */
             if (result[0].status == 403) {
-			m.reply("inviting");
+			reply("inviting");
 			console.log(i);
 			await delay(3000);
 		 await SendGroupInviteMessageToUser(result[0].jid, Wave, m.chat);
 		 await delay(2000);
-		 m.reply("Invited");
+		 reply("Invited");
 		}
 		}
                 break;
@@ -4118,7 +4119,7 @@ case 'pokemon': {
     });
   } catch (error) {
     console.error(error);
-    reply('Failed to send pokemon wallpaper.');
+    Wave.sendMessage(m.chat, { text: 'Failed to send pokemon wallpaper.'}, { quoted : m });
   }
   break;
 }
@@ -4178,7 +4179,7 @@ case 'zero-two': {
     });
   } catch (error) {
     console.error(error);
-    reply('Failed to send zero-two wallpaper.');
+    Wave.sendMessage(m.chat, {text: 'Failed to send zero-two wallpaper.'}, { quoted: m });
   }
   break;
 }
@@ -4186,8 +4187,8 @@ case 'zero-two': {
 
 			    ////
 			    case 'hd': {
-			if (!quoted) return reply(`Where is the picture?`)
-			if (!/image/.test(mime)) return reply(`Send/Reply Photos With Captions ${prefix + command}`)
+			if (!quoted) return Wave.sendMessage(m.chat, { text: `Where is the picture?`}, { quoted: m });
+			if (!/image/.test(mime)) return Wave.sendMessage(m.chat, { text:  `Send/Reply Photos With Captions ${prefix + command}`}, { quoted: m });
 			reply(mess.wait)
 			const { remini } = require('./src/lib/remini')
 			let media = await quoted.download()
@@ -4218,6 +4219,7 @@ Wave.sendMessage(from, { text: 'Question : *' + cex + '*\nChecker : ' + `@${send
 }
 break;
 ////////
+case 'htag':
 case 'hidetag': {  
            if (!m.isGroup) return reply(mess.group)
                 if (!isAdmins && !isCreator) return reply(mess.admin)
@@ -4265,21 +4267,21 @@ case 'hidetag': {
 			    
 case 'runtime': {
             	let lowq = `*The Bot Has Been Online For:*\n *${runtime(process.uptime())}*`
-                reply(lowq)
+                Wave.sendMessage(m.chat, {text: lowq}, { quoted: m });
             	}
             break;
 			///////////////////////////////////////////////////////
 case 'instagram': case 'ig': case 'igvideo': case 'igimage': case 'igvid': case 'igimg': {
-	  if (!text) return reply(`You need to give the URL of Any Instagram video, post, reel, image`)
+	  if (!text) return Wave.sendMessage(m.chat, { text: `You need to give the URL of Any Instagram video, post, reel, image`}, { quoted: m });
   let res
   try {
     res = await fetch(`https://www.guruapi.tech/api/igdlv1?url=${text}`)
   } catch (error) {
-    return reply(`An error occurred: ${error.message}`)
+    return Wave.sendMessage(m.chat, { text: `An error occurred: ${error.message}`}, { quoted: m });
   }
   let api_response = await res.json()
   if (!api_response || !api_response.data) {
-    return reply(`No video or image found or Invalid response from API.`)
+    return Wave.sendMessage(m.chat, { text: `No video or image found or Invalid response from API.`}, { quoted: m });
   }
   const mediaArray = api_response.data;
   for (const mediaData of mediaArray) {
@@ -4352,7 +4354,7 @@ return await Wave.relayMessage(m.chat, msgs.message, {})
           nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
             buttons: [{
             "name": "quick_reply",
-              "buttonParamsJson": `{\"display_text\":\"Menu✨\",\"id\":\"${prefix}help"}`
+              "buttonParamsJson": `{\"display_text\":\"Menu\",\"id\":\"${prefix}help"}`
             },
             {
             "name": "quick_reply",
@@ -4382,9 +4384,9 @@ break
 case 'apk': {
   try {
     if (command === 'apk') {
-      if (!text) return reply(`*[📝] Please provide the APK Name you want to download.*`);
+      if (!text) return Wave.sendMessage(m.chat, { text: `*[📝] Please provide the APK Name you want to download.*`}, { quoted: m });
       let data = await download(text);
-      if (data.size.replace(' MB', '') > 200) {
+      if (data.size.replace(' MB', '') > 600) {
         return await Wave.sendMessage(m.chat, { text: '*[📦] The file is too large.*' }, { quoted: m });
       }
       if (data.size.includes('GB')) {
@@ -4397,14 +4399,14 @@ case 'apk': {
       );
     }
   } catch {
-    return reply(`*[❗️] An error occurred. Make sure to provide a valid link.*`);
+    return Wave.sendMessage(m.chat, { text: `*[❗️] An error occurred. Make sure to provide a valid link.*`}, { quoted: m });
   }
 };
-break
+break;
 
 case 'mediafire': {
-  if (!args[0]) return reply(`*[📝] Please enter the MediaFire link next to the command.*`);
-  if (!args[0].match(/mediafire/gi)) return reply(`*[🔗] Incorrect link. Please provide a valid MediaFire link.*`);
+  if (!args[0]) return Wave.sendMessage(m.chat, { text: `*[📝] Please enter the MediaFire link next to the command.*`}, { quoted: m });
+  if (!args[0].match(/mediafire/gi)) return Wave.sendMessage(m.chat, { text: `*[🔗] Incorrect link. Please provide a valid MediaFire link.*`}, { quoted: m });
   
   const { mediafiredl } = require('@bochilteam/scraper');
   let full = /f$/i.test(command);
@@ -4429,20 +4431,20 @@ case 'welcome':
             case 'left': {
               if (!m.isGroup) return reply(mess.group)
                 if (!isCreator) return reply(mess.owner)
-               if (args.length < 1) return reply('on/off?')
+               if (args.length < 1) return Wave.sendMessage(m.chat, { text: 'on/off?'}, { quoted: m });
                if (args[0] === 'on') {
                   welcome = true
-                  reply(`${command} is enabled`)
+                  Wave.sendMessage(m.chat, { text: `${command} is enabled`}, { quoted: m });
                } else if (args[0] === 'off') {
                   welcome = false
-                  reply(`${command} is disabled`)
+                  Wave.sendMessage(m.chat, { text: `${command} is disabled`}, { quoted: m });
                }
             }
             break;
 
 
 case 'git': case 'gitclone':
-if (!text) return reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/Kyle6012/WAVE-MD `)
+if (!text) return Wave.sendMessage(m.chat, { text: `Where is the link?\nExample :\n${prefix}${command} https://github.com/Kyle6012/WAVE-MD `}, { quoted: m });
 if (!isUrl(text) && !text.includes('github.com')) return reply(`Link invalid!!`)
     let repo = text.split('/');
     let url = `https://api.github.com/repos/${repo[3]}/${repo[4]}/zipball`
@@ -4455,9 +4457,9 @@ break;
 case 'telestick': case 'tgs':{
 		if (args[0] && args[0].match(/(https:\/\/t.me\/addstickers\/)/gi)) {
 		let waveresources = await Telesticker(args[0])
-		await reply(`Sending ${waveresources.length} stickers...`)
+		await Wave.sendMessage(m.chat, { text: `Sending ${waveresources.length} stickers...`}, { quoted: m });
 		if (m.isGroup && waveresources.length > 30) {
-			await reply('Number of stickers more than 30, bot will send it in private chat.')
+			await Wave.sendMessage(m.chat, { text: 'Number of stickers more than 30, bot will send it in private chat.'}, { quoted: m });
 			for (let i = 0; i < waveresources.length; i++) {
 				Wave.sendMessage(m.sender, { sticker: { url: waveresources[i].url }})
 			}
@@ -4466,7 +4468,7 @@ case 'telestick': case 'tgs':{
 				Wave.sendMessage(m.chat, { sticker: { url: waveresources[i].url }})
 			}
 		}
-	} else reply(`Telegram sticker Link??\nExample. ${prefix + command} https://t.me/addstickers/FriendlyDeath`)
+	} else Wave.sendMessage(m.chat, { text: `Telegram sticker Link??\nExample. ${prefix + command} https://t.me/addstickers/FriendlyDeath`}, { quoted: m });
 }
 break;
 
@@ -4498,7 +4500,7 @@ case 'naturetypography':
 case 'quotesunder':
 case 'shinetext':{
 
-if (!q) return reply(`Example : ${prefix+command} Bealth`) 
+if (!q) return Wave.sendMessage(m.chat, { text: `Example : ${prefix+command} Bealth`}, { quoted: m }); 
 let link
 if (/stonetext/.test(command)) link = 'https://photooxy.com/online-3d-white-stone-text-effect-utility-411.html'
 if (/writeart/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-art-quote-on-wood-engine-370.html'
@@ -4536,9 +4538,9 @@ case 'poll': {
 if (!m.isGroup) return replay(mess.grouponly)
             let [poll, opt] = text.split("|")
             if (text.split("|") < 2)
-                return await reply(
-                    `Mention question and atleast 2 options\nExample: ${prefix}poll Who is best admin?|Bealth,Wave,Owner...`
-                )
+                return await Wave.sendMessage(m.chat,
+                    { text: `Mention question and atleast 2 options\nExample: ${prefix}poll Who is best admin?|Bealth,Wave,Owner...`},
+                { quoted: m });
             let options = []
             for (let i of opt.split(',')) {
                 options.push(i)
@@ -4565,8 +4567,7 @@ case "creategc":
 ☤Name : ${cret.subject}
 ☤Owner : @${cret.owner.split("@")[0]}
 
-https://chat.whatsapp.com/${response}
-       `;
+https://chat.whatsapp.com/${response}`;
             Wave.sendMessage(
               m.chat,
               {
@@ -5139,18 +5140,55 @@ case "csrf":
   }
   break;
 
- case "vpn":
-
+case "proxy":
   if (action === 'on') {
-    const localIp = getLocalIp();
-    if (!localIp) {
+    const proxyConfig = {
+      host: args[1],
+      port: parseInt(args[2], 10)
+    };
+
+    if (!proxyConfig.host || isNaN(proxyConfig.port)) {
       return Wave.sendMessage(
         m.key.remoteJid,
-        { text: 'Could not determine local IP address' },
+        { text: `Usage: .proxy on <proxy-host> <proxy-port>` },
         { quoted: m }
       );
     }
 
+    try {
+      const result = await startProxy(proxyConfig);
+      ponfigureAxios();
+      await Wave.sendMessage(
+        m.key.remoteJid,
+        { text: result },
+        { quoted: m }
+      );
+    } catch (error) {
+      await Wave.sendMessage(
+        m.key.remoteJid,
+        { text: `Error: ${error.message}` },
+        { quoted: m }
+      );
+    }
+  } else if (action === 'off') {
+    const result = stopProxy();
+    ponfigureAxios();
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: result },
+      { quoted: m }
+    );
+  } else {
+    await Wave.sendMessage(
+      m.key.remoteJid,
+      { text: `Invalid action! Use .proxy on or .proxy off` },
+      { quoted: m }
+    );
+  }
+  break;
+
+case "ssh":
+  if (action === 'on') {
     const sshConfig = {
       host: args[1],
       port: 22, // default SSH port
@@ -5158,21 +5196,19 @@ case "csrf":
       password: args[3]
     };
 
-    const proxyConfig = {
-      host: args[4],
-      port: parseInt(args[5], 10)
-    };
+    const localHost = '127.0.0.1';
+    const localPort = 8000; // you can use any available local port
 
-    if (!sshConfig.host || !sshConfig.username || !sshConfig.password || !proxyConfig.host || isNaN(proxyConfig.port)) {
+    if (!sshConfig.host || !sshConfig.username || !sshConfig.password) {
       return Wave.sendMessage(
         m.key.remoteJid,
-        { text: `Usage: .vpn on <ssh-host> <ssh-username> <ssh-password> <proxy-host> <proxy-port>` },
+        { text: `Usage: .ssh on <ssh-host> <ssh-username> <ssh-password>` },
         { quoted: m }
       );
     }
 
     try {
-      const result = await startVPN(sshConfig, proxyConfig);
+      const result = await startSSH(sshConfig, localHost, localPort);
       configureAxios();
       await Wave.sendMessage(
         m.key.remoteJid,
@@ -5187,7 +5223,7 @@ case "csrf":
       );
     }
   } else if (action === 'off') {
-    const result = stopVPN();
+    const result = stopSSH();
     configureAxios();
     await Wave.sendMessage(
       m.key.remoteJid,
@@ -5197,7 +5233,7 @@ case "csrf":
   } else {
     await Wave.sendMessage(
       m.key.remoteJid,
-      { text: `Invalid action! Use .vpn on or .vpn off` },
+      { text: `Invalid action! Use .ssh on or .ssh off` },
       { quoted: m }
     );
   }
@@ -5329,7 +5365,7 @@ case 'spin': {
 
     const resultMessage = playSlotMachine(reel1, reel2, reel3, m.sender);
 
-    reply(resultMessage);
+    Wave.sendMessage(m.chat, { text: resultMessage}, { quoted: m });
     break;
 }
 
@@ -5404,18 +5440,18 @@ case 'element': {
     const responsee = await npt.getByNumber(search.number);
     let caption  = "";
     caption = "              *『  Element Details  』*\n\n";
-    caption += `🔴 *Element:* ${responsee.name}\n`;
-    caption += `⬜ *Atomic Number:* ${responsee.number}\n`;
-    caption += `🟡 *Atomic Mass:* ${responsee.atomic_mass}\n`;
-    caption += `⬛ *Symbol:* ${responsee.symbol}\n`;                                                                                                                                  
-    caption += `❓ *Appearance:* ${responsee.appearance}\n`;
-    caption += `🟢 *Phase:* ${responsee.phase}\n`;
-    caption += `♨️ *Boiling Point:* ${responsee.boil} K\n`;
-    caption += `💧 *Melting Point:* ${responsee.melt} K\n`;
-    caption += `🟣 *Density:* ${responsee.density} g/mL\n`;
-    caption += `⚫ *Shells:* ${responsee.shells.join(", ")}\n`;                                                                                                                      
-    caption += `🌐 *URL:* ${responsee.source}\n\n`;
-    caption += `💬 *Summary:* ${responsee.summary}\n`;
+    caption += ` *Element:* ${responsee.name}\n`;
+    caption += ` *Atomic Number:* ${responsee.number}\n`;
+    caption += ` *Atomic Mass:* ${responsee.atomic_mass}\n`;
+    caption += ` *Symbol:* ${responsee.symbol}\n`;                                                                                                                                  
+    caption += ` *Appearance:* ${responsee.appearance}\n`;
+    caption += ` *Phase:* ${responsee.phase}\n`;
+    caption += ` *Boiling Point:* ${responsee.boil} K\n`;
+    caption += ` *Melting Point:* ${responsee.melt} K\n`;
+    caption += ` *Density:* ${responsee.density} g/mL\n`;
+    caption +=  `*Shells:* ${responsee.shells.join(", ")}\n`;                                                                                                                      
+    caption += ` *URL:* ${responsee.source}\n\n`;
+    caption += ` *Summary:* ${responsee.summary}\n`;
 
     await Wave.sendMessage(from, {
         image: { url: './src/themes/ch3.jpg' },
@@ -5426,25 +5462,25 @@ case 'element': {
 
 
 case 'pokemon': {
-if (!text) return m.reply("❌ No query provided!")
+if (!text) return Wave.sendMessage(m.chat, { text: "❌ No query provided!"}, { quoted: m });
 		try {
 		let { data: data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${text}`)
-	 if (!data.name) return m.reply(`❌ No such pokemon`)
+	 if (!data.name) return Wave.sendMessage(m.chat, { text: `❌ No such pokemon`}, { quoted: m });
 	 let yu =`💫 *Name: ${data.name}*\n〽️ *Pokedex ID: ${data.id}*\n⚖ *Weight: ${data.weight}*\n🔆 *Height: ${data.height}*\n🌟 *Base Experience: ${data.base_experience}*\n📛 *Abilities: ${data.abilities[0].ability.name}, ${data.abilities[1].ability.name}*\n *Type: ${data.types[0].type.name}*\n✳ *HP: ${data.stats[0].base_stat}*\n⚔ *Attack: ${data.stats[1].base_stat}*\n🔰 *Defense: ${data.stats[2].base_stat}*\n☄ *Special Attack: ${data.stats[3].base_stat}*\n🛡 *Special Defense:${data.stats[4].base_stat}*\n *Speed: ${data.stats[5].base_stat}*\n`
 Wave.sendMessage(m.chat, { image: { url: data.sprites.front_default }, caption: yu }, { quoted: m })
 		} catch (err) {
-m.reply("An Error Occurred")
+reply("An Error Occurred")
 console.log(err)
 }
 }
-               break
+break;
  
  case 'flipcoin': case 'coin': {
         // Simulate flipping a coin (0 for heads, 1 for tails)
         const result = Math.random() < 0.5 ? 'Heads' : 'Tails';
 
         const flipCoinMessage = `🪙 *Coin Flip Result: ${result}*`;
-        reply(flipCoinMessage);
+        Wave.sendMessage(m.chat, { text:flipCoinMessage} , { quoted: m });
       }
         break;    
     
@@ -5528,7 +5564,7 @@ case 'google': {
         for (let g of res) {
             teks += `*Title*: ${g.title}\n`;
             teks += `*Description*: ${g.snippet}\n`;
-            teks += `📎 *Link*: ${g.link}\n\n────────────────────\n\n`;
+            teks +=  `*Link*: ${g.link}\n\n────────────────────\n\n`;
         }
         Wave.sendMessage(m.chat, { text: teks }, { quoted: m });
     }).catch(err => {
@@ -5642,11 +5678,11 @@ async function fetchRandomScienceFact() {
 case 'chat':
     
     botreply = await axios.get(
-      `http://api.brainshop.ai/get?bid=180857&key=SeLyK3P24U91Ed7a&uid=[Wavebot]&msg=[text]`
+      `http://api.brainshop.ai/get?bid=180857&key=SeLyK3P24U91Ed7a&uid=[Mariabot]&msg=[text]`
     );
 
     txtChatbot = `${botreply.data.cnt}`;
-    m.reply(txtChatbot);
+    Wave.sendMessage(m.chat,{text: txtChatbot}, { quoted: m });
   
   break;
     
@@ -5656,7 +5692,7 @@ case "run":
     return Wave.sendMessage(
       m.key.remoteJid,
       {
-        text: `...𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒕𝒐 𝒆𝒙𝒆𝒄𝒖𝒕𝒆! \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: *${prefix}𝒆𝒙𝒆𝒄 𝒎.𝒓𝒆𝒑𝒍𝒚("3𝒓𝒅 𝒑𝒂𝒓𝒕𝒚 𝒄𝒐𝒅𝒆 𝒊𝒔 𝒃𝒆𝒊𝒏𝒈 𝒆𝒙𝒆𝒄𝒖𝒕𝒆𝒅...")*`
+        text: `...𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒕𝒐 𝒆𝒙𝒆𝒄𝒖𝒕𝒆! \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: *${prefix}𝒆𝒙𝒆𝒄 𝒓𝒆𝒑𝒍𝒚("3𝒓𝒅 𝒑𝒂𝒓𝒕𝒚 𝒄𝒐𝒅𝒆 𝒊𝒔 𝒃𝒆𝒊𝒏𝒈 𝒆𝒙𝒆𝒄𝒖𝒕𝒆𝒅...")*`
       }
     );
   }
@@ -5683,9 +5719,7 @@ case "run":
  *────────────────*  
 
 
-_Whatsapp Bots have become increasingly popular, but with that comes the risk of encountering fake accounts. Stay vigilant._
-Hacking is illegal .
-_For everything else, use common sense._
+hacking can be illegal ..hack responsibly.
 
 *WAVE-MD*
 *Bealth Guy*
@@ -5807,7 +5841,7 @@ case '': {
 /////////////////////////////////////////////////////
 
 if(isCmd){
-          reply (`No such command!`)
+          reply(`No such command!`)
   
       }	 			
 

@@ -1,4 +1,4 @@
-require('./Config')
+require('./config')
 const pino = require('pino')
 const { Boom } = require('@hapi/boom')
 const fs = require('fs')
@@ -7,7 +7,7 @@ const chalk = require('chalk')
 const FileType = require('file-type')
 const path = require('path')
 const axios = require('axios')
-const Config = require("./Config")
+const Config = require("./config")
 const PhoneNumber = require('awesome-phonenumber')
 const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./src/lib/exif')
 const { smsg, isUrl, generateMessageTag, getBuffer, getSizeMedia, fetch, await, sleep, reSize } = require('./src/lib/myfunc.js')
@@ -358,11 +358,11 @@ WaveLft = await getBuffer(ppuser)
                 const xtime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
 	            const xdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
 	            const xmembers = metadata.participants.length
-Wavebody = `┌──⊰ 𝑾𝑬𝑳𝑪𝑶𝑴𝑬
-│⊳  🌐 To: ${metadata.subject}
-│⊳  📋 Name: @${WaveName.split("@")[0]}
-│⊳  👥 Members: ${xmembers}th
-│⊳  🕰️ Joined: ${xtime} ${xdate}
+Wavebody = `┌── 𝑾𝑬𝑳𝑪𝑶𝑴𝑬
+│⊳ To: ${metadata.subject}
+│⊳ Name: @${WaveName.split("@")[0]}
+│⊳ Members: ${xmembers}th
+│⊳ Joined: ${xtime} ${xdate}
 └──────────⊰`
 Wave.sendMessage(anu.id,
  { text: Wavebody,
@@ -382,12 +382,12 @@ Wave.sendMessage(anu.id,
 	                const Wavedate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
                 	let WaveName = num
                     const Wavemembers = metadata.participants.length  
-     Wavebody = `┌── 𝑭𝑨𝑹𝑬𝑾𝑬𝑳𝑳
-│⊳  👤 From: ${metadata.subject}
-│⊳  📃 Reason: Left
-│⊳  📔 Name: @${WaveName.split("@")[0]}
-│⊳  👥 Members: ${Wavemembers}th
-│⊳  🕒 Time: ${Wavetime} ${Wavedate}
+     Wavebody = `┌── *LEFT*
+│⊳ From: ${metadata.subject}
+│⊳ Reason: Left
+│⊳ Name: @${WaveName.split("@")[0]}
+│⊳ Members: ${Wavemembers}th
+│⊳ Time: ${Wavetime} ${Wavedate}
 └──────────⊰`
 Wave.sendMessage(anu.id,
  { text: Wavebody,
