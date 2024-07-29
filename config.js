@@ -10,7 +10,7 @@ global.location = "Kenya"
 global.botname = process.env.BOTNAME || "WAVE-MD",
 
 //sticker details
-global.stickername = process.env.STICKER || "ꪶ♱ꫂ 𝐵𝐸𝐴𝐿𝑇𝐻 𝐺𝑈𝑌 ⛧",
+global.stickername = process.env.STICKER || "bealth guy",
 global.packname = 'Sticker By'
 global.author = process.env.AUTHOR || "ꪶ♱ꫂ 𝐵𝐸𝐴𝐿𝑇𝐻 𝐺𝑈𝑌 ⛧",
 //console view/theme

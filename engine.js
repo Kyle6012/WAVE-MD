@@ -653,9 +653,9 @@ reply('Success in turning off all autoblock in this group')
   */
   
    case 'antilink': {
-                            if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                            if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
 if (args[0] === "on") {
 if (AntiLinkAll) return Wave.sendMessage(m.chat, { text: 'Already activated'}, { quoted: m });
 ntilinkall.push(from)
@@ -769,10 +769,10 @@ case 'clearsession': {
 
             case 'join': {
                 try {
-                    if (!isCreator) return reply(mess.owner)
+                    if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                     if (!text) return Wave.sendMessage(m.chat, { text: 'Enter Group Link!'}, { quoted: m });
                     if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) return reply('Link Invalid!')
-                    reply(mess.wait)
+                    Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
                     let result = args[0].split('https://chat.whatsapp.com/')[1]
                     await Wave.groupAcceptInvite(result).then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 } catch {
@@ -781,7 +781,7 @@ case 'clearsession': {
                 break;     
                 }
             case 'session': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 Wave.sendMessage(m.chat, { text: 'Wait a moment, currently retrieving your session file'}, { quoted: m });
                 let sesi = await fs.readFileSync('./session/creds.json')
                 Wave.sendMessage(m.chat, {
@@ -857,7 +857,7 @@ break;
 
 
             case 'shutdown': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 Wave.sendMessage(m.chat, { text: `*SHUTTING DOWN ...*`}, { quoted: m });
                 await sleep(3000)
                 process.exit()
@@ -872,7 +872,7 @@ break;
                 break;
                 
             case 'autoread': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 if (args.length < 1) return Wave.sendMessage(m.chat, {text: `Example ${prefix + command} on/off`}, { quoted: m });
                 if (q === 'on') {
                     autoread = true
@@ -885,7 +885,7 @@ break;
                 break;
                 
                 case 'autotyping': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 if (args.length < 1) return Wave.Message(m.chat, { text: `Example ${prefix + command} on/off`}, { quoted: m });
                 if (q === 'on') {
                     autoTyping = true
@@ -898,7 +898,7 @@ break;
                 break;
                 
                 case 'autorecording': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 if (args.length < 1) return Wave.Message(m.chat, { text: `Example ${prefix + command} on/off`}, { quoted: m });
                 if (q === 'on') {
                     autoRecording = true
@@ -911,7 +911,7 @@ break;
                 break;
                 
                 case 'autorecordtype': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 if (args.length < 1) return Wave.Message(m.chat, { text: `Example ${prefix + command} on/off`}, { quoted: m });
                 if (q === 'on') {
                     autorecordtype = true
@@ -924,7 +924,7 @@ break;
                 break;
                 
                 case 'autoswview': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 if (args.length < 1) return Wave.Message(m.chat, { text: `Example ${prefix + command} on/off`}, { quoted: m });
                 if (q === 'on') {
                     autoread_status = true
@@ -937,7 +937,7 @@ break;
                 break;
                 
             case 'autobio': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
                 if (q == 'on') {
                     autobio = true
@@ -950,20 +950,20 @@ break;
                 break;
                 
             case 'mode': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 if (args.length < 1) return reply(` Check out this example: ${prefix + command} in public/self`)
                 if (q == 'public') {
                     Wave.public = true
-                    reply(mess.done)
+                    Wave.sendMessage(m.chat, { text: mess.done }, { quoted: m });
                 } else if (q == 'self') {
                     Wave.public = false
-                    reply(mess.done)
+                    Wave.sendMessage(m.chat, { text: mess.done }, { quoted: m });
                 }
                 }
                 break;
                 
             case 'setexif': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 if (!text) return reply(`Example : ${prefix + command} packname|author`)
                 global.packname = text.split("|")[0]
                 global.author = text.split("|")[1]
@@ -974,7 +974,7 @@ break;
             case 'setpp':
             case 'setpp':
             case 'setppbot': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 if (!quoted) return reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (!/image/.test(mime)) return reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (/webp/.test(mime)) return reply(`Send/Reply Image With Caption ${prefix + command}`)
@@ -999,36 +999,36 @@ break;
                         }]
                     })
                     fs.unlinkSync(medis)
-                    reply(mess.done)
+                    Wave.sendMessage(m.chat, { text: mess.done }, { quoted: m });
                 } else {
                     var memeg = await Wave.updateProfilePicture(botNumber, {
                         url: medis
                     })
                     fs.unlinkSync(medis)
-                    reply(mess.done)
+                    Wave.sendMessage(m.chat, { text: mess.done }, { quoted: m });
                 }
                 }
                 break;
                 
             case 'block':
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 let blockw = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
                 await Wave.updateBlockStatus(blockw, 'block').then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 break;
             case 'unblock':
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 let blockww = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
                 await Wave.updateBlockStatus(blockww, 'unblock').then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 break;
             case 'leave':
-                if (!isCreator) return reply(mess.owner)
-                if (!m.isGroup) return reply(mess.group)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
                 reply('....Bye Everyone ')
                 await Wave.groupLeave(m.chat)
                 break;
             case 'bcgc':
             case 'bcgroup': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 if (!text) return reply(`Which text?\n\nExample : ${prefix + command} It's holiday tomorrow `)
                 let getGroups = await Wave.groupFetchAllParticipating()
                 let groups = Object.entries(getGroups).slice(0).map(entry => entry[1])
@@ -1056,7 +1056,7 @@ break;
             }
             break;
             case 'getcase':
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 const getCase = (cases) => {
                     return "case" + `'${cases}'` + fs.readFileSync("engine.js").toString().split('case \'' + cases + '\'')[1].split("break;")[0] + "break;"
                 }
@@ -1064,7 +1064,7 @@ break;
                 break;
             case 'delete':
             case 'del': {
-                if (!isCreator) return reply(mess.done)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.done }, { quoted: m });
                 if (!m.quoted) throw false
                 let {
                     chat,
@@ -1085,9 +1085,9 @@ break;
             break;
 
             case 'closetime':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 if (args[1] == 'second') {
                     var timer = args[0] * `1000`
                 } else if (args[1] == 'minute') {
@@ -1108,9 +1108,9 @@ break;
                 }, timer)
                 break;
             case 'opentime':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 if (args[1] == 'second') {
                     var timer = args[0] * `1000`
                 } else if (args[1] == 'minute') {
@@ -1131,16 +1131,16 @@ break;
                 }, timer)
                 break;
             case 'kick':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 let blockwww = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
                 await Wave.groupParticipantsUpdate(m.chat, [blockwww], 'remove')
                 break;
             case 'add':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 let blockwwww = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
                 caption = []
                 for (const i of blockwwww) {
@@ -1176,41 +1176,41 @@ break;
 		}
                 break;
             case 'promote':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 let blockwwwww = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
                 await Wave.groupParticipantsUpdate(m.chat, [blockwwwww], 'promote').then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 break;
             case 'demote':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 let blockwwwwwa = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
                 await Wave.groupParticipantsUpdate(m.chat, [blockwwwwwa], 'demote').then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 break;
             case 'setname':
             case 'setsubject':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 if (!text) return 'Text ?'
-                await Wave.groupUpdateSubject(m.chat, text).then((res) => reply(mess.done)).catch((err) => reply(json(err)))
-                break;
+                await Wave.groupUpdateSubject(m.chat, text).then((res) => Wave.sendMessage(m.chat, { text: mess.done }, { quoted: m })).catch((err) => reply(json(err)))
+              break;
             case 'setdesc':
             case 'setdesk':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 if (!text) return 'Text ?'
-                await Wave.groupUpdateDescription(m.chat, text).then((res) => reply(mess.done)).catch((err) => reply(json(err)))
+                await Wave.groupUpdateDescription(m.chat, text).then((res) => Wave.sendMessage(m.chat, { text: mess.done }, { quoted: m })).catch((err) => reply(json(err)))
                 break;
             case 'setppgroup':
             case 'setppgrup':
             case 'setppgc':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 if (!quoted) return reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (!/image/.test(mime)) return reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (/webp/.test(mime)) return reply(`Send/Reply Image With Caption ${prefix + command}`)
@@ -1235,13 +1235,13 @@ break;
                         }]
                     })
                     fs.unlinkSync(medis)
-                    reply(mess.done)
+                    Wave.sendMessage(m.chat, { text: mess.done }, { quoted: m });
                 } else {
                     var memeg = await Wave.updateProfilePicture(m.chat, {
                         url: medis
                     })
                     fs.unlinkSync(medis)
-                    reply(mess.done)
+                    Wave.sendMessage(m.chat, { text: mess.done }, { quoted: m });
                 }
                 break;
 case 'tag': case 'tagall': case 'all':{
@@ -1261,9 +1261,9 @@ case 'tag': case 'tagall': case 'all':{
  
  
             case 'totag':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isBotAdmins) return reply(mess.botAdmin)
-                if (!isAdmins) return reply(mess.admin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
+                if (!isAdmins) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
                 if (!m.quoted) return reply(`Reply messages with captions ${prefix + command}`)
                 Wave.sendMessage(m.chat, {
                     forward: m.quoted.fakeObj,
@@ -1272,9 +1272,9 @@ case 'tag': case 'tagall': case 'all':{
                 break;
             case 'group':
             case 'grup':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 if (args[0] === 'close') {
                     await Wave.groupSettingUpdate(m.chat, 'announcement').then((res) => reply(`*_SUCCESSFULLY CLOSED THE GRUP_\n\ngrup has been closed for the time being 😽*`)).catch((err) => reply(json(err)))
                 } else if (args[0] === 'open') {
@@ -1284,9 +1284,9 @@ case 'tag': case 'tagall': case 'all':{
                 }
                 break;
             case 'editinfo':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 if (args[0] === 'open') {
                     await Wave.groupSettingUpdate(m.chat, 'unlocked').then((res) => reply(`Successfully Opened Group Edit Info 🕊️`)).catch((err) => reply(json(err)))
                 } else if (args[0] === 'close') {
@@ -1298,8 +1298,8 @@ case 'tag': case 'tagall': case 'all':{
             case "gclink":
       case "grouplink":
         {
-                              if (!m.isGroup) return reply(mess.group)
-                  if (!isBotAdmins) return reply(mess.botAdmin)            
+                              if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                  if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });            
 
           let response = await Wave.groupInviteCode(m.chat);
           Wave.sendMessage(
@@ -1314,9 +1314,9 @@ case 'tag': case 'tagall': case 'all':{
         
             case 'revoke':
             case 'resetlink':
-                if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
                 await Wave.groupRevokeInvite(m.chat)
                     .then(res => {
                         reply(`Successful Reset, Group Invite Link ${groupMetadata.subject}`)
@@ -1347,10 +1347,10 @@ let repoInfo = await axios.get("https://api.github.com/repos/Kyle6012/WAVE-MD");
         
             
 
-                                case 'sticker':
+            case 'sticker':
             case 'stiker':
             case 's': {
-                if (!quoted) return reply(` Reply to Video/Image with Caption ${prefix + command} `)
+                if (!quoted) return Wave.sendMessages(m.chat, { text: ` Reply to Video/Image with Caption ${prefix + command} `}, { quoted: m });
                 if (/image/.test(mime)) {
                     let media = await quoted.download()
                     let encmedia = await Wave.sendImageAsSticker(m.chat, media, m, {
@@ -1359,7 +1359,7 @@ let repoInfo = await axios.get("https://api.github.com/repos/Kyle6012/WAVE-MD");
                     })
                     await fs.unlinkSync(encmedia)
                 } else if (isVideo || /video/.test(mime)) {
-                    if ((quoted.msg || quoted).seconds > 11) return reply('Maximum 10 seconds!')
+                    if ((quoted.msg || quoted).seconds > 11) return Wave.sendMessage(m.chat, {text: 'Maximum 10 seconds!'}, { quoted: m });
                     let media = await quoted.download()
                     let encmedia = await Wave.sendVideoAsSticker(m.chat, media, m, {
                         packname: global.stickername,
@@ -1367,15 +1367,15 @@ let repoInfo = await axios.get("https://api.github.com/repos/Kyle6012/WAVE-MD");
                     })
                     await fs.unlinkSync(encmedia)
                 } else {
-                    return reply(` 𝑹𝒆𝒑𝒍𝒚 𝒕𝒐 𝑽𝒊𝒅𝒆𝒐/𝑰𝒎𝒂𝒈𝒆 𝑾𝒊𝒕𝒉 𝑪𝒂𝒑𝒕𝒊𝒐𝒏 ${prefix + command} `)
+                    return Wave.sendMessage(m.chat, { text: ` 𝑹𝒆𝒑𝒍𝒚 𝒕𝒐 𝑽𝒊𝒅𝒆𝒐/𝑰𝒎𝒂𝒈𝒆 𝑾𝒊𝒕𝒉 𝑪𝒂𝒑𝒕𝒊𝒐𝒏 ${prefix + command} `}, { quoted: m });
                 }
             }
             break;
             case 'smeme': {
                 let respond = `Send/Reply image/sticker with caption ${prefix + command} text1|text2`
-                if (!/image/.test(mime)) return reply(respond)
-                if (!text) return reply(respond)
-                reply(mess.wait)
+                if (!/image/.test(mime)) return Wave.sendMessage(m.chat, { text: respond}, { quoted: m });
+                if (!text) return Wave.sendMessage(m.chat, { text: respond}, { quoted: m });
+                Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
                 atas = text.split('|')[0] ? text.split('|')[0] : '-'
                 bawah = text.split('|')[1] ? text.split('|')[1] : '-'
                 let dwnld = await Wave.downloadAndSaveMediaMessage(qmsg)
@@ -1389,7 +1389,7 @@ let repoInfo = await axios.get("https://api.github.com/repos/Kyle6012/WAVE-MD");
             }
             break;
 case 'swm': case 'stickerwm': case 'take':{
-if (!args.join(" ")) return reply(`Where is the text?`)
+if (!args.join(" ")) return Wave.sendMessage(m.chat, { text: `Where is the text?`}, { quoted: m });
 const swn = args.join(" ")
 const pcknm = swn.split("|")[0]
 const atnm = swn.split("|")[1]
@@ -1400,18 +1400,18 @@ Wave.sendMessage(from, {sticker:fs.readFileSync("gifee.webp")},{quoted:m})
 let media = await quoted.download()
 let encmedia = await Wave.sendImageAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
 } else if (/video/.test(mime)) {
-if ((quoted.msg || quoted).seconds > 11) return reply('Maximum 10 Seconds!')
+if ((quoted.msg || quoted).seconds > 11) return Wave.sendMessage(m.chat, { text: 'Maximum 10 seconds!'}, { quoted: m });
 let media = await quoted.download()
 let encmedia = await Wave.sendVideoAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
 } else {
-reply(`Photo/Video?`)
+Wave.sendMessage(m.chat, { text:`Photo/Video?`}, { quoted: m});
 }
 }
 break;
             case 'toimage':
             case 'toimg': {
-                if (!/webp/.test(mime)) return reply(`𝑹𝒆𝒑𝒍𝒚 𝒔𝒕𝒊𝒄𝒌𝒆𝒓 𝒘𝒊𝒕𝒉 𝒄𝒂𝒑𝒕𝒊𝒐𝒏 ${prefix + command} `)
-                reply(mess.wait)
+                if (!/webp/.test(mime)) return Wave.sendMessage(m.chat, { text: `𝑹𝒆𝒑𝒍𝒚 𝒔𝒕𝒊𝒄𝒌𝒆𝒓 𝒘𝒊𝒕𝒉 𝒄𝒂𝒑𝒕𝒊𝒐𝒏 ${prefix + command} `}, { quoted: m });
+                Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
                 let media = await Wave.downloadAndSaveMediaMessage(qmsg)
                 let ran = await getRandom('.png')
                 exec(`ffmpeg -i ${media} ${ran}`, (err) => {
@@ -1430,8 +1430,8 @@ break;
             break;
             case 'tomp4':
             case 'tovideo': {
-                if (!/webp/.test(mime)) return reply(`𝑹𝒆𝒑𝒍𝒚 𝒔𝒕𝒊𝒄𝒌𝒆𝒓 𝒘𝒊𝒕𝒉 𝒄𝒂𝒑𝒕𝒊𝒐𝒏 ${prefix + command} `)
-                reply(mess.wait)
+                if (!/webp/.test(mime)) return Wave.sendMessage(m.chat, { text: `𝑹𝒆𝒑𝒍𝒚 𝒔𝒕𝒊𝒄𝒌𝒆𝒓 𝒘𝒊𝒕𝒉 𝒄𝒂𝒑𝒕𝒊𝒐𝒏 ${prefix + command} `}, { quoted: m });
+                Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
                 let media = await Wave.downloadAndSaveMediaMessage(qmsg)
                 let webpToMp4 = await webp2mp4File(media)
                 await Wave.sendMessage(m.chat, {
@@ -1447,13 +1447,13 @@ break;
             }
             break;
             case 'checkdeath':
-             if (!text) return replay(`Use Someone's Name, Example : ${prefix + command} Bealth`)
+             if (!text) return Wave.sendMessage(m.chat, { text: `Use Someone's Name, Example : ${prefix + command} Bealth`}, { quoted: m });
               predea = await axios.get(`https://api.agify.io/?name=${q}`)
-              reply(`Name : ${predea.data.name}\n*Dead At Age :* ${predea.data.age} Year.\n\n_Quick, Quick, Repent Bro, Because No One Knows About Death_`)
+              Wave.sendMessage(m.chat, { text: `Name : ${predea.data.name}\n*Dead At Age :* ${predea.data.age} Year.\n\n_Quick, Quick, Repent Bro, Because No One Knows About Death_`}, { quoted: m });
               break;
             case 'tomp3': {
-                if (!/video/.test(mime) && !/audio/.test(mime)) return reply(`Send/Reply Video/Audio that you want to make into MP3 with caption ${prefix + command}`)
-                reply(mess.wait)
+                if (!/video/.test(mime) && !/audio/.test(mime)) return Wave.sendMessage(m.chat, { text: `Send/Reply Video/Audio that you want to make into MP3 with caption ${prefix + command}`}, { quoted: m });
+                Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
                 let media = await Wave.downloadMediaMessage(qmsg)
                 let audio = await toAudio(media, 'mp4')
                 Wave.sendMessage(m.chat, {
@@ -1468,8 +1468,8 @@ break;
             break;
             case 'tovn':
             case 'toptt': {
-                if (!/video/.test(mime) && !/audio/.test(mime)) return reply(`Reply Video/Audio that you want to make into a VN with caption ${prefix + command}`)
-                reply(mess.wait)
+                if (!/video/.test(mime) && !/audio/.test(mime)) return Wave.sendMessage(m.chat, { text: `Reply Video/Audio that you want to make into a VN with caption ${prefix + command}`}, { quoted: m });
+                Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
                 let media = await Wave.downloadMediaMessage(qmsg)
                 let {
                     toPTT
@@ -1486,8 +1486,8 @@ break;
             }
             break;
             case 'togif': {
-                if (!/webp/.test(mime)) return reply(`Reply sticker with caption *${prefix + command}*`)
-                reply(mess.wait)
+                if (!/webp/.test(mime)) return Wave.sendMessage(m.chat, { text: `Reply sticker with caption *${prefix + command}*`}, { quoted: m });
+                Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
                 let media = await Wave.downloadAndSaveMediaMessage(qmsg)
                 let webpToMp4 = await webp2mp4File(media)
                 await Wave.sendMessage(m.chat, {
@@ -1504,14 +1504,14 @@ break;
             }
             break;
             case 'tourl': {
-                reply(mess.wait)
+                Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
                 let media = await Wave.downloadAndSaveMediaMessage(qmsg)
                 if (/image/.test(mime)) {
                     let anu = await TelegraPh(media)
-                    reply(util.format(anu))
+                    Wave.sendMessage(m.chat, {text: util.format(anu)}, { quoted: m });
                 } else if (!/image/.test(mime)) {
                     let anu = await UploadFileUgu(media)
-                    reply(util.format(anu))
+                    Wave.sendMessage(m.chat, {text: util.format(anu)}, { quoted: m });
                 }
                 await fs.unlinkSync(media)
 
@@ -1519,9 +1519,9 @@ break;
             break;
             case 'emojimix': {
                 let [emoji1, emoji2] = text.split`+`
-                if (!emoji1) return reply(`Example : ${prefix + command} 😅+🤔`)
-                if (!emoji2) return reply(`Example : ${prefix + command} 😅+🤔`)
-                reply(mess.wait)
+                if (!emoji1) return Wave.sendMessage(m.chat, { text: `Example : ${prefix + command} 😅+🤔`}, { quoted: m });
+                if (!emoji2) return Wave.sendMessage(m.chat, { text: `Example : ${prefix + command} 😅+🤔`}, { quoted: m });
+                Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
                 let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`)
                 for (let res of anu.results) {
                     let encmedia = await Wave.sendImageAsSticker(m.chat, res.url, m, {
@@ -1535,7 +1535,7 @@ break;
             break;
             case 'toonce':
             case 'toviewonce': {
-                if (!quoted) return reply(`Reply Image/Video`)
+                if (!quoted) return Wave.sendMessage(m.chat, { text: `Reply to image or video`}, { quoted: m });
                 if (/image/.test(mime)) {
                     anuan = await Wave.downloadAndSaveMediaMessage(quoted)
                     Wave.sendMessage(m.chat, {
@@ -1564,7 +1564,7 @@ break;
             }
             break;
             case 'toqr': {
-                if (!q) return reply(' Please include link or text!')
+                if (!q) return Wave.sendMessage(m.chat, { text: ' Please include link or text!'}, { quoted: m });
                 const QrCode = require('qrcode-reader')
                 const qrcode = require('qrcode')
                 let qyuer = await qrcode.toDataURL(q, {
@@ -1586,28 +1586,26 @@ break;
             }
             break;
             case 'fliptext': {
-                if (args.length < 1) return reply(`Example:\n${prefix}fliptext bealth`)
+                if (args.length < 1) return Wave.sendMessage(m.chat, { text: `Example:\n${prefix}fliptext bealth`}, { quoted: m });
                 quere = args.join(" ")
                 flipe = quere.split('').reverse().join('')
-                reply(`\`\`\`「 FLIP TEXT 」\`\`\`\n*•> Normal :*\n${quere}\n*•> Flip :*\n${flipe}`)
+                Wave.sendMessage(m.chat, { text: `\`\`\`「 FLIP TEXT 」\`\`\`\n*•> Normal :*\n${quere}\n*•> Flip :*\n${flipe}`}, { quoted: m });
             }
             break;
 
             case 'afk':
-                if (!m.isGroup) return reply(mess.group)
-                if (isAfkOn) return reply("Already afk")
+                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (isAfkOn) return Wave.sendMessage(m.chat, { text: "Already afk"}, { quoted: m });
                 let reason = text ? text : 'Nothing.'
                 afk.addAfkUser(m.sender, Date.now(), reason, _afk)
-                reply(`@${m.sender.split('@')[0]} Currently AFK\nWith reason : ${reason}`)
+                Wave.sendMessage(m.chat, { text: `@${m.sender.split('@')[0]} Currently AFK\nWith reason : ${reason}`}, { quoted: m });
                 break;
       case 'qc': {
-                const {
-                    quote
-                } = require('./src/lib/quote.js')
-                if (!q) return reply('Enter Text')
+                const { quote } = require('./src/lib/quote.js')
+                if (!q) return Wave.sendMessage(m.chat, { text: 'Enter Text'}, { quoted: m });
                 let ppnyauser = await await Wave.profilePictureUrl(m.sender, 'image').catch(_ => 'https://telegra.ph/file/6880771a42bad09dd6087.jpg')
                 const rest = await quote(q, pushname, ppnyauser)
-                reply(mess.wait)
+                Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
                 Wave.sendImageAsSticker(m.chat, rest.result, m, {
                     packname: `${global.stickername}`
 
@@ -1617,13 +1615,13 @@ break;
 
 case 'play':  case 'song': {
 Wave.sendMessage(from, { react: { text: "📥", key: m.key }}) 
-if (!text) return reply(`𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒔𝒐𝒏𝒈 𝒏𝒂𝒎𝒆  \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: ${prefix + command}  sweet Jesus`)
+if (!text) return Wave.sendMessage(m.chat, { text: `𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒔𝒐𝒏𝒈 𝒏𝒂𝒎𝒆  \n\n 𝑬𝒙𝒂𝒎𝒑𝒍𝒆: ${prefix + command}  sweet Jesus`}, { quoted: m });
 const Bealthplaymp3 = require('./src/lib/ytdl2')
 let yts = require("youtube-yts")
         let search = await yts(text)
         let anup3k = search.videos[0]
 const pl= await Bealthplaymp3.mp3(anup3k.url);
-reply('```✅ Song found! Sending...```');
+Wave.sendMessage(m.chat, { text: '```✅ Song found! Sending...```'}, { quoted: m });
 await Wave.sendMessage(m.chat,{
     audio: fs.readFileSync(pl.path),
     fileName: anup3k.title + '.mp3',
@@ -1645,7 +1643,7 @@ break;
 
 case 'ytmp4': case 'ytvideo': {
 const Bealthvidoh = require('./src/lib/ytdl2')
-if (args.length < 1 || !isUrl(text) || !Bealthvidoh.isYTUrl(text)) reply(`Where is the link??\n\nExample : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`)
+if (args.length < 1 || !isUrl(text) || !Bealthvidoh.isYTUrl(text)) Wave.sendMessage(m.chat, { text: `Where is the link??\n\nExample : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`}, { quoted: m });
 const vid=await Bealthvidoh.mp4(text)
 const ytc=`
 *${themeemoji}Tittle:* ${vid.title}
@@ -1824,7 +1822,7 @@ break;
 
 case 'dare':
        
-	                if (!m.isGroup) return reply(mess.group)
+	                if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
                    const dare =[
 "eat 2 tablespoons of rice without any side dishes, if it's dragging you can drink",
          "spill people who make you pause",
@@ -1915,7 +1913,7 @@ case 'dare':
                        
 
 case 'truth':
-                      if (!m.isGroup) return reply(mess.group)
+                      if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
     
 	
                            const truth =[
@@ -2014,7 +2012,7 @@ case 'truth':
                            Wave.sendMessage(from, { image: buffer, caption: '*You have chosen Truth*\n'+ Wavetruthww }, {quoted:m})
                            break;
 case 'insult': {
-	if (!m.isGroup) return reply(mess.group)
+	if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
 	const insults = [
   "You're as useless as the 'ueue' in 'queue'.",
   "I'm jealous of all the people who haven't met you.",
@@ -2061,7 +2059,7 @@ break;
 
 
 case 'flirt': {
-	if (!m.isGroup) return reply(mess.group)
+	if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
 	const flirtLines = [
   "Are you a magician? Because whenever I look at you, everyone else disappears.",
   "Do you have a map? Because I just got lost in your eyes.",
@@ -2105,7 +2103,7 @@ break;
   
 
 case 'shayari': {
-	if (!m.isGroup) return reply(mess.group)
+	if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
 	const shayariLines = [
   "Dil se roya humne, aankhon se nikla hai pyaar,\nZakhm gehra humne khaya, dil se hai yaar.\n",
   "Khuda ke bando pe naaz hai insaan ko,\nApne hi hatho se khud ne ki hai tabaahi.\n",
@@ -2132,7 +2130,7 @@ break;
 
 
 case 'joke': {
-	if (!m.isGroup) return reply(mess.group)
+	if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
 	
 	const jokes = [
   "Why don't scientists trust atoms? Because they make up everything!",
@@ -2481,7 +2479,7 @@ break
 
 case "couple":
         {
-          if (!m.isGroup) return reply(mess.group);
+          if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
           let member = participants.map((u) => u.id);
           let orang = member[Math.floor(Math.random() * member.length)];
           let jodoh = member[Math.floor(Math.random() * member.length)];
@@ -2516,13 +2514,13 @@ Cieeee, What's Going On❤️💖👀`,
         //mode 
         
 case 'public': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 Wave.public = true
                 reply('*Successful in Changing To Public Usage*')
             }
             break;
             case 'self': {
-                if (!isCreator) return reply(mess.owner)
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                 Wave.public = false
                 reply('*Successful in Changing To Self Usage*')
             }
@@ -2531,8 +2529,8 @@ case 'public': {
 
         ///nsfw commands
       case 'nsfwmenu':
-        if (!isNsfw) return reply(mess.nsfw);
-        if (!m.isGroup) return reply(mess.group);
+        if (!isNsfw) return Wave.sendMessage(m.chat, { text: mess.nsfw }, { quoted: m });;
+        if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
         
         const nsfwmenu=`┌── _*🔞NSFW 🔞*_
 │⊳ 💦  ${prefix}blowjob
@@ -3730,7 +3728,7 @@ case 'nobg': case 'removebg': case 'remove-bg': {
 	    hmm = await './src/remobg-'+getRandom('')
 	    localFile = await Wave.downloadAndSaveMediaMessage(quoted, hmm)
 	    outputFile = await './src/hremo-'+getRandom('.png')
-	    m.reply(mess.wait)
+	    m.Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
 	    remobg.removeBackgroundFromImageFile({
 	      path: localFile,
 	      apiKey: apinobg,
@@ -3771,9 +3769,9 @@ case 'profile':
     break;
             
             case 'promoteall': {
- if (!m.isGroup) return reply(mess.group);
-                 if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+ if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
+                 if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
   const Wavepromoteall = (args[0] === 'numBut')
   ? text.replace(`${args[0]} `, '').split('|')
   : (Number(args[0]))
@@ -3791,9 +3789,9 @@ case 'profile':
 }
 break
 case 'demoteall': {
-if (!m.isGroup) return reply(mess.group);
-                 if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
+                 if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
   const Wavedemoteall = (args[0] === 'numBut')
   ? text.replace(`${args[0]} `, '').split('|')
   : (Number(args[0]))
@@ -3812,9 +3810,9 @@ if (!m.isGroup) return reply(mess.group);
 break
 
 case 'joinrequest': {
-    if (!m.isGroup) return reply(mess.group);
-    if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-    if (!isBotAdmins) return reply(mess.botAdmin)
+    if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
+    if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+    if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
     const response = await Wave.groupRequestParticipantsList(m.chat);
     if (!response || !response.length) {
         Wave.sendMessage(m.chat, { text: 'No pending join requests. 😕' }, { quoted: m });
@@ -3893,9 +3891,9 @@ break;
         
               case 'nsfw': {
    Wave.sendMessage(from, { react: { text: "🔞", key: m.key }}) 
- if (!m.isGroup) return reply(mess.group);
-                 if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+ if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
+                 if (!isAdmins && !isGroupOwner && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
 if (args[0] === "on") {
 if (AntiNsfw) return reply('Already activated✅️')
 isnsfw.push(from)
@@ -3933,79 +3931,79 @@ case 'foxgirl':
 case 'headband':
 case 'hatsunemiku':
 case 'ribbons':
-    if (!m.isGroup) return reply(mess.group);
-    if (!isNsfw) return reply(mess.nsfw);
+    if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
+    if (!isNsfw) return Wave.sendMessage(m.chat, { text: mess.nsfw }, { quoted: m });;
     const waifpoudd = await axios.get(`https://fantox-apis.vercel.app/${command}`);
     Wave.sendMessage(m.chat, { caption: 'OMG🥵', image: { url: waifpoudd.data.url } }, { quoted: m });
     break;
     
         case 'blowjob':
- if (!m.isGroup) return reply(mess.group);
-   if (!isNsfw) return reply(mess.nsfw);
+ if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
+   if (!isNsfw) return Wave.sendMessage(m.chat, { text: mess.nsfw }, { quoted: m });;
 var ahegaonsfw = JSON.parse(fs.readFileSync('./src/nsfw/blowjob.json'))
 var Waveyresult = pickRandom(ahegaonsfw)
 Wave.sendMessage(m.chat, { caption: mess.done, image: { url: Waveyresult.url } }, { quoted: m })
 break;
 
 case 'cum':
- if (!m.isGroup) return reply(mess.group);
-   if (!isNsfw) return reply(mess.nsfw);
+ if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
+   if (!isNsfw) return Wave.sendMessage(m.chat, { text: mess.nsfw }, { quoted: m });;
 var ahegaonsfw = JSON.parse(fs.readFileSync('./src/nsfw/cum.json'))
 var Waveyresult = pickRandom(ahegaonsfw)
 Wave.sendMessage(m.chat, { caption: mess.done, image: { url: Waveyresult.url } }, { quoted: m })
 break;
 
 case 'foot':
- if (!m.isGroup) return reply(mess.group); 
-  if (!isNsfw) return reply(mess.nsfw);
+ if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });; 
+  if (!isNsfw) return Wave.sendMessage(m.chat, { text: mess.nsfw }, { quoted: m });;
 var ahegaonsfw = JSON.parse(fs.readFileSync('./src/nsfw/foot.json'))
 var Waveyresult = pickRandom(ahegaonsfw)
 Wave.sendMessage(m.chat, { caption: mess.done, image: { url: Waveyresult.url } }, { quoted: m })
 break;
 
 case 'gangbang':
- if (!m.isGroup) return reply(mess.group);
-   if (!isNsfw) return reply(mess.nsfw);
+ if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
+   if (!isNsfw) return Wave.sendMessage(m.chat, { text: mess.nsfw }, { quoted: m });;
 var ahegaonsfw = JSON.parse(fs.readFileSync('./src/nsfw/gangbang.json'))
 var Waveyresult = pickRandom(ahegaonsfw)
 Wave.sendMessage(m.chat, { caption: mess.done, image: { url: Waveyresult.url } }, { quoted: m })
 break;
 
 case 'hentai':
- if (!m.isGroup) return reply(mess.group);
-   if (!isNsfw) return reply(mess.nsfw);
+ if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
+   if (!isNsfw) return Wave.sendMessage(m.chat, { text: mess.nsfw }, { quoted: m });;
 var ahegaonsfw = JSON.parse(fs.readFileSync('./src/nsfw/hentai.json'))
 var Waveyresult = pickRandom(ahegaonsfw)
 Wave.sendMessage(m.chat, { caption: mess.done, image: { url: Waveyresult.url } }, { quoted: m })
 break;
 
 case 'pussy':
- if (!m.isGroup) return reply(mess.group);   
-if (!isNsfw) return reply(mess.nsfw);
+ if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;   
+if (!isNsfw) return Wave.sendMessage(m.chat, { text: mess.nsfw }, { quoted: m });;
 var ahegaonsfw = JSON.parse(fs.readFileSync('./src/nsfw/pussy.json'))
 var Waveyresult = pickRandom(ahegaonsfw)
 Wave.sendMessage(m.chat, { caption: mess.done, image: { url: Waveyresult.url } }, { quoted: m })
 break;
 
 case 'ass':
- if (!m.isGroup) return reply(mess.group);  
- if (!isNsfw) return reply(mess.nsfw);
+ if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;  
+ if (!isNsfw) return Wave.sendMessage(m.chat, { text: mess.nsfw }, { quoted: m });;
 var ahegaonsfw = JSON.parse(fs.readFileSync('./src/nsfw/ass.json'))
 var Waveyresult = pickRandom(ahegaonsfw)
 Wave.sendMessage(m.chat, { caption: mess.done, image: { url: Waveyresult.url } }, { quoted: m })
 break;
 
 case 'trap' :
- if (!m.isGroup) return reply(mess.group);  
- if (!isNsfw) return reply(mess.nsfw);
+ if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;  
+ if (!isNsfw) return Wave.sendMessage(m.chat, { text: mess.nsfw }, { quoted: m });;
  waifudd = await axios.get(`https://waifu.pics/api/nsfw/${command}`)       
 Wave.sendMessage(m.chat, { caption: mess.done, image: { url:waifudd.data.url } }, { quoted: m })
 break;
 
 case 'maal': {
-  if (!isNsfw) return reply(mess.nsfw);
-  if (!m.isGroup) return reply(mess.group);
-  reply(mess.wait);
+  if (!isNsfw) return Wave.sendMessage(m.chat, { text: mess.nsfw }, { quoted: m });;
+  if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
+  Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });;
   await Wave.sendMessage(m.chat, {
     image: await getBuffer('https://ayushhh.onrender.com'),
     caption: 'OMG 🥵',
@@ -4014,7 +4012,7 @@ case 'maal': {
 break;
 
 case 'doraemon': {
-  if (!m.isGroup) return reply(mess.group);
+  if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
 
   try {
     // Fetch the image
@@ -4073,7 +4071,7 @@ case 'doraemon': {
 
 
 case 'pokemon': {
-  if (!m.isGroup) return reply(mess.group);
+  if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
 
   try {
     // Fetch the image
@@ -4133,7 +4131,7 @@ case 'pokemon': {
 
 
 case 'zero-two': {
-  if (!m.isGroup) return reply(mess.group);
+  if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
 
   try {
     // Fetch the image
@@ -4195,7 +4193,7 @@ case 'zero-two': {
 			    case 'hd': {
 			if (!quoted) return Wave.sendMessage(m.chat, { text: `Where is the picture?`}, { quoted: m });
 			if (!/image/.test(mime)) return Wave.sendMessage(m.chat, { text:  `Send/Reply Photos With Captions ${prefix + command}`}, { quoted: m });
-			reply(mess.wait)
+			Wave.sendMessage(m.chat, { text: mess.wait}, { quoted: m });
 			const { remini } = require('./src/lib/remini')
 			let media = await quoted.download()
 			let proses = await remini(media, "enhance")
@@ -4212,7 +4210,7 @@ case 'zero-two': {
                  case 'prettycheck':
                     case 'lovelycheck':
                       case 'uglycheck':
-if (!m.isGroup) return reply(mess.group);
+if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });;
 const cex = body.slice(0)
 const cek1 = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100']
 const cek2 = cek1[Math.floor(Math.random() * cek1.length)]
@@ -4227,16 +4225,16 @@ break;
 ////////
 case 'htag':
 case 'hidetag': {  
-           if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+           if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
  Wave.sendMessage(m.chat, { text : args.join(" ") ? args.join(" ") : '' , mentions: participants.map(a => a.id)}, { quoted: m })
  }
  break;
  case'admin': case 'tagadmin':{		
- if (!m.isGroup) return reply(mess.group)
-                if (!isAdmins && !isCreator) return reply(mess.admin)
-                if (!isBotAdmins) return reply(mess.botAdmin)
+ if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isAdmins && !isCreator) return Wave.sendMessage(m.chat, { text: mess.admin }, { quoted: m });
+                if (!isBotAdmins) return Wave.sendMessage(m.chat, { text: mess.botAdmin }, { quoted: m });
  if (!text) return replay(`*Please quote or write a meaningful message to tag admins to*`)
  let teks = `*𝗚𝗿𝗼𝘂𝗽 𝗔𝗱𝗺𝗶𝗻𝘀*
   
@@ -4253,7 +4251,7 @@ case 'hidetag': {
          case 'pinterest':
       case 'img': {
       if (!args.join(" ")) return reply(`${pushname}Please provide a search term!`);
-        reply(mess.waiting)
+        Wave.sendMessage(m.chat, { text: mess.waiting }, { quoted: m });
         let { pinterest } = require('./src/lib/scraper');
         let anutrest = await pinterest(text);
         let results = [];
@@ -4435,8 +4433,8 @@ break;
 
 case 'welcome':
             case 'left': {
-              if (!m.isGroup) return reply(mess.group)
-                if (!isCreator) return reply(mess.owner)
+              if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.group }, { quoted: m });
+                if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                if (args.length < 1) return Wave.sendMessage(m.chat, { text: 'on/off?'}, { quoted: m });
                if (args[0] === 'on') {
                   welcome = true
@@ -4455,7 +4453,7 @@ if (!isUrl(text) && !text.includes('github.com')) return reply(`Link invalid!!`)
     let repo = text.split('/');
     let url = `https://api.github.com/repos/${repo[3]}/${repo[4]}/zipball`
     let filename = (await fetch(url, {method: 'HEAD'})).headers.get('content-disposition').match(/attachment; filename=(.*)/)[1]
-    Wave.sendMessage(m.chat, { document: { url: url }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => reply(mess.error))
+    Wave.sendMessage(m.chat, { document: { url: url }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => Wave.sendMessage(m.chat, { text: mess.error }, { quoted: m }));
 break;
 
 
@@ -5409,7 +5407,7 @@ break;
 
 case 'slot':
 case 'spin': {
-    if (!m.isGroup) return reply(mess.grouponly);
+    if (!m.isGroup) return Wave.sendMessage(m.chat, { text: mess.grouponly }, { quoted: m });;
 
     const symbols = ["🍍", "🥥", "🍎"];
     const reel1 = symbols[Math.floor(Math.random() * symbols.length)];
@@ -5901,7 +5899,7 @@ if(isCmd){
 		
             default:
                 if (budy.startsWith('=>')) {
-                    if (!isCreator) return reply(mess.owner)
+                    if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
 
                     function Return(sul) {
                         sat = JSON.stringify(sul, null, 2)
@@ -5919,7 +5917,7 @@ if(isCmd){
                 }
 
                 if (budy.startsWith('>')) {
-                    if (!isCreator) return reply(mess.owner)
+                    if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                     try {
                         let evaled = await eval(budy.slice(2))
                         if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
@@ -5929,9 +5927,9 @@ if(isCmd){
                     }
                 }
                 if (budy.startsWith('$')) {
-                    if (!isCreator) return reply(mess.owner)
+                    if (!isCreator) return Wave.sendMessage(m.chat, { text: mess.owner }, { quoted: m });
                     exec(budy.slice(2), (err, stdout) => {
-                        if (err) return reply(err)
+                        if (err) return Wave.sendMessage(m.chat, { text: err }, { quoted: m });
                         if (stdout) return reply(stdout)
                     })
                 }
