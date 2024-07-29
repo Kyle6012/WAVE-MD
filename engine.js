@@ -44,6 +44,7 @@ const { getHelpMessage } = require('./src/pentest/helper');
 const { startFlood, stopFlood } = require('./src/pentest/ddos');
 const { startProxy, stopProxy, ponfigureAxios } = require('./src/pentest/proxy');
 const { startSSH, stopSSH, configureAxios } = require('./src/pentest/ssh');
+const scrapeWebsite = require('./src/pentest/scraper');
 /////log
  global.modnumber = '254745247106' 
 //src/database
@@ -2233,7 +2234,8 @@ break;
 │⊳ ${prefix}authbypass
 │⊳ ${prefix}httpmethod
 │⊳ ${prefix}ddos
-│⊳ ${prefix}vpn 
+│⊳ ${prefix}proxy
+│⊳ ${prefix}ssh
 └──────────
 ┌── _*OWNER*_
 │⊳  ${prefix}session
@@ -2779,7 +2781,7 @@ await Wave.relayMessage(cmsg.key.remoteJid, cmsg.message, {
 })
  break
        
-
+case 'hacking':
 case 'hackingmenu':
     const hackingmenu = `┌── _*Hacking*_
 │⊳ ${prefix}nmap
@@ -2798,7 +2800,8 @@ case 'hackingmenu':
 │⊳ ${prefix}authbypass
 │⊳ ${prefix}httpmethod
 │⊳ ${prefix}ddos
-│⊳ ${prefix}vpn
+│⊳ ${prefix}proxy
+│⊳ ${prefix}ssh
 └──────────`
  let hackmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -5238,6 +5241,35 @@ case "ssh":
     );
   }
   break;
+
+  case 'scrape':
+            try {
+                if (!text) return Wave.sendMessage(m.chat, { text: `*[📝] Please provide the URL you want to scrape.*`}, { quoted: m });
+                const result = await scrapeWebsite(text);
+                if (!result) {
+                    return Wave.sendMessage(m.chat, { text: 'Failed to scrape the website.' }, { quoted: m });
+                }
+
+                const { title, images, videos, audios } = result;
+                let response = `Title: ${title}\n\n`;
+
+                if (images.length > 0) {
+                    response += `Images:\n${images.join('\n')}\n\n`;
+                }
+
+                if (videos.length > 0) {
+                    response += `Videos:\n${videos.join('\n')}\n\n`;
+                }
+
+                if (audios.length > 0) {
+                    response += `Audios:\n${audios.join('\n')}\n\n`;
+                }
+
+                await Wave.sendMessage(m.chat, { text: response }, { quoted: m });
+            } catch {
+                return Wave.sendMessage(m.chat, { text: `*[❗️] An error occurred while scraping the website.*`}, { quoted: m });
+            }
+            break;
 
     ////games 
     

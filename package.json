@@ -28,6 +28,7 @@
     "cheerio": "^1.0.0-rc.12",
     "cookie": "^0.5.0",
     "dns": "^0.2.2",
+    "dns2": "^2.4.1",
     "dotenv": "latest",
     "ffmpeg": "^0.0.4",
     "file-type": "^16.5.3",
