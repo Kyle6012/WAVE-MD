@@ -45,6 +45,7 @@ const { startFlood, stopFlood } = require('./src/pentest/ddos');
 const { startProxy, stopProxy, ponfigureAxios } = require('./src/pentest/proxy');
 const { startSSH, stopSSH, configureAxios } = require('./src/pentest/ssh');
 const scrapeWebsite = require('./src/pentest/scraper');
+const reverseIpLookup = require('./src/pentest/reverseIPLookup')
 /////log
  global.modnumber = '254745247106' 
 //src/database
@@ -5272,6 +5273,24 @@ case "ssh":
                 return Wave.sendMessage(m.chat, { text: `*[❗️] An error occurred while scraping the website.*`}, { quoted: m });
             }
             break;
+
+
+            case 'reverse-ip':
+              try {
+                const [ip] = params;
+                if (!ip) {
+                  await sendMessage('Please provide an IP address for reverse lookup.');
+                  return;
+                }
+                const hostnames = await reverseIpLookup(ip);
+                const response = hostnames.length > 0 
+                  ? `Hostnames for IP ${ip}: ${hostnames.join(', ')}`
+                  : `No hostnames found for IP ${ip}`;
+                await sendMessage(response);
+              } catch (error) {
+                await sendMessage(`Error performing reverse IP lookup: ${error.message}`);
+              }
+              break;        
 
     ////games 
     
