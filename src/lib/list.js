@@ -1,7 +1,7 @@
 const prefix = global.prefa
-  const pushname = m.pushName || "No Name"
+const pushname = m.pushName || "No Name"
 
-const listmenu=`
+const listmenu = `
 *❯❯❯❯ Command List ❮❮❮❮*
 
 𝐇𝐞𝐥𝐥𝐨 𝐦𝐲 𝐝𝐚𝐫𝐥𝐢𝐧𝐠  *${pushname}*
@@ -28,8 +28,6 @@ const listmenu=`
  *Weeb Commands* 
 𝗨𝘀𝗲 : Help7
 
- *Nsfw Commands* 
-𝗨𝘀𝗲 : Help8
 
  *SnapBlend Commands* 
 
@@ -46,6 +44,4 @@ const listmenu=`
   
   
  `
- module.exports = listmenu
- 
- 
+module.exports = listmenu
