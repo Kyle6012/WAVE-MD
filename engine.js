@@ -102,8 +102,9 @@ module.exports = Wave = async(Wave, m, msg, chatUpdate, store) => {
                 m.message.listResponseMessage ? m.singleSelect.selectedRowId ||
                 m.message.InteractiveResponseMessage.NativeFlowResponseMessage ||
                 m.text :
-                ''
+                '' :
             );
+
 
             var budy = (typeof m.text === 'string' ? m.text : '');
             const prefix = global.prefa || ".";
@@ -204,7 +205,7 @@ module.exports = Wave = async(Wave, m, msg, chatUpdate, store) => {
                             "body": `${ownername}`,
                             "previewType": "PHOTO",
                             "thumbnailUrl": ``,
-                            "thumbnail": fs.readFileSync(`./src/thumb.jpg`),
+                            "thumbnail": fs.readFileSync(`./src/themes/thumb.jpg`),
                             "sourceUrl": `${link}`
                         }
                     }
@@ -1020,7 +1021,7 @@ module.exports = Wave = async(Wave, m, msg, chatUpdate, store) => {
                                         showAdAttribution: true,
                                         title: ' *Wave Broadcast* ',
                                         body: `Sent ${i.length} Group`,
-                                        thumbnailUrl: './src/list.jpg',
+                                        thumbnailUrl: './src/themes/list.jpg',
                                         sourceUrl: global.link,
                                         mediaType: 1,
                                         renderLargerThumbnail: true
@@ -1322,7 +1323,7 @@ module.exports = Wave = async(Wave, m, msg, chatUpdate, store) => {
  
 ©️ *Bealth Guy*`
 
-                        Wave.sendMessage(from, { image: { url: './src/thumb.jpg' }, gifPlayback: true, caption: scritxt }, { quoted: m })
+                        Wave.sendMessage(from, { image: { url: './src/themes/thumb.jpg' }, gifPlayback: true, caption: scritxt }, { quoted: m })
                     }
                     break;
 
@@ -1719,7 +1720,7 @@ module.exports = Wave = async(Wave, m, msg, chatUpdate, store) => {
 
  *The bored programmer: Bealth Guy*.`
 
-                    Wave.sendMessage(m.chat, { image: { url: "h./src/list.jpg" }, caption: txxt }, { quoted: m });
+                    Wave.sendMessage(m.chat, { image: { url: "h./src/themes/list.jpg" }, caption: txxt }, { quoted: m });
 
                     break;
                 case "support":
@@ -2491,7 +2492,7 @@ Cieeee, What's Going On❤️💖👀`,
                                         previewType: "PHOTO",
                                         thumbnailUrl: ``,
                                         thumbnail: fs.readFileSync(
-                                            `./src/thumb.jpg`
+                                            `./src/themes/thumb..jpg`
                                         ),
                                         sourceUrl: `${link}`,
                                     },
@@ -2550,7 +2551,7 @@ Cieeee, What's Going On❤️💖👀`,
                                         text: botname
                                     }),
                                     header: proto.Message.InteractiveMessage.Header.create({
-                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/list.jpg') }, { upload: Wave.waUploadToServer })),
+                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/themes/list.jpg') }, { upload: Wave.waUploadToServer })),
                                         title: generalmenu,
                                         subtitle: themeemoji,
                                         hasMediaAttachment: false
@@ -2622,7 +2623,7 @@ Cieeee, What's Going On❤️💖👀`,
                                         text: botname
                                     }),
                                     header: proto.Message.InteractiveMessage.Header.create({
-                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/list.jpg') }, { upload: Wave.waUploadToServer })),
+                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/themes/list.jpg') }, { upload: Wave.waUploadToServer })),
                                         title: educationmenu,
                                         subtitle: themeemoji,
                                         hasMediaAttachment: false
@@ -2692,7 +2693,7 @@ Cieeee, What's Going On❤️💖👀`,
                                         text: botname
                                     }),
                                     header: proto.Message.InteractiveMessage.Header.create({
-                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/list.jpg') }, { upload: Wave.waUploadToServer })),
+                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/themes/list.jpg') }, { upload: Wave.waUploadToServer })),
                                         title: codingmenu,
                                         subtitle: themeemoji,
                                         hasMediaAttachment: false
@@ -2862,7 +2863,7 @@ Cieeee, What's Going On❤️💖👀`,
                                         text: botname
                                     }),
                                     header: proto.Message.InteractiveMessage.Header.create({
-                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/list.jpg') }, { upload: Wave.waUploadToServer })),
+                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/themes/list.jpg') }, { upload: Wave.waUploadToServer })),
                                         title: ownermenu,
                                         subtitle: themeemoji,
                                         hasMediaAttachment: false
@@ -2944,7 +2945,7 @@ Cieeee, What's Going On❤️💖👀`,
                                         text: botname
                                     }),
                                     header: proto.Message.InteractiveMessage.Header.create({
-                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/list.jpg') }, { upload: Wave.waUploadToServer })),
+                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/themes/list.jpg') }, { upload: Wave.waUploadToServer })),
                                         title: groupmenu,
                                         subtitle: themeemoji,
                                         hasMediaAttachment: false
@@ -3031,7 +3032,7 @@ Cieeee, What's Going On❤️💖👀`,
                                         text: botname
                                     }),
                                     header: proto.Message.InteractiveMessage.Header.create({
-                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/list.jpg') }, { upload: Wave.waUploadToServer })),
+                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/themes/list.jpg') }, { upload: Wave.waUploadToServer })),
                                         title: funmenu,
                                         subtitle: themeemoji,
                                         hasMediaAttachment: false
@@ -3110,7 +3111,7 @@ Cieeee, What's Going On❤️💖👀`,
                                         text: botname
                                     }),
                                     header: proto.Message.InteractiveMessage.Header.create({
-                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/list.jpg') }, { upload: Wave.waUploadToServer })),
+                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/themes/list.jpg') }, { upload: Wave.waUploadToServer })),
                                         title: downloadmenu,
                                         subtitle: themeemoji,
                                         hasMediaAttachment: false
@@ -3180,7 +3181,7 @@ Cieeee, What's Going On❤️💖👀`,
                                         text: botname
                                     }),
                                     header: proto.Message.InteractiveMessage.Header.create({
-                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/list.jpg') }, { upload: Wave.waUploadToServer })),
+                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/themes/list.jpg') }, { upload: Wave.waUploadToServer })),
                                         title: wallmenu,
                                         subtitle: themeemoji,
                                         hasMediaAttachment: false
@@ -3262,7 +3263,7 @@ Cieeee, What's Going On❤️💖👀`,
                                         text: botname
                                     }),
                                     header: proto.Message.InteractiveMessage.Header.create({
-                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/list.jpg') }, { upload: Wave.waUploadToServer })),
+                                        ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/themes/list.jpg') }, { upload: Wave.waUploadToServer })),
                                         title: snapblendmenu,
                                         subtitle: themeemoji,
                                         hasMediaAttachment: false
@@ -3501,7 +3502,7 @@ _Please Select Button Below_
                                             text: botname
                                         }),
                                         header: proto.Message.InteractiveMessage.Header.create({
-                                            ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/list.jpg') }, { upload: Wave.waUploadToServer })),
+                                            ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/themes/list.jpg') }, { upload: Wave.waUploadToServer })),
                                             title: ``,
                                             gifPlayback: true,
                                             subtitle: ownername,
@@ -3579,7 +3580,7 @@ _Please Select Button Below_
                                             text: botname
                                         }),
                                         header: proto.Message.InteractiveMessage.Header.create({
-                                            ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/list.jpg') }, { upload: Wave.waUploadToServer })),
+                                            ...(await prepareWAMessageMedia({ image: fs.readFileSync('./src/themes/list.jpg') }, { upload: Wave.waUploadToServer })),
                                             title: ``,
                                             gifPlayback: true,
                                             subtitle: ownername,
@@ -4423,7 +4424,7 @@ https://chat.whatsapp.com/${response}`;
                     break;
                 case 'p':
                 case 'ping':
-                    let thumbnail = './src/ch1.jpg';
+                    let thumbnail = './src/themes/ch1.jpg';
                     let fgg = {
                         key: { fromMe: false, participant: `0@s.whatsapp.net`, remoteJid: 'status@broadcast' },
                         message: {
@@ -5610,7 +5611,7 @@ hacking can be illegal ..hack responsibly.
 *Bealth Guy*
 
  *────────────────* `
- let wavejpg= "./src/list.jpg" 
+ let wavejpg= "./src/themes/list.jpg" 
  
 let tifxmsg = generateWAMessageFromContent(from, {
   viewOnceMessage: {
@@ -5627,7 +5628,7 @@ let tifxmsg = generateWAMessageFromContent(from, {
             text: botname
           }),
                     header: proto.Message.InteractiveMessage.Header.create({
-                ...(await prepareWAMessageMedia({ image: { url: "./src/Mariach.jpg" }}, { upload: Wave.waUploadToServer})), 
+                ...(await prepareWAMessageMedia({ image: { url: "./src/themes/Mariach.jpg" }}, { upload: Wave.waUploadToServer})), 
             title: tifx,
             subtitle: themeemoji,
             hasMediaAttachment: false
