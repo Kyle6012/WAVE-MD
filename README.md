@@ -1,4 +1,4 @@
-<a href="https://bealthguy.netlify.app"><img src="./src/list.jpg" alt="WAVE-MD" border="0"></a>
+<a href="https://bealthguy.netlify.app"><img src="./src/themes/list.jpg" alt="WAVE-MD" border="0"></a>
 <h1 align="center">WAVE-MD<br></h1>
 
 <p align="center"> 
