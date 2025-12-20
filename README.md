@@ -2,7 +2,7 @@
 <h1 align="center">WAVE-MD<br></h1>
 
 <p align="center"> 
-  Whatsapp bot made by nodejs
+  Whatsapp bot made by nodejs (Hobby Project)
 </p>
 
 
